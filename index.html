@@ -1,0 +1,1421 @@
+<meta charset="utf-8">
+<title>Axle — Admin Demo (Alesha's view)</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f7f8f5; --surface: #fcfcfb; --surface-2: #f1f1ec;
+    --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+    --line: #e1e0d9; --hair: rgba(11,11,11,0.10);
+    --accent: #0e6672; --accent-ink: #0b4d57; --accent-wash: rgba(14,102,114,0.09);
+    --good: #0ca30c; --good-text: #006300; --warn: #fab219; --serious: #ec835a; --crit: #d03b3b;
+    --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+    --grid: #e1e0d9; --axis: #c3c2b7;
+    --shadow: 0 1px 2px rgba(11,11,11,0.04), 0 10px 28px rgba(11,11,11,0.06);
+    --display: "Avenir Next", Avenir, Futura, "Century Gothic", "Segoe UI", system-ui, sans-serif;
+    --body: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+      --ink: #fff; --ink-2: #c3c2b7; --line: #2c2c2a; --hair: rgba(255,255,255,0.10);
+      --accent: #56b6c2; --accent-ink: #8ed2db; --accent-wash: rgba(86,182,194,0.13);
+      --good-text: #0ca30c; --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+      --grid: #2c2c2a; --axis: #383835;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 28px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+    --ink: #fff; --ink-2: #c3c2b7; --line: #2c2c2a; --hair: rgba(255,255,255,0.10);
+    --accent: #56b6c2; --accent-ink: #8ed2db; --accent-wash: rgba(86,182,194,0.13);
+    --good-text: #0ca30c; --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+    --grid: #2c2c2a; --axis: #383835;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 28px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --page: #f7f8f5; --surface: #fcfcfb; --surface-2: #f1f1ec;
+    --ink: #0b0b0b; --ink-2: #52514e; --line: #e1e0d9; --hair: rgba(11,11,11,0.10);
+    --accent: #0e6672; --accent-ink: #0b4d57; --accent-wash: rgba(14,102,114,0.09);
+    --good-text: #006300; --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+    --grid: #e1e0d9; --axis: #c3c2b7;
+    --shadow: 0 1px 2px rgba(11,11,11,0.04), 0 10px 28px rgba(11,11,11,0.06);
+  }
+  html { background: var(--page); }
+  body { font-family: var(--body); color: var(--ink); background: var(--page); margin: 0; font-size: 14px; line-height: 1.5; }
+  .demo-note { text-align: center; font-size: 11.5px; color: var(--muted); padding: 8px 14px; border-bottom: 1px solid var(--line); background: var(--surface); }
+  .app { display: flex; min-height: 100vh; }
+  .side { width: 196px; flex: none; background: var(--surface); border-right: 1px solid var(--line); padding: 16px 10px; display: flex; flex-direction: column; gap: 2px; position: sticky; top: 0; align-self: flex-start; height: 100vh; box-sizing: border-box; }
+  .brand { display: flex; align-items: center; gap: 8px; padding: 4px 10px 2px; font-family: var(--display); font-weight: 700; letter-spacing: 0.03em; font-size: 15px; }
+  .brand i { color: var(--accent); font-style: normal; }
+  .org { padding: 0 10px 12px; font-size: 11px; color: var(--muted); }
+  .nav-item { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: 7px; font-size: 13px; color: var(--ink-2); cursor: pointer; border: 0; background: transparent; text-align: left; font-family: var(--body); width: 100%; }
+  .nav-item svg { color: var(--muted); flex: none; }
+  .nav-item.on { background: var(--accent-wash); color: var(--accent-ink); font-weight: 600; }
+  .nav-item.on svg { color: var(--accent); }
+  .nav-item.off { opacity: 0.45; }
+  .nav-item.off .na { margin-left: auto; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .side .gap { flex: 1; }
+  .whoami { margin: 0 10px 6px; padding: 9px 11px; border-radius: 9px; background: var(--surface-2); font-size: 11px; color: var(--ink-2); }
+  .whoami b { display: block; font-size: 12px; color: var(--ink); }
+  .ver { margin: 0 10px; padding-top: 9px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .main { flex: 1; min-width: 0; padding: 18px 22px 60px; position: relative; }
+  .topbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .topbar h1 { font-family: var(--display); font-size: 19px; font-weight: 600; margin: 0; }
+  .topbar .sp { flex: 1; }
+  .datechip { font-size: 12px; font-weight: 600; color: var(--ink-2); border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 5px 11px; }
+  .avatar { width: 28px; height: 28px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .view { display: none; }
+  .view.on { display: block; }
+
+  .urgent { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding: 10px 14px; border-radius: 10px; background: rgba(208,59,59,0.10); border: 1px solid rgba(208,59,59,0.3); border-left: 4px solid var(--crit); font-size: 12.5px; flex-wrap: wrap; }
+  .urgent .tag { flex: none; font-family: var(--display); font-size: 10px; font-weight: 800; letter-spacing: 0.1em; color: #fff; background: var(--crit); border-radius: 5px; padding: 3px 8px; }
+  .urgent .ack { margin-left: auto; }
+  .queues { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .qchip { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 8px 6px 14px; }
+  .qchip i { font-style: normal; font-family: var(--mono); font-size: 12px; font-weight: 700; background: var(--accent-wash); color: var(--accent-ink); border-radius: 999px; padding: 2px 9px; }
+  .qchip.hot i { background: rgba(208,59,59,0.13); color: var(--crit); }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 12px; }
+  .tile { background: var(--surface); border: 1px solid var(--hair); border-radius: 10px; padding: 12px 14px 10px; }
+  .tile .k { font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .tile .v { font-family: var(--display); font-size: 22px; font-weight: 600; margin-top: 3px; }
+  .tile .v small { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .tile .d { font-size: 11px; margin-top: 1px; color: var(--muted); }
+  .up { color: var(--good-text); font-weight: 600; } .down { color: var(--crit); font-weight: 600; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  @media (max-width: 900px) { .grid2 { grid-template-columns: 1fr; } .side { display: none; } .mobile-nav { display: flex !important; } }
+  .mobile-nav { display: none; flex-wrap: wrap; gap: 6px; padding: 10px 14px; background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 5; }
+  .mobile-nav button { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: var(--ink-2); font-family: var(--body); }
+  .mobile-nav button.on { background: var(--accent-wash); border-color: var(--accent); color: var(--accent-ink); }
+  .panel { background: var(--surface); border: 1px solid var(--hair); border-radius: 10px; margin-bottom: 12px; }
+  .panel:not(:has(.chartbox)) { overflow-x: auto; }
+  .panel-h { display: flex; align-items: baseline; gap: 10px; padding: 12px 16px 0; }
+  .panel-h h5 { margin: 0; font-family: var(--display); font-size: 13.5px; font-weight: 600; }
+  .panel-h .sub { font-size: 11.5px; color: var(--muted); }
+  .panel-h .sp { flex: 1; }
+  .tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; margin-top: 6px; }
+  .tbl th { text-align: left; font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 8px 14px 6px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .tbl td { padding: 8px 14px; border-top: 1px solid var(--line); }
+  .tbl tr:first-child td { border-top: 0; }
+  .tbl .num { text-align: right; }
+  .mono { font-family: var(--mono); font-size: 11.5px; white-space: nowrap; }
+  .dim { color: var(--muted); }
+  .pill { display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 600; white-space: nowrap; color: var(--ink); }
+  .pill::before { content: ""; width: 6px; height: 6px; border-radius: 999px; }
+  .p-good { background: rgba(12,163,12,0.13); } .p-good::before { background: var(--good); }
+  .p-warn { background: rgba(250,178,25,0.16); } .p-warn::before { background: var(--warn); }
+  .p-serious { background: rgba(236,131,90,0.16); } .p-serious::before { background: var(--serious); }
+  .p-crit { background: rgba(208,59,59,0.14); } .p-crit::before { background: var(--crit); }
+  .p-idle { background: var(--surface-2); } .p-idle::before { background: var(--muted); }
+  .panel-f { display: flex; justify-content: flex-end; border-top: 1px solid var(--line); padding: 8px 12px; }
+  .panel-f a { font-size: 12px; font-weight: 600; color: var(--accent-ink); text-decoration: none; cursor: pointer; }
+  .fchip { font-size: 12px; font-weight: 600; color: var(--ink-2); border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 12px; cursor: pointer; font-family: var(--body); }
+  .fchip.on { background: var(--accent-wash); border-color: transparent; color: var(--accent-ink); }
+  .feed { list-style: none; margin: 6px 0 8px; padding: 0 8px; font-size: 12px; }
+  .feed li { display: flex; gap: 9px; padding: 7px 8px; border-radius: 8px; align-items: flex-start; }
+  .feed .sig { flex: none; width: 17px; height: 17px; border-radius: 5px; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center; color: #fff; margin-top: 1px; }
+  .sig.crit { background: var(--crit); } .sig.warn { background: var(--warn); color: #3a2a00; }
+  .feed .when { margin-left: auto; color: var(--muted); font-size: 10.5px; flex: none; }
+  .meter { height: 6px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+  .meter i { display: block; height: 100%; background: var(--accent); }
+  .yn { display: inline-flex; gap: 4px; }
+  .yn button { border: 1px solid var(--line); background: var(--surface); border-radius: 7px; font-size: 11px; font-weight: 700; padding: 3px 10px; cursor: pointer; color: var(--ink-2); font-family: var(--body); }
+  .yn button.y.on { background: rgba(12,163,12,0.15); border-color: var(--good); color: var(--good-text); }
+  .yn button.n.on { background: rgba(208,59,59,0.12); border-color: var(--crit); color: var(--crit); }
+  .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--page); font-size: 12.5px; font-weight: 600; border-radius: 999px; padding: 9px 18px; opacity: 0; pointer-events: none; transition: opacity 0.25s; z-index: 50; max-width: 90vw; text-align: center; }
+  .modal-wrap { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 40; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .modal { background: var(--surface); border: 1px solid var(--hair); border-radius: 12px; box-shadow: var(--shadow); width: 100%; max-width: 560px; max-height: 85vh; overflow-y: auto; }
+  .aa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px 12px; margin-top: 10px; }
+  .aa-sec { margin-top: 16px; padding-bottom: 4px; border-bottom: 1px solid var(--line); font-size: 10.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+  .aa-card { background: var(--accent-wash); border-radius: 9px; padding: 9px 12px; font-size: 12.5px; margin-top: 10px; }
+  .aa-foot { display: flex; align-items: center; gap: 10px; border-top: 1px solid var(--line); margin-top: 16px; padding-top: 12px; }
+  .aa-mf { grid-column: 1 / -1; }
+  .aa-mrow { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .aa-mrow .aa-msel { width: auto; min-width: 90px; }
+  .aa-yp { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 12px; font-size: 11.5px; font-weight: 600; color: var(--ink-2); cursor: pointer; font-family: var(--body); }
+  .aa-yp.on { background: var(--accent-wash); border-color: var(--accent); color: var(--accent-ink); }
+  .aa-yin { width: 76px; border: 1px solid var(--line); background: var(--surface); border-radius: 7px; padding: 5px 9px; font-size: 12px; color: var(--ink); font-family: var(--body); }
+  .aa-slide { overflow: hidden; max-height: 0; transition: max-height 0.25s ease; }
+  .aa-slide.open { max-height: 140px; }
+  @media (prefers-reduced-motion: reduce) { .aa-slide { transition: none; } }
+  .aa-f label { display: block; font-size: 9.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+  .aa-f input, .aa-f select { width: 100%; border: 1px solid var(--line); background: var(--surface); border-radius: 7px; padding: 6px 9px; font-size: 12.5px; color: var(--ink); font-family: var(--body); box-sizing: border-box; }
+  .aa-tag { display: inline-block; font-size: 8px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent-ink); background: var(--accent-wash); border-radius: 4px; padding: 1px 5px; vertical-align: 1px; }
+  @media (max-width: 560px) { .aa-grid { grid-template-columns: 1fr; } }
+  .toast.on { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+  .tapzone { border: 2px dashed var(--accent); border-radius: 12px; padding: 16px; text-align: center; font-weight: 600; color: var(--accent-ink); cursor: pointer; margin: 12px 0; }
+  .choice { display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; font-size: 12.5px; font-weight: 600; margin: 0 6px 8px 0; cursor: pointer; background: var(--surface); color: var(--ink); font-family: var(--body); }
+  .choice.on { background: var(--accent-wash); border-color: var(--accent); color: var(--accent-ink); }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 99px; margin-right: 6px; }
+  .d-blue { background: var(--s1); } .d-yellow { background: var(--s4); } .d-red { background: var(--crit); } .d-green { background: var(--good); }
+  .okline { background: var(--accent-wash); border-radius: 9px; padding: 9px 12px; font-size: 12.5px; margin-top: 8px; }
+  .howto { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 12px 16px; font-size: 12.5px; color: var(--ink-2); margin-top: 12px; }
+  .howto code { font-family: var(--mono); font-size: 11px; background: var(--surface-2); border-radius: 5px; padding: 1px 6px; word-break: break-all; }
+  .hidden { display: none !important; }
+  .search { display: flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 5px 11px; font-size: 12px; color: var(--muted); min-width: 150px; }
+  .vhead { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; flex-wrap: wrap; }
+  .vhead h1 { font-family: var(--display); font-size: 19px; margin: 0; font-weight: 700; }
+  .vmeta { display: flex; gap: 16px; flex-wrap: wrap; font-size: 11.5px; color: var(--muted); margin-bottom: 12px; }
+  .vmeta b { color: var(--ink-2); font-weight: 600; }
+  .tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); margin-bottom: 14px; overflow-x: auto; }
+  .tab { font-size: 12.5px; font-weight: 600; color: var(--muted); padding: 7px 12px; border-bottom: 2px solid transparent; background: none; border-top: 0; border-left: 0; border-right: 0; cursor: pointer; font-family: var(--body); white-space: nowrap; }
+  .tab.on { color: var(--accent-ink); border-bottom-color: var(--accent); }
+  .wo { border: 1px solid var(--hair); border-left: 3px solid var(--serious); border-radius: 9px; padding: 11px 13px; margin: 10px 14px 14px; font-size: 12.5px; background: var(--surface); }
+  .wo .id { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .wo b { display: block; font-size: 13.5px; margin: 2px 0 3px; }
+  .wo .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; font-size: 11px; color: var(--muted); align-items: center; }
+  .stack-h { display: flex; height: 20px; border-radius: 6px; overflow: hidden; gap: 2px; margin: 10px 14px 8px; }
+  .stack-h i { display: block; height: 100%; }
+  .sk { display: flex; gap: 14px; flex-wrap: wrap; font-size: 11.5px; color: var(--ink-2); padding: 0 14px 12px; }
+  .sk span { display: inline-flex; align-items: center; gap: 6px; }
+  .sk i { width: 9px; height: 9px; border-radius: 3px; }
+  .tl { list-style: none; margin: 8px 0 0; padding: 0 14px 10px 18px; font-size: 12px; }
+  .tl li { position: relative; padding: 0 0 14px 20px; }
+  .tl li::before { content: ""; position: absolute; left: 2px; top: 5px; width: 9px; height: 9px; border-radius: 999px; background: var(--line); }
+  .tl li.hot::before { background: var(--serious); }
+  .tl li::after { content: ""; position: absolute; left: 6px; top: 17px; bottom: -2px; width: 1px; background: var(--line); }
+  .tl li:last-child::after { display: none; }
+  .tl .when { color: var(--muted); font-size: 10.5px; }
+  .tl p { margin: 1px 0 0; color: var(--ink-2); }
+  .docrow { display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-top: 1px solid var(--line); font-size: 12px; flex-wrap: wrap; }
+  .docrow:first-of-type { border-top: 0; }
+  .docrow .sp { flex: 1; }
+  .backlink { font-size: 12.5px; font-weight: 600; color: var(--accent-ink); cursor: pointer; background: none; border: 0; padding: 0; font-family: var(--body); margin-bottom: 10px; display: inline-block; }
+  .wx-tile { margin: 8px 10px 0; padding: 12px 13px; border-radius: 11px; background: var(--surface-2); border: 1px solid var(--hair); color: var(--ink); }
+  .wxt-ic { width: 27px; height: 27px; flex: none; }
+  .wxt-k { display: block; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+  .wxt-now { display: flex; align-items: center; gap: 9px; }
+  .wxt-hours { display: flex; gap: 4px; margin-top: 8px; }
+  .wxt-hours .h { flex: 1; text-align: center; background: var(--surface); border: 1px solid var(--hair); border-radius: 7px; padding: 4px 1px; }
+  .wxt-hours .h b { display: block; font-size: 8.5px; color: var(--muted); font-weight: 600; }
+  .wxt-hours .h svg { width: 13px; height: 13px; margin: 2px 0 1px; }
+  .wxt-hours .h i { display: block; font-style: normal; font-size: 9.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .wxt-temp { font-family: var(--display); font-size: 27px; font-weight: 700; line-height: 1; }
+  .wxt-cond { font-size: 11px; line-height: 1.3; color: var(--ink-2); }
+  .wxt-detail { font-size: 10.5px; margin-top: 6px; color: var(--muted); line-height: 1.4; }
+  .wxt-alert { margin-top: 9px; font-size: 9.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; background: rgba(250,178,25,0.18); border-radius: 6px; padding: 4px 8px; color: var(--ink); }
+  .fb-pill { position: fixed; right: 14px; bottom: 12px; z-index: 20; display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--ink-2); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; box-shadow: var(--shadow); cursor: pointer; font-family: var(--body); }
+  .chartbox { padding: 6px 10px 10px; position: relative; }
+  .chartbox svg { display: block; width: 100%; height: auto; }
+  .note-sm { font-size: 11.5px; color: var(--muted); padding: 4px 16px 12px; }
+  /* ---- proposal-parity dashboard bits ---- */
+  .queues .lbl { flex-basis: 100%; font-size: 10.5px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 1px; }
+  .dash-divider { height: 1px; background: var(--line); margin: 2px 0 14px; }
+  .btn { font-size: 12.5px; font-weight: 600; border-radius: 8px; padding: 6px 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; font-family: var(--body); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .tile svg.spark { display: block; width: 100%; height: 26px; margin-top: 6px; }
+  .legend { display: flex; gap: 16px; padding: 10px 16px 2px; flex-wrap: wrap; }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: var(--ink-2); }
+  .legend i { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+  .tip { position: absolute; pointer-events: none; opacity: 0; background: var(--ink); color: var(--page); font-size: 11.5px; line-height: 1.5; border-radius: 7px; padding: 7px 10px; transform: translate(-50%, calc(-100% - 10px)); white-space: nowrap; z-index: 3; font-variant-numeric: tabular-nums; }
+  .tip b { font-weight: 600; }
+  .tip .trow { display: flex; align-items: center; gap: 6px; }
+  .tip i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+  @media (prefers-reduced-motion: no-preference) { .tip { transition: opacity 0.12s ease; } }
+  /* ---- global table kit: sort · filter · pagination ---- */
+  .tkit-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px 0; }
+  .tkit-q { flex: 0 1 240px; min-width: 120px; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 5px 11px; font-size: 12px; color: var(--ink); font-family: var(--body); }
+  .tkit-q::placeholder { color: var(--muted); }
+  .tkit-foot { display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--line); padding: 8px 14px; font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .tkit-foot .sp { flex: 1; }
+  .tkit-foot .fchip[disabled] { opacity: 0.4; cursor: default; }
+  th.tkit-th { cursor: pointer; user-select: none; white-space: nowrap; }
+  th.tkit-th:hover { color: var(--accent-ink); }
+  th.tkit-th[data-tkdir]::after { content: " ▲"; font-size: 8px; color: var(--accent-ink); }
+  th.tkit-th[data-tkdir="desc"]::after { content: " ▼"; }
+  .grid2.dash { grid-template-columns: 3fr 2fr; }
+  .grid2b { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .grid2 > .panel, .grid2b > .panel, .colstack > .panel { margin-bottom: 0; }
+  .colstack { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .sig.info { background: var(--axis); color: var(--surface); }
+  .feed b { font-weight: 600; }
+  .feed p { margin: 1px 0 0; color: var(--ink-2); }
+  .feed.scrolls { max-height: 470px; overflow-y: auto; margin-bottom: 0; padding-bottom: 8px; }
+  .tbl.tight td { padding-top: 5.5px; padding-bottom: 5.5px; font-size: 12.5px; }
+  .tbl.tight .dim { white-space: nowrap; }
+  @media (max-width: 900px) { .grid2.dash, .grid2b { grid-template-columns: 1fr; } }
+</style>
+
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-hex" viewBox="0 0 24 24"><path d="M12 2.5 20.5 7v10L12 21.5 3.5 17V7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.6" fill="currentColor"/></symbol>
+  <symbol id="i-dash" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></g></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2.5 6.5h11v10h-11zM13.5 10h4l3 3.5v3h-7"/><circle cx="7" cy="17.5" r="1.9"/><circle cx="17" cy="17.5" r="1.9"/></g></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.5S5 14.7 5 9.6a7 7 0 0 1 14 0c0 5.1-7 11.9-7 11.9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="9.6" r="2.4" fill="currentColor"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5.5" cy="5.5" r="2"/><circle cx="5.5" cy="12" r="2"/><circle cx="5.5" cy="18.5" r="2"/><path d="M10.5 5.5H20M10.5 12H20M10.5 18.5H20"/></g></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M3 5h18v11.5H9.5L4.5 20.5v-4H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M7.5 9.5h9M7.5 12.5h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M20.7 6.3a5 5 0 0 1-6.6 6.2L7 19.6a2.1 2.1 0 0 1-3-3l7.1-7.1a5 5 0 0 1 6.2-6.6L14 6.2l3.4 3.4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-fuel" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 21V5a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v16M3.5 21h11"/><path d="M14 9h2.5a2 2 0 0 1 2 2v5a1.7 1.7 0 0 0 3.4 0V9.8L19 6"/></g></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 2.5h8L19 7.5v14H6z"/><path d="M13.5 3v5H19M9 13h6M9 17h6"/></g></symbol>
+  <symbol id="i-id" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5" width="19" height="14" rx="2"/><circle cx="8.5" cy="11" r="2.2"/><path d="M5.5 16.5c.6-1.7 1.7-2.5 3-2.5s2.4.8 3 2.5M14.5 9.5h4.5M14.5 13h4.5"/></g></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></g></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M18.5 5.5l-2.1 2.1M7.6 16.4l-2.1 2.1"/></g></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5" stroke-linecap="round"/></g></symbol>
+  <symbol id="i-trailer" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2.5 7.5h13v8h-13zM15.5 13.5H21M21 11v5"/><circle cx="7" cy="17.5" r="1.9"/><circle cx="12" cy="17.5" r="1.9"/></g></symbol>
+  <symbol id="i-loader" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 12h9v5H4zM6 12V9h5v3M13 14h4l3-4.5M20 9.5l2 1.5"/><circle cx="6.5" cy="19" r="1.9"/><circle cx="11" cy="19" r="1.9"/></g></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.6" fill="#f7b81f"/><g stroke="#f7b81f" stroke-width="2" stroke-linecap="round"><path d="M12 2.2v2.2M12 19.6v2.2M2.2 12h2.2M19.6 12h2.2M5 5l1.6 1.6M17.4 17.4 19 19M19 5l-1.6 1.6M6.6 17.4 5 19"/></g></symbol>
+  <symbol id="i-cloudrain" viewBox="0 0 24 24"><path d="M7 15a4.5 4.5 0 1 1 .8-8.9A5.5 5.5 0 0 1 18.4 8.6 3.8 3.8 0 0 1 17.5 16H7z" fill="#9db4c4"/><g stroke="#4a90c2" stroke-width="1.8" stroke-linecap="round"><path d="M9 18.5v2.4M13 18.5v2.4M17 18.5v2.4"/></g></symbol>
+  <symbol id="i-storm" viewBox="0 0 24 24"><path d="M7 14a4.5 4.5 0 1 1 .8-8.9A5.5 5.5 0 0 1 18.4 7.6 3.8 3.8 0 0 1 17.5 15H7z" fill="#8296a8"/><path d="M12.6 15.5 10 20h2.4l-1.4 3.6 4.6-5.8h-2.5l1.7-2.3z" fill="#f7b81f"/></symbol>
+</svg>
+<div class="demo-note">Interactive demo of Axle's admin app as <b>Alesha</b> (Manager role) would see it — illustrative data, nothing saved, five of sixteen screens. Companion to the proposal &amp; punch demo.</div>
+<div class="mobile-nav" id="mnav"></div>
+<div class="app">
+  <nav class="side">
+    <div class="brand"><svg width="20" height="20"><use href="#i-hex"/></svg>AXLE</div>
+    <div class="org">Madison Commercial Landscapes</div>
+    <button class="nav-item on" data-view="dash" type="button"><svg width="16" height="16"><use href="#i-dash"/></svg>Dashboard</button>
+    <button class="nav-item" data-view="assets" type="button"><svg width="16" height="16"><use href="#i-truck"/></svg>Assets</button>
+    <button class="nav-item off" data-na="Live map" type="button"><svg width="16" height="16"><use href="#i-pin"/></svg>Live map<span class="na">soon</span></button>
+    <button class="nav-item off" data-na="Dispatch" type="button"><svg width="16" height="16"><use href="#i-route"/></svg>Dispatch<span class="na">soon</span></button>
+    <button class="nav-item off" data-na="Messages" type="button"><svg width="16" height="16"><use href="#i-msg"/></svg>Messages<span class="na">soon</span></button>
+    <button class="nav-item off" data-na="Maintenance" type="button"><svg width="16" height="16"><use href="#i-wrench"/></svg>Maintenance<span class="na">soon</span></button>
+    <button class="nav-item" data-view="fuel" type="button"><svg width="16" height="16"><use href="#i-fuel"/></svg>Fuel &amp; costs</button>
+    <button class="nav-item off" data-na="Inventory" type="button"><svg width="16" height="16"><use href="#i-doc"/></svg>Inventory<span class="na">soon</span></button>
+    <button class="nav-item" data-view="people" type="button"><svg width="16" height="16"><use href="#i-id"/></svg>People</button>
+    <button class="nav-item" data-view="reports" type="button"><svg width="16" height="16"><use href="#i-chart"/></svg>Reports</button>
+    <button class="nav-item" data-view="tags" type="button"><svg width="16" height="16"><use href="#i-hex"/></svg>Tag manager</button>
+    <span class="gap"></span>
+    <div class="wx-tile">
+      <span class="wxt-k">Weather · Madison shop</span>
+      <div class="wxt-now"><svg class="wxt-ic" aria-hidden="true"><use href="#i-sun"/></svg><span class="wxt-temp">78°</span><span class="wxt-cond">Sunny</span></div>
+      <div class="wxt-detail">Rain 40% after 3p · wind SW 8 mph</div>
+      <div class="wxt-hours">
+        <span class="h"><b>Fri</b><svg aria-hidden="true"><use href="#i-storm"/></svg><i>76°</i></span>
+        <span class="h"><b>Sat</b><svg aria-hidden="true"><use href="#i-cloudrain"/></svg><i>72°</i></span>
+        <span class="h"><b>Sun</b><svg aria-hidden="true"><use href="#i-sun"/></svg><i>80°</i></span>
+      </div>
+      <div class="wxt-alert">▲ T-storm watch until 8p</div>
+    </div>
+    <button class="nav-item off" data-na="Settings" type="button"><svg width="16" height="16"><use href="#i-gear"/></svg>Settings<span class="na">soon</span></button>
+    <div class="whoami" style="margin-top:8px"><b>Alesha B.</b>Manager · sees everything operational — no keys, no deploys (those are the product-owner's seat)</div>
+    <div class="ver"><b>v0.2.0-demo</b> · Aug 1</div>
+  </nav>
+
+  <div class="main">
+    <!-- ============ DASHBOARD ============ -->
+    <section class="view on" id="v-dash">
+      <div class="topbar"><h1>Good morning, Alesha</h1><span class="sp"></span><span class="search"><svg width="13" height="13"><use href="#i-search"/></svg>Search units, drivers, VINs…</span><span class="datechip">Jul 30, 2026</span><span class="avatar">AB</span></div>
+      <div class="urgent" id="urgentbar"><span class="tag">URGENT</span><span><b>Alesha:</b> all crews back to the shop by 2 pm — severe storms. Secure loads before you roll.</span><span class="ack"><button class="btn primary" id="ackbtn" type="button">Acknowledge</button><span class="dim" style="font-size:11px;margin-left:8px" id="ackcount">41/61 acked</span></span></div>
+      <div class="queues">
+        <span class="lbl">Waiting on someone</span>
+        <span class="qchip">Deep-check reviews <i>2</i></span>
+        <span class="qchip">Purchase requests <i>4</i></span>
+        <span class="qchip">Punch corrections <i>1</i></span>
+        <span class="qchip hot">Incidents <i>1</i></span>
+        <span class="qchip hot">Inspection anomalies <i>3</i></span>
+        <span class="qchip hot">Low stock <i>7</i></span>
+        <span class="qchip">Tools overdue <i>1</i></span>
+        <span class="qchip">Urgent acks outstanding <i id="q-acks">20</i></span>
+      </div>
+      <div class="dash-divider"></div>
+      <div class="tiles">
+        <div class="tile"><div class="k">On the clock</div><div class="v">23</div><div class="d">of 24 expected · live</div><svg class="spark" data-spark="19,21,22,24,23,22,23" aria-hidden="true"></svg></div>
+        <div class="tile"><div class="k">Vehicles active</div><div class="v">128<small> / 142</small></div><div class="d">9 in shop · 5 idle</div><svg class="spark" data-spark="118,121,124,120,126,125,128" aria-hidden="true"></svg></div>
+        <div class="tile"><div class="k">Utilization</div><div class="v">87.3%</div><div class="d"><span class="up">▲ 2.1 pts</span> vs June</div><svg class="spark" data-spark="81,83,82,85,84,86,87.3" aria-hidden="true"></svg></div>
+        <div class="tile"><div class="k">Cost per mile</div><div class="v">$0.612</div><div class="d"><span class="up">▼ 3.4%</span> vs June</div><svg class="spark" data-spark="0.66,0.65,0.658,0.64,0.633,0.625,0.612" aria-hidden="true"></svg></div>
+        <div class="tile"><div class="k">Open defects</div><div class="v">9</div><div class="d"><span class="down">3 critical</span> · 6 minor</div><svg class="spark" data-spark="14,12,13,10,11,8,9" aria-hidden="true"></svg></div>
+        <div class="tile"><div class="k">PM compliance</div><div class="v">94.2%</div><div class="d">6 services due ≤ 7 days</div><svg class="spark" data-spark="90,91,93,92,93,95,94.2" aria-hidden="true"></svg></div>
+      </div>
+      <div class="grid2 dash">
+        <div class="colstack">
+          <div class="panel">
+            <div class="panel-h"><h5>Cost per mile — trailing 12 weeks</h5><span class="sub">Fleet average, weekly</span><span class="sp"></span><span class="sub mono">$/mi</span></div>
+            <div class="legend"><span><i style="background:var(--s1)"></i>Fuel</span><span><i style="background:var(--s2)"></i>Maintenance</span></div>
+            <div class="chartbox" id="cpm-chart"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-h"><h5>Monthly spend by category</h5><span class="sub">Feb – Jul 2026</span><span class="sp"></span><span class="sub mono">$k</span></div>
+            <div class="legend"><span><i style="background:var(--s1)"></i>Fuel</span><span><i style="background:var(--s2)"></i>Maintenance</span><span><i style="background:var(--s3)"></i>Insurance</span><span><i style="background:var(--s4)"></i>Tolls &amp; other</span></div>
+            <div class="chartbox" id="spend-chart"></div>
+          </div>
+        </div>
+        <div class="panel" style="display:flex;flex-direction:column;min-height:0">
+          <div class="panel-h"><h5>Needs attention</h5><span class="sp"></span><span class="sub">15 alerts · scrolls</span></div>
+          <ul class="feed scrolls">
+            <li><span class="sig warn">!</span><div><b>Weather — severe t-storm watch until 8p:</b> 3 crews on sites in the watch area.<p>NWS alert · crews notified by broadcast.</p></div><span class="when">6:38a</span></li>
+            <li><span class="sig crit">!</span><div><b>DVIR defect — U-078:</b> air line leak reported on pre-trip.<p>Vehicle held. Draft work order ready.</p></div><span class="when">7:42a</span></li>
+            <li><span class="sig warn">!</span><div><b>License expiring:</b> J. Reyes, CDL-B in 23 days.<p>Renewal reminder sent Jul 12 — no upload yet.</p></div><span class="when">Jul 30</span></li>
+            <li><span class="sig warn">!</span><div><b>Fuel exception — U-092:</b> 41 gal purchased; tank holds 34.<p>Card 8841 · Speedway #204, 11:48 pm.</p></div><span class="when">Jul 29</span></li>
+            <li><span class="sig warn">!</span><div><b>Inspection anomaly — U-078:</b> brakes marked OK while brake work order is still open.</div><span class="when">7:05a</span></li>
+            <li><span class="sig warn">!</span><div><b>Deep check skipped — U-092:</b> D. Whitfield skipped the 30-use photo survey.<p>Short inspection completed. 2nd skip this month.</p></div><span class="when">Jul 29</span></li>
+            <li><span class="sig warn">!</span><div><b>PM overdue — U-104:</b> PM-B service past due by 240 mi.</div><span class="when">Jul 29</span></li>
+            <li><span class="sig info">i</span><div><b>Stopped mid-route — U-078:</b> no movement for 22 min at Jefferson St.</div><span class="when">9:04a</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid2b">
+        <div class="panel" style="display:flex;flex-direction:column;min-height:0">
+          <div class="panel-h"><h5>Past due</h5><span class="sp"></span><span class="sub">Action needed</span></div>
+          <table class="tbl tight">
+            <tr><td class="mono">U-183</td><td>Registration renewal <span class="dim">· lapsed Jul 24</span></td><td class="num"><span class="pill p-crit">Lapsed</span></td></tr>
+            <tr><td class="mono">U-104</td><td>PM-B service <span class="dim">· overdue 240 mi</span></td><td class="num"><span class="pill p-serious">Overdue</span></td></tr>
+            <tr><td class="mono">U-062</td><td>Coolant flush <span class="dim">· overdue 12 days</span></td><td class="num"><span class="pill p-serious">Overdue</span></td></tr>
+          </table>
+          <div class="panel-f"><a data-view="reports" class="navlink">View report →</a></div>
+        </div>
+        <div class="panel" style="display:flex;flex-direction:column;min-height:0">
+          <div class="panel-h"><h5>Coming up</h5><span class="sp"></span><span class="sub">Next 14 days</span></div>
+          <table class="tbl tight">
+            <tr><td class="mono">U-078</td><td>PM-A service <span class="dim">· due in 310 mi</span></td><td class="num"><span class="pill p-warn">Book now</span></td></tr>
+            <tr><td class="mono">U-201</td><td>DOT annual inspection <span class="dim">· Aug 14</span></td><td class="num"><span class="pill p-idle">Scheduled</span></td></tr>
+            <tr><td class="mono">U-155</td><td>Tire rotation <span class="dim">· in 1,100 mi</span></td><td class="num"><span class="pill p-idle">Upcoming</span></td></tr>
+            <tr><td class="mono">U-217</td><td>Brake job — WO-1042 <span class="dim">· at Loudon Truck Svc</span></td><td class="num"><span class="pill p-good">In progress</span></td></tr>
+          </table>
+          <div class="panel-f"><a data-view="reports" class="navlink">View report →</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ASSETS ============ -->
+    <section class="view" id="v-assets">
+      <div class="topbar"><h1>Assets</h1><span class="sp"></span><input class="search" id="asset-search" type="search" placeholder="Unit, VIN, serial, plate…" aria-label="Search assets"><button class="fchip" data-toast="Bulk CSV import — minimal columns: unit #, VIN, class, current meter. The NHTSA decode fills year/make/model per row; the truthful seed list is the insurance policy's vehicle schedule." type="button">Import CSV</button><button class="btn primary" id="aa-open" type="button">+ Add asset</button></div>
+      <div class="panel">
+        <div class="filters" style="border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;padding:12px 14px;flex-wrap:wrap">
+          <button class="fchip on" data-cf="vehicle" type="button">Vehicles <small>142</small></button>
+          <button class="fchip" data-cf="trailer" type="button">Trailers <small>38</small></button>
+          <button class="fchip" data-cf="heavy" type="button">Heavy equipment <small>24</small></button>
+          <button class="fchip" data-cf="light" type="button">Light equipment <small>61</small></button>
+          <span style="flex:1"></span>
+          <button class="fchip" data-toast="Groups scope the register by depot or crew — Madison runs one depot today, so this stays quiet." type="button">Group: All depots ▾</button>
+        </div>
+        <div class="filters" style="display:flex;align-items:center;gap:8px;padding:12px 14px;flex-wrap:wrap">
+          <button class="fchip on" data-sf="all" type="button">All <small>142</small></button>
+          <button class="fchip" data-sf="active" type="button">Active <small>128</small></button>
+          <button class="fchip" data-sf="shop" type="button">In shop <small>9</small></button>
+          <button class="fchip" data-sf="idle" type="button">Idle <small>5</small></button>
+          <span style="flex:1"></span>
+          <button class="fchip" data-toast="The default order is next PM due — the order a manager works the list in. Click any column header to re-sort." type="button">Sort: Next PM ▾</button>
+        </div>
+        <table class="tbl" id="asset-tbl">
+          <thead><tr><th>Unit</th><th>Vehicle</th><th>Status</th><th>Driver</th><th class="num">Odometer</th><th>Health</th><th class="num">Next PM</th></tr></thead>
+          <tbody>
+            <tr data-t="vehicle" data-s="active"><td class="mono">U-104</td><td>2021 Freightliner MT45 · Box</td><td><span class="pill p-good">Active</span></td><td>M. Okafor</td><td class="num mono">112,480 mi</td><td><span class="pill p-warn">PM overdue</span></td><td class="num dim">−240 mi</td></tr>
+            <tr data-t="vehicle" data-s="shop"><td class="mono">U-078</td><td>2020 Isuzu NPR-HD · Box</td><td><span class="pill p-crit">Held</span></td><td>D. Whitfield</td><td class="num mono">134,902 mi</td><td><span class="pill p-crit">1 critical defect</span></td><td class="num dim">310 mi</td></tr>
+            <tr data-t="vehicle" data-s="shop"><td class="mono">U-217</td><td>2023 Ford Transit 350 · Van</td><td><span class="pill p-serious">In shop</span></td><td class="dim">—</td><td class="num mono">48,213 mi</td><td><span class="pill p-serious">WO-1042 open</span></td><td class="num dim">3,120 mi</td></tr>
+            <tr data-t="vehicle" data-s="active"><td class="mono">U-131</td><td>2022 Ram ProMaster 2500 · Van</td><td><span class="pill p-good">Active</span></td><td>J. Reyes</td><td class="num mono">61,020 mi</td><td><span class="pill p-good">No defects</span></td><td class="num dim">1,850 mi</td></tr>
+            <tr data-t="vehicle" data-s="active"><td class="mono">U-201</td><td>2023 Chevy Silverado 2500 · Pickup</td><td><span class="pill p-good">Active</span></td><td>S. Patel</td><td class="num mono">41,268 mi</td><td><span class="pill p-good">No defects</span></td><td class="num dim">2,730 mi</td></tr>
+            <tr data-t="vehicle" data-s="idle"><td class="mono">U-092</td><td>2019 Ford F-250 · Pickup</td><td><span class="pill p-idle">Idle 6 days</span></td><td class="dim">—</td><td class="num mono">98,770 mi</td><td><span class="pill p-warn">Fuel exception</span></td><td class="num dim">4,400 mi</td></tr>
+            <tr data-t="vehicle" data-s="active"><td class="mono">U-155</td><td>2024 Ford Transit 250 · Van</td><td><span class="pill p-good">Active</span></td><td>T. Nguyen</td><td class="num mono">22,314 mi</td><td><span class="pill p-good">No defects</span></td><td class="num dim">5,980 mi</td></tr>
+            <tr data-t="trailer" data-s="active"><td class="mono">TR-12</td><td>16 ft utility trailer</td><td><span class="pill p-good">Active</span></td><td class="dim">—</td><td class="num dim">—</td><td><span class="pill p-good">No defects</span></td><td class="num dim">Nov</td></tr>
+            <tr data-t="trailer" data-s="idle"><td class="mono">TR-07</td><td>14 ft enclosed trailer</td><td><span class="pill p-idle">Idle</span></td><td class="dim">—</td><td class="num dim">—</td><td><span class="pill p-good">No defects</span></td><td class="num dim">Oct</td></tr>
+            <tr data-t="heavy" data-s="shop"><td class="mono">EQ-208</td><td>Skid steer</td><td><span class="pill p-serious">In shop</span></td><td class="dim">—</td><td class="num mono">214 hrs</td><td><span class="pill p-serious">Hydraulic drip</span></td><td class="num dim">250 hrs</td></tr>
+            <tr data-t="light" data-s="active"><td class="mono">EQ-113</td><td>Plate compactor</td><td><span class="pill p-good">Active</span></td><td class="dim">—</td><td class="num mono">88 hrs</td><td><span class="pill p-good">No defects</span></td><td class="num dim">120 hrs</td></tr>
+            <tr data-t="light" data-s="active"><td class="mono">EQ-334</td><td>72" zero-turn mower</td><td><span class="pill p-good">Active</span></td><td class="dim">—</td><td class="num mono">402 hrs</td><td><span class="pill p-good">No defects</span></td><td class="num dim">450 hrs</td></tr>
+          </tbody>
+        </table>
+        <div class="note-sm">Click U-104 for the full detail page — the same layout as proposal screen 7 (other rows are placeholders in this demo; every unit gets one in the real app). The class tabs and status chips filter live; counts show the proposal's 142-asset fleet fiction.</div>
+      </div>
+    </section>
+
+    <!-- ============ FUEL ============ -->
+    <section class="view" id="v-fuel">
+      <div class="topbar"><h1>Fuel &amp; costs</h1><span class="fchip on">Transactions</span><button class="fchip" id="chip-pins" type="button">Cards &amp; PINs</button><button class="fchip" id="chip-exc" type="button">Exceptions <small>3</small></button><button class="fchip" data-toast="The ledger view — every fill posts as a cost entry on its vehicle; the dashboard's cost-per-mile drinks from it." type="button">Ledger</button><span class="sp"></span><span class="datechip">July 2026</span></div>
+      <div class="tiles">
+        <div class="tile"><div class="k">Fuel spend · MTD</div><div class="v">$38.2k</div><div class="d"><span class="up">▼ 4.1%</span> vs June</div></div>
+        <div class="tile"><div class="k">Avg price / gal</div><div class="v">$3.42</div><div class="d">In-network $3.31 · out $3.58</div></div>
+        <div class="tile"><div class="k">Fleet MPG</div><div class="v">12.8</div><div class="d"><span class="up">▲ 0.3</span> from pump odometers</div></div>
+        <div class="tile"><div class="k">Exceptions</div><div class="v">3</div><div class="d"><span class="down">1 open</span> · 2 resolved</div></div>
+      </div>
+      <div class="grid2 dash">
+        <div class="panel">
+          <div class="panel-h"><h5>Transactions</h5><span class="sp"></span><span class="sub">WEX API · synced 6:12a</span></div>
+          <table class="tbl">
+            <thead><tr><th>When</th><th>Card → vehicle</th><th>Person (PIN)</th><th class="num">Gal</th><th class="num">$/gal</th><th class="num">Total</th><th class="num">Network</th></tr></thead>
+            <tbody>
+              <tr><td class="dim">Jul 30 · 6:41a</td><td><b>Truck 7</b> → U-104</td><td>M. Okafor <span class="mono">••51</span></td><td class="num mono">38.2</td><td class="num mono">$3.29</td><td class="num mono">$125.68</td><td class="num"><span class="pill p-good">CITGO</span></td></tr>
+              <tr><td class="dim">Jul 29 · 11:48p</td><td><b>U-092</b></td><td class="dim">PIN not recognized</td><td class="num mono">41.0</td><td class="num mono">$3.44</td><td class="num mono">$141.04</td><td class="num"><span class="pill p-crit">Overfill</span></td></tr>
+              <tr><td class="dim">Jul 29 · 2:10p</td><td><b>U-131</b></td><td>J. Reyes <span class="mono">••83</span></td><td class="num mono">24.6</td><td class="num mono">$3.55</td><td class="num mono">$87.33</td><td class="num"><span class="pill p-idle">Out-of-network</span></td></tr>
+              <tr><td class="dim">Jul 28 · 7:02a</td><td><b>U-155</b></td><td>T. Nguyen <span class="mono">••64</span></td><td class="num mono">22.1</td><td class="num mono">$3.31</td><td class="num mono">$73.15</td><td class="num"><span class="pill p-good">CITGO</span></td></tr>
+              <tr><td class="dim">Jul 28 · 6:44a</td><td><b>Truck 7</b> → U-104</td><td>M. Okafor <span class="mono">••51</span></td><td class="num mono">11.4</td><td class="num mono">$3.31</td><td class="num mono">$37.73</td><td class="num"><span class="pill p-good">CITGO</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="panel" style="margin-bottom:12px" id="fuel-exceptions">
+            <div class="panel-h"><h5>Exceptions</h5><span class="sp"></span><span class="sub">Auto-flagged by rules</span></div>
+            <ul class="feed">
+              <li><span class="sig crit">!</span><div><b>Overfill — U-092:</b> 41 gal purchased; tank holds 34. Card used at 11:48 pm.<p>Assigned to Alesha · driver response requested</p></div><span class="when">Jul 29</span></li>
+              <li><span class="sig warn">!</span><div><b>PIN not on manifest — U-131:</b> PIN ••29 fueled a truck they weren't checked into.<p>Resolved — shop run, noted by dispatcher</p></div><span class="when">Jul 27</span></li>
+              <li><span class="sig info">i</span><div><b>Price outlier:</b> $3.89/gal at an out-of-network stop; in-network was 0.4 mi away.</div><span class="when">Jul 25</span></li>
+            </ul>
+          </div>
+          <div class="panel" id="fuel-pins">
+            <div class="panel-h"><h5>Cards &amp; PINs</h5><span class="sub">Mirror of WEX · audited</span><span class="sp"></span><button class="fchip" data-toast="Assigned here, mirrored to WEX — audited; the pump always agrees with the app about who's who." type="button">+ Assign PIN</button></div>
+            <div style="padding:4px 0 8px">
+              <div class="docrow"><b>Truck 7</b><span class="dim">→ U-104</span><span class="sp"></span><span class="dim">4 PINs active</span><span class="pill p-good">OK</span></div>
+              <div class="docrow"><b>U-092</b><span class="sp"></span><span class="dim">Unrecognized PIN Jul 29</span><span class="pill p-warn">PIN review</span></div>
+              <div class="docrow"><b>U-131</b><span class="sp"></span><span class="dim">3 PINs active</span><span class="pill p-good">OK</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PEOPLE ============ -->
+    <section class="view" id="v-people">
+      <div class="topbar"><h1>People</h1><button class="fchip on" id="chip-drivers" type="button">Drivers <small>24</small></button><button class="fchip" id="chip-staff" type="button">All staff <small>61</small></button><span class="sp"></span><input class="search" id="people-search" type="search" placeholder="Name, license…" aria-label="Search people"><button class="fchip" id="chip-exp" type="button">Expiring ≤ 60 days <small>2</small></button><button class="btn primary" data-toast="Enrollment works by phone or email — the free path is a QR off Alesha's screen at onboarding; passkey from day one." type="button">+ Add person</button></div>
+      <div id="drivers-wrap">
+      <div class="panel">
+        <table class="tbl" id="drivers-tbl">
+          <thead><tr><th>Driver</th><th>License</th><th>Medical cert</th><th class="num">HOS today</th><th>Safety score · 8 wks</th><th>Assigned</th></tr></thead>
+          <tbody>
+            <tr data-exp="1"><td><b>T. Nguyen</b></td><td><span class="pill p-good">CDL-B · 2028</span></td><td><span class="pill p-crit">Exp in 5 days</span></td><td class="num mono">7h 55m</td><td><svg class="spark" data-spark="90,92,91,93,94,93,95,95" style="width:80px;height:20px;display:inline-block;vertical-align:middle" aria-hidden="true"></svg> <b>95</b></td><td class="mono">U-155</td></tr>
+            <tr data-exp="1"><td><b>J. Reyes</b></td><td><span class="pill p-warn">Exp in 23 days</span></td><td><span class="pill p-good">Valid · 2027</span></td><td class="num mono">4h 10m</td><td><svg class="spark" data-spark="85,86,88,87,89,88,88,88" style="width:80px;height:20px;display:inline-block;vertical-align:middle" aria-hidden="true"></svg> <b>88</b></td><td class="mono">U-131</td></tr>
+            <tr><td><b>M. Okafor</b></td><td><span class="pill p-good">CDL-B · 2027</span></td><td><span class="pill p-good">Valid · 2027</span></td><td class="num mono">6h 40m</td><td><svg class="spark" data-spark="86,87,89,90,90,91,92,92" style="width:80px;height:20px;display:inline-block;vertical-align:middle" aria-hidden="true"></svg> <b>92</b></td><td class="mono">U-104</td></tr>
+            <tr><td><b>S. Patel</b></td><td><span class="pill p-good">Class D · 2029</span></td><td class="dim">n/a</td><td class="num mono">8h 00m</td><td><svg class="spark" data-spark="89,90,90,91,92,91,91,91" style="width:80px;height:20px;display:inline-block;vertical-align:middle" aria-hidden="true"></svg> <b>91</b></td><td class="mono">U-201</td></tr>
+            <tr><td><b>D. Whitfield</b></td><td><span class="pill p-good">CDL-B · 2027</span></td><td><span class="pill p-good">Valid · 2028</span></td><td class="num mono">2h 05m</td><td><svg class="spark" data-spark="88,87,85,84,82,81,80,79" style="width:80px;height:20px;display:inline-block;vertical-align:middle" aria-hidden="true"></svg> <b>79</b> <span class="down">▼</span></td><td class="mono">U-078</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin:10px 2px 12px">Safety scores are imported from the fleet's existing Cambridge Mobile Telematics program (Federated DriveSAFE — the Bluetooth tag in each vehicle plus the CMT app) — entered from the insurer portal until an API/export path is arranged — so drivers keep one scoring setup, not two. Expiry alerts fire at 60 / 30 / 7 days to driver + manager.</p>
+      </div>
+      <div id="staff-wrap" class="hidden">
+      <div class="panel">
+        <div class="panel-h"><h5>Directory</h5><span class="sp"></span><span class="sub">roles gate screens · language follows the person</span></div>
+        <table class="tbl" id="staff-tbl">
+          <thead><tr><th>Name</th><th>Role</th><th>Type</th><th>Language</th><th class="num">Status</th></tr></thead>
+          <tbody>
+            <tr><td><b>R. Madison</b></td><td>Owner</td><td class="dim">Permanent</td><td>English</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>Alesha B.</b></td><td>Manager</td><td class="dim">Permanent</td><td>English</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>M. Okafor</b></td><td>Driver</td><td class="dim">Permanent</td><td>English</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>J. Reyes</b></td><td>Driver</td><td class="dim">Permanent</td><td>Español</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>T. Nguyen</b></td><td>Driver</td><td class="dim">Permanent</td><td>English</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>D. Whitfield</b></td><td>Driver</td><td class="dim">Permanent</td><td>English</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>A. Brooks</b></td><td>Driver</td><td class="dim">Permanent</td><td>English</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>S. Patel</b></td><td>Driver</td><td class="dim">Permanent</td><td>English</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>D. Ríos</b></td><td>Driver</td><td class="dim">Seasonal</td><td>Español</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>L. Vargas</b></td><td>Mechanic</td><td class="dim">Permanent</td><td>Español</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>M. Torres</b></td><td>Driver</td><td class="dim">Seasonal</td><td>Español</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>R. Delgado</b></td><td>Driver</td><td class="dim">Permanent</td><td>Español</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>C. Jensen</b></td><td>Driver</td><td class="dim">Permanent</td><td>English</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>K. Osei</b></td><td>Driver</td><td class="dim">Permanent</td><td>English</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>P. Novak</b></td><td>Dispatcher</td><td class="dim">Permanent</td><td>English</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>G. Fuentes</b></td><td>Driver</td><td class="dim">Seasonal</td><td>Español</td><td class="num"><span class="pill p-good">Active</span></td></tr>
+            <tr><td><b>J. Carter</b></td><td>Driver</td><td class="dim">Seasonal</td><td>English</td><td class="num"><span class="pill p-idle">Archived</span></td></tr>
+          </tbody>
+        </table>
+        <div class="note-sm">Archived ≠ deleted: J. Carter's punches, certs, PIN, and points all survive the winter — unarchive is one tap in November.</div>
+      </div>
+      </div>
+      <div class="grid2b">
+        <div class="panel">
+          <div class="panel-h"><h5>Time clock — today</h5><span class="sp"></span><span class="sub">23 on the clock · live</span></div>
+          <table class="tbl">
+            <tr><td><b>M. Okafor</b></td><td class="dim">In 5:58a · at the shop · driving U-104</td><td class="num mono">4h 12m</td><td class="num"><span class="pill p-good">On clock</span></td></tr>
+            <tr><td><b>T. Nguyen</b></td><td class="dim">In 6:01a · at the shop · now at job 4</td><td class="num mono">4h 09m</td><td class="num"><span class="pill p-good">On clock</span></td></tr>
+            <tr><td><b>D. Whitfield</b></td><td class="dim">In 7:31a · shop kiosk</td><td class="num mono">2h 39m</td><td class="num"><span class="pill p-good">On clock</span></td></tr>
+            <tr><td><b>A. Brooks</b></td><td class="dim">In 6:45a · remote · Elm Ridge HOA (GPS)</td><td class="num mono">3h 27m</td><td class="num"><span class="pill p-good">On clock</span></td></tr>
+            <tr><td><b>R. Chen</b></td><td class="dim">Out 2:12p · at the shop · shift ended</td><td class="num mono">6h 00m</td><td class="num"><span class="pill p-idle">Off</span></td></tr>
+          </table>
+        </div>
+        <div class="panel" style="display:flex;flex-direction:column">
+          <div class="panel-h"><h5>Timesheets — week of Jul 27</h5><span class="sp"></span><span class="sub">Closes Sunday</span></div>
+          <table class="tbl">
+            <tr><td><b>M. Okafor</b></td><td class="num mono">38h 20m</td><td class="num mono dim">OT 2h 10m</td><td class="num"><span class="pill p-good">Ready</span></td></tr>
+            <tr><td><b>J. Reyes</b></td><td class="num mono">39h 05m</td><td class="num mono dim">—</td><td class="num"><span class="pill p-good">Ready</span></td></tr>
+            <tr><td><b>D. Whitfield</b></td><td class="num mono">31h 40m</td><td class="num mono dim">—</td><td class="num"><span class="pill p-warn">1 edit · audited</span></td></tr>
+          </table>
+          <div style="display:flex;justify-content:flex-end;margin-top:auto;padding:10px 14px 12px"><button class="btn primary" data-toast="Hours sent — ADP receives per-rate hours; blended overtime pays on the weighted-average rate, with the math shown on each timesheet." type="button">Send hours to ADP</button></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><h5>Fix a timesheet — D. Whitfield · Thu Jul 30</h5><span class="sp"></span><span class="sub">Every change needs a reason → audit log</span></div>
+        <table class="tbl">
+          <tr><td class="mono">In · 7:31a</td><td class="dim">Shop kiosk · at the shop</td><td></td><td class="num"><button class="fchip" data-toast="Edit opens the punch — new time, required reason; D. Whitfield is notified." type="button">Edit</button> <button class="fchip" data-toast="Remove requires a reason too — the original stays in the audit trail, never overwritten." type="button">Remove</button></td></tr>
+          <tr id="fix-out-row"><td class="mono">Out · —</td><td class="dim">Missed punch-out · flagged by the nightly check</td><td><span class="pill p-warn">Missing</span></td><td class="num"><button class="btn primary" id="fix-add" type="button">+ Add punch · 4:00p</button></td></tr>
+        </table>
+        <p style="font-size:11.5px;color:var(--muted);margin:10px 14px 12px">4:00p is suggested from his last GPS ping at the shop. The reason is required, D. Whitfield is notified of the change, the week recalculates, and the corrected total is what exports to ADP.</p>
+      </div>
+    </section>
+
+    <!-- ============ REPORTS ============ -->
+    <section class="view" id="v-reports">
+      <div class="topbar"><h1>Reports</h1><span class="sp"></span><button class="fchip" data-toast="Exports what's on screen — CSV, current filters applied." type="button">Export CSV</button></div>
+      <div class="tiles">
+        <div class="tile"><div class="k">Cost per mile · fleet</div><div class="v">$0.612</div><div class="d"><span class="up">▼ 3.4%</span> vs June</div></div>
+        <div class="tile"><div class="k">Downtime · July</div><div class="v">3.1%</div><div class="d">Of scheduled asset-days</div></div>
+        <div class="tile"><div class="k">Replace-vs-repair flags</div><div class="v">2</div><div class="d">TCO threshold crossed</div></div>
+        <div class="tile"><div class="k">Utilization</div><div class="v">87.3%</div><div class="d">Fleet-wide · 30 days</div></div>
+      </div>
+      <div class="grid2b">
+        <div class="panel">
+          <div class="panel-h"><h5>Cost per mile by class</h5><span class="sp"></span><span class="sub">July · fuel + maintenance + fixed</span></div>
+          <div style="padding:6px 16px 10px">
+            <div style="display:flex;align-items:center;gap:10px;padding:7px 0"><span style="width:110px;font-size:12.5px">Box trucks</span><span class="meter" style="flex:1"><i style="width:100%;background:var(--s1)"></i></span><span class="mono" style="font-size:12px">$0.71</span></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:7px 0"><span style="width:110px;font-size:12.5px">Vans</span><span class="meter" style="flex:1"><i style="width:82%;background:var(--s1)"></i></span><span class="mono" style="font-size:12px">$0.58</span></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:7px 0"><span style="width:110px;font-size:12.5px">Pickups</span><span class="meter" style="flex:1"><i style="width:76%;background:var(--s1)"></i></span><span class="mono" style="font-size:12px">$0.54</span></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:7px 0"><span style="width:110px;font-size:12.5px">Equipment · per hr</span><span class="meter" style="flex:1"><i style="width:58%;background:var(--s3)"></i></span><span class="mono" style="font-size:12px">$4.10</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><h5>Replace-vs-repair watchlist</h5><span class="sp"></span><span class="sub">12-mo maintenance vs value</span></div>
+          <table class="tbl">
+            <tr><td class="mono">U-078</td><td>2020 Isuzu NPR-HD</td><td class="dim">$8.9k maint · 31% of value</td><td class="num"><span class="pill p-warn">Review</span></td></tr>
+            <tr><td class="mono">U-092</td><td>2019 Ford F-250</td><td class="dim">Rising trend · 3 WOs in 90 days</td><td class="num"><span class="pill p-idle">Watch</span></td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><h5>Quick pull</h5><span class="sp"></span><span class="sub">any period · exports with current filters</span></div>
+        <div style="padding:4px 0 8px">
+          <div class="docrow"><b>Punctuality PTO</b><span class="dim">Days late · minutes total · your yes/no column</span><span class="sp"></span><button class="fchip pull" type="button">Pull</button></div>
+          <div class="docrow"><b>Overtime — blended rates</b><span class="dim">The FLSA math, printed per week</span><span class="sp"></span><button class="fchip pull" type="button">Pull</button></div>
+          <div class="docrow"><b>Maintenance due</b><span class="dim">The dashboard boxes, in full</span><span class="sp"></span><button class="fchip pull" type="button">Pull</button></div>
+          <div class="docrow"><b>Cost per mile</b><span class="dim">Per truck, per class, trending</span><span class="sp"></span><button class="fchip pull" type="button">Pull</button></div>
+          <div class="docrow"><b>Safety scores — history</b><span class="dim">Every CMT import kept, years back</span><span class="sp"></span><button class="fchip pull" type="button">Pull</button></div>
+          <div class="docrow"><b>Punch history</b><span class="dim">Any pay period, any year</span><span class="sp"></span><button class="fchip pull" type="button">Pull</button></div>
+          <div class="docrow"><b>Incidents — history</b><span class="dim">Every case, claim PDFs archived</span><span class="sp"></span><button class="fchip pull" type="button">Pull</button></div>
+        </div>
+      </div>
+      <div id="pulled-punct" class="hidden">
+      <div class="panel" style="border-color:var(--accent)">
+        <div class="panel-h"><h5>Punctuality PTO — July</h5><span class="sp"></span><span class="sub">the report calculates · you decide · under 20 min = earns 8h by rule of thumb</span></div>
+        <table class="tbl">
+          <thead><tr><th>Name</th><th class="num">Days late</th><th class="num">Minutes total</th><th>Gets PTO?</th></tr></thead>
+          <tbody>
+            <tr><td>M. Okafor</td><td class="num">1</td><td class="num">4</td><td><span class="yn" data-p="okafor"><button class="y" type="button">Yes</button><button class="n" type="button">No</button></span></td></tr>
+            <tr><td>D. Ríos</td><td class="num">0</td><td class="num">0</td><td><span class="yn" data-p="rios"><button class="y" type="button">Yes</button><button class="n" type="button">No</button></span></td></tr>
+            <tr><td>T. Nguyen</td><td class="num">15</td><td class="num">17</td><td><span class="yn" data-p="nguyen"><button class="y" type="button">Yes</button><button class="n" type="button">No</button></span></td></tr>
+            <tr><td>D. Whitfield</td><td class="num">6</td><td class="num">54</td><td><span class="yn" data-p="whit"><button class="y" type="button">Yes</button><button class="n" type="button">No</button></span></td></tr>
+          </tbody>
+        </table>
+        <div class="note-sm">Try it — the column starts blank on purpose. Nguyen was late fifteen times for one minute each getting kids to school; the math says yes anyway, but the call is yours, and whatever you decide is recorded. Approved hours feed PTO balances and the ADP export.</div>
+      </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><h5>Scheduled reports</h5><span class="sp"></span><span class="sub">email digests per audience</span></div>
+        <div style="padding:4px 0 8px">
+          <div class="docrow"><b>Weekly cost summary</b><span class="dim">R. Madison + Alesha · Mondays 7a</span><span class="sp"></span><span class="pill p-good">On</span></div>
+          <div class="docrow"><b>DVIR &amp; skip digest</b><span class="dim">Alesha · daily 5p</span><span class="sp"></span><span class="pill p-good">On</span></div>
+          <div class="docrow"><b>Payroll bonus report</b><span class="dim">Payroll · monthly → ADP</span><span class="sp"></span><span class="pill p-good">On</span></div>
+          <div class="docrow"><b>Monthly fleet review</b><span class="dim">Owners · 1st of month</span><span class="sp"></span><span class="pill p-good">On</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VEHICLE DETAIL ============ -->
+    <section class="view" id="v-vehicle">
+      <button class="backlink" id="veh-back" type="button">← Assets</button>
+      <div class="vhead"><h1 id="vh-title">—</h1><span id="vh-pill"></span><span class="sp" style="flex:1"></span><button class="fchip" data-toast="Cost logged — lands in the unified ledger, attributed to this unit." type="button">Log cost</button><button class="fchip" data-toast="Work order drafted — vendor, estimate, and the defect that triggered it attach automatically." type="button" style="background:var(--accent);border-color:var(--accent);color:#fff">New work order</button></div>
+      <div class="vmeta" id="vh-meta"></div>
+      <div class="tabs"><button class="tab on" type="button">Overview</button><button class="tab" data-toast="Service history — every touch, forever, in the full build." type="button">Service history</button><button class="tab" data-toast="Costs — the unit's slice of the ledger." type="button">Costs</button><button class="tab" data-toast="Trips — every manifest this unit was on." type="button">Trips</button><button class="tab" data-toast="Inspections — every DVIR, with the anomaly engine's notes." type="button">Inspections</button><button class="tab" data-toast="Documents — title, registration, insurance, warranties." type="button">Documents</button></div>
+      <div class="tiles" id="vh-tiles"></div>
+      <div class="grid2">
+        <div>
+          <div class="panel"><div class="panel-h"><h5>Open work order</h5></div><div id="vh-wo"></div></div>
+          <div class="panel"><div class="panel-h"><h5>Cost, trailing 12 months</h5><span class="sp"></span><span class="sub mono" id="vh-cost-total"></span></div>
+            <div class="stack-h" id="vh-stack"></div><div class="sk" id="vh-sk"></div>
+          </div>
+        </div>
+        <div>
+          <div class="panel"><div class="panel-h"><h5>Service timeline</h5></div><ul class="tl" id="vh-tl"></ul></div>
+          <div class="panel"><div class="panel-h"><h5>Documents</h5><span class="sp"></span><span class="sub">auto-reminders on</span></div>
+            <div class="docrow"><svg width="15" height="15"><use href="#i-doc"/></svg>Registration<span class="sp"></span><span class="dim" id="vh-reg-exp">Exp Sep 8, 2026</span><span class="pill p-warn" id="vh-reg-pill">Renew in 39 days</span><button class="fchip" id="vh-renew" type="button">Mark renewed</button></div>
+            <div class="docrow"><svg width="15" height="15"><use href="#i-doc"/></svg>Insurance certificate<span class="sp"></span><span class="dim">Exp Jan 2027</span><span class="pill p-good">Valid</span></div>
+            <div class="docrow"><svg width="15" height="15"><use href="#i-doc"/></svg>Purchase title<span class="sp"></span><span class="dim">Uploaded Mar 2023</span><span class="pill p-idle">Archived</span></div>
+          </div>
+          <div class="panel"><div class="panel-h"><h5>Tags on this unit</h5><span class="sp"></span><span class="sub">the codes the phone reads</span></div>
+            <div id="vh-tags"></div>
+            <div class="note-sm">A dead or peeled tag re-links in the Tag manager in ~10 seconds — tap the new blank, pick this unit; the old code retires, audited.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TAGS ============ -->
+    <section class="view" id="v-tags">
+      <div class="topbar"><h1>Tag manager</h1><span class="sp"></span><span class="datechip">Manager-entitled · commissioning is a 30-second job</span></div>
+      <div class="grid2">
+        <div class="panel" style="overflow:visible">
+          <div class="panel-h"><h5>Tag registry</h5><span class="sub" id="reg-count">3 active</span><span class="sp"></span><button class="fchip" id="btn-new" type="button">+ Commission</button></div>
+          <table class="tbl" id="reg-tbl">
+            <thead><tr><th>Tag ID</th><th>Linked to</th><th>Action</th></tr></thead>
+            <tbody>
+            <tr><td class="mono">AX-9D41</td><td><span class="dot d-blue"></span>U-104 · dash</td><td class="dim">check-in</td></tr>
+            <tr><td class="mono">AX-3B77</td><td><span class="dot d-blue"></span>TR-12 · tongue</td><td class="dim">check-in</td></tr>
+            <tr><td class="mono">AX-51C8</td><td><span class="dot d-yellow"></span>U-104 · trimmer line</td><td class="dim">supply</td></tr>
+            </tbody>
+          </table>
+          <div style="padding:0 16px 14px" class="hidden" id="wiz">
+            <div id="wz-1">
+              <div class="tapzone" id="wz-tap"><svg width="16" height="16" style="vertical-align:-3px;margin-right:6px"><use href="#i-hex"/></svg>Simulate tapping the blank tag</div>
+            </div>
+            <div class="hidden" id="wz-2">
+              <div style="font-size:12.5px;margin:8px 0 4px"><b>What is it?</b></div>
+              <button class="choice" data-asset="U-104 · dash" type="button">U-104 dash</button>
+              <button class="choice" data-asset="EQ-208 · frame" type="button">EQ-208 frame</button>
+              <button class="choice" data-asset="U-104 · 2-cycle oil" type="button">2-cycle oil bin</button>
+              <div style="font-size:12.5px;margin:8px 0 4px"><b>Action color</b></div>
+              <button class="choice" data-color="blue" type="button"><span class="dot d-blue"></span>Check-in</button>
+              <button class="choice" data-color="yellow" type="button"><span class="dot d-yellow"></span>Supply</button>
+              <button class="choice" data-color="red" type="button"><span class="dot d-red"></span>Problem</button>
+              <button class="choice" data-color="green" type="button"><span class="dot d-green"></span>Service</button>
+              <div><button class="fchip" id="wz-save" type="button" disabled>Link it</button></div>
+            </div>
+            <div class="hidden" id="wz-3">
+              <div class="okline"><b id="wz-done-id">AX-____</b> linked ✓ — audited; the QR face regenerates from the ID for the print sheet.</div>
+              <button class="fchip" id="wz-again" type="button" style="margin-top:8px">Commission another</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel" style="overflow:visible">
+          <div class="panel-h"><h5>What a tap becomes</h5><span class="sp"></span><span class="sub" id="res-sub">choose a tag — or open this page from a real one</span></div>
+          <div class="okline hidden" id="real-badge" style="margin:10px 16px 0">📶 Opened by a physical tag — this URL's hash came from an NTAG sticker.</div>
+          <div style="padding:10px 16px 4px" id="res-body"><span class="dim" style="font-size:12.5px">Waiting for a tap…</span></div>
+          <div style="padding:0 16px 12px">
+            <button class="choice" data-tap="U-104" type="button"><span class="dot d-blue"></span>U-104 dash</button>
+            <button class="choice" data-tap="TR-12" type="button"><span class="dot d-blue"></span>TR-12 tongue</button>
+            <button class="choice" data-tap="OIL" type="button"><span class="dot d-yellow"></span>Oil bin</button>
+            <button class="choice" data-tap="EQ-208" type="button"><span class="dot d-red"></span>EQ-208 problem</button>
+          </div>
+        </div>
+      </div>
+      <div class="howto">
+        <b>Real-tap test:</b> write this URL onto a blank NTAG with an NFC Tools-class app — <code id="howto-url">this-page#t=U-104</code> — then tap it with your phone (screen on, signed into claude.ai). Variants: <code>#t=TR-12</code> · <code>#t=OIL</code> · <code>#t=EQ-208</code>. The tag is just a URL; the phone is the reader; the software decides what it means.
+      </div>
+    </section>
+  </div>
+</div>
+<button class="fb-pill" id="fbpill" type="button"><svg width="13" height="13"><use href="#i-msg"/></svg>Feedback</button>
+<div class="toast" id="toast"></div>
+<div class="modal-wrap hidden" id="aa-modal">
+  <div class="modal">
+    <div class="panel-h" style="padding:14px 18px 0"><h5>Add asset</h5><span class="sp"></span><button class="fchip" id="aa-cancel" type="button">Cancel</button></div>
+    <div style="padding:8px 18px 18px">
+      <div id="aa-1">
+        <div style="font-size:12.5px;margin:6px 0 8px"><b>What kind of asset?</b> <span class="dim">The type decides what Axle asks for next.</span></div>
+        <button class="choice" data-aat="vehicle" type="button"><svg width="14" height="14" style="vertical-align:-2px;margin-right:5px"><use href="#i-truck"/></svg>Vehicle</button>
+        <button class="choice" data-aat="trailer" type="button"><svg width="14" height="14" style="vertical-align:-2px;margin-right:5px"><use href="#i-trailer"/></svg>Trailer</button>
+        <button class="choice" data-aat="heavy" type="button"><svg width="14" height="14" style="vertical-align:-2px;margin-right:5px"><use href="#i-loader"/></svg>Heavy equipment</button>
+        <button class="choice" data-aat="light" type="button"><svg width="14" height="14" style="vertical-align:-2px;margin-right:5px"><use href="#i-wrench"/></svg>Light equipment</button>
+        <div class="aa-slide" id="aa-vinstrip">
+          <div style="padding-top:12px">
+            <div style="font-size:12.5px;margin:0 0 6px"><b><span id="aa-vin-what">Vehicle</span> — the VIN does the work</b> <span class="dim" id="aa-vin-hint">— locate on the door jamb, or the insurance schedule</span></div>
+            <span class="mono" id="aa-vin-code" style="background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:7px 12px;display:inline-block;margin-right:8px">1FT8W3BT6NEC45912</span>
+            <button class="fchip" id="aa-decode" type="button">Search NHTSA database</button>
+          </div>
+        </div>
+      </div>
+      <div id="aa-formwrap" class="hidden">
+        <div id="aa-form"></div>
+        <div class="aa-foot"><span class="dim" style="font-size:11px;line-height:1.5" id="aa-note"></span><span class="sp" style="flex:1"></span><button class="fchip" id="aa-add" type="button" style="background:var(--accent);border-color:var(--accent);color:#fff;flex:none">Add to the register</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var toastTimer = null;
+  function toast(msg) {
+    var t = $("toast");
+    t.textContent = msg;
+    t.classList.add("on");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove("on"); }, 2600);
+  }
+  // ---- router ----
+  var views = ["dash", "assets", "fuel", "people", "reports", "tags"];
+  var labels = { dash: "Dashboard", assets: "Assets", fuel: "Fuel & costs", people: "People", reports: "Reports", tags: "Tag manager" };
+  function show(v) {
+    $("v-vehicle").classList.remove("on");
+    views.forEach(function (x) {
+      $("v-" + x).classList.toggle("on", x === v);
+    });
+    document.querySelectorAll("[data-view]").forEach(function (b) {
+      b.classList.toggle("on", b.getAttribute("data-view") === v);
+    });
+    document.querySelectorAll("#mnav button").forEach(function (b) {
+      b.classList.toggle("on", b.getAttribute("data-v") === v);
+    });
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("[data-view]").forEach(function (b) {
+    b.addEventListener("click", function () { show(b.getAttribute("data-view")); });
+  });
+  document.querySelectorAll("[data-na]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      toast(b.getAttribute("data-na") + " isn't in this demo — it's mocked in the proposal document.");
+    });
+  });
+  var mnav = $("mnav");
+  views.forEach(function (v) {
+    var b = document.createElement("button");
+    b.type = "button"; b.textContent = labels[v]; b.setAttribute("data-v", v);
+    if (v === "dash") b.classList.add("on");
+    b.addEventListener("click", function () { show(v); });
+    mnav.appendChild(b);
+  });
+  $("fbpill").addEventListener("click", function () {
+    toast("In the real app: category → say it (typed or dictated) → send. Your app version attaches automatically and it opens a case.");
+  });
+  // ---- dashboard: acks (matches the proposal's 41/61; chip count stays in sync) ----
+  var acks = 41, ACK_TOTAL = 61;
+  var ackNames = ["D. Ríos", "M. Okafor", "J. Reyes", "T. Nguyen", "S. Patel", "A. Brooks"];
+  $("ackbtn").addEventListener("click", function () {
+    if (acks >= ACK_TOTAL) { toast("Everyone has acknowledged — the banner is down on every phone."); return; }
+    acks++;
+    $("ackcount").textContent = acks + "/" + ACK_TOTAL + " acked";
+    var left = ACK_TOTAL - acks;
+    $("q-acks").textContent = left;
+    if (left === 0) $("q-acks").parentElement.style.display = "none"; // a queue at zero isn't waiting on anyone
+    toast(acks === ACK_TOTAL ? "L. Vargas acknowledged — that's everyone. The chip leaves the strip: a queue at zero isn't waiting on anyone." : ackNames[acks % ackNames.length] + " acknowledged just now.");
+  });
+  // ---- assets: full vehicle detail view ----
+  var VEH = {
+    "U-104": { title: "U-104 · 2021 Freightliner MT45", pill: ["p-good", "Active"], meta: "VIN <b>1FVACWDT6MHMS5814</b> · Plate <b>WI · TRK-104</b> · Group <b>Madison — Mow crew</b> · In service <b>Apr 2021</b>",
+      tiles: [["Odometer", "112,486 mi", "Pump prompt · Jul 29"], ["Cost / mile · 12 mo", "$0.63", "▲ 1¢ vs fleet avg"], ["Utilization · 30 d", "88%", "26 active days"], ["Fuel economy", "9.8 mpg", "Class avg 9.5"]],
+      wo: '<span class="id">PM-B · due now</span><b>PM-B service — overdue 240 mi</b>Oil, filters, brake inspection. Book at Loudon or in-house bay 2.<div class="meta"><span class="pill p-serious">Overdue</span><span>One tap books it</span></div>',
+      cost: ["$16,120", [["Fuel", "$11,020", "var(--s1)", 68], ["Maintenance", "$3,480", "var(--serious)", 22], ["Insurance", "$1,410", "var(--good)", 8], ["Other", "$210", "var(--s4)", 2]]],
+      tl: [["hot", "Late inspection", "today 6:31a", "Deferred to first site per policy — flagged, points docked."], ["", "PM-A service", "Jun 30 · 109,000 mi", "In-house, bay 2."], ["", "Supply tap — trimmer line", "Jun 12", "Restocked next morning."]],
+      reg: ["Exp Feb 12, 2027", "p-good", "Valid"],
+      tags: [["AX-9D41", "blue", "dash", "check-in"], ["AX-51C8", "yellow", "trimmer-line rack", "supply"]] }
+  };
+  function openVehicle(id) {
+    var v = VEH[id]; if (!v) return;
+    $("vh-title").textContent = v.title;
+    $("vh-pill").innerHTML = '<span class="pill ' + v.pill[0] + '">' + v.pill[1] + "</span>";
+    $("vh-meta").innerHTML = v.meta;
+    $("vh-tiles").innerHTML = v.tiles.map(function (t) {
+      return '<div class="tile"><div class="k">' + t[0] + '</div><div class="v">' + t[1] + '</div><div class="d">' + t[2] + "</div></div>";
+    }).join("");
+    $("vh-wo").innerHTML = '<div class="wo">' + v.wo + "</div>";
+    $("vh-cost-total").textContent = "Total " + v.cost[0];
+    $("vh-stack").innerHTML = v.cost[1].map(function (c) { return '<i style="width:' + c[3] + '%;background:' + c[2] + '"></i>'; }).join("");
+    $("vh-sk").innerHTML = v.cost[1].map(function (c) { return '<span><i style="background:' + c[2] + '"></i>' + c[0] + " " + c[1] + "</span>"; }).join("");
+    $("vh-tl").innerHTML = v.tl.map(function (t) {
+      return '<li class="' + t[0] + '"><b>' + t[1] + '</b> <span class="when">· ' + t[2] + "</span><p>" + t[3] + "</p></li>";
+    }).join("");
+    $("vh-tags").innerHTML = (v.tags || []).map(function (t) {
+      return '<div class="docrow"><span class="dot d-' + t[1] + '"></span><span class="mono">' + t[0] + " · " + t[2] + '</span><span class="sp"></span><span class="dim">' + t[3] + '</span><span class="pill p-good">Active</span><button class="fchip vh-relink" type="button">Re-link</button></div>';
+    }).join("") || '<div class="note-sm">No tags commissioned yet — the Tag manager links one in 30 seconds.</div>';
+    $("vh-reg-exp").textContent = v.reg[0] === "—" ? "—" : v.reg[0];
+    $("vh-reg-pill").className = "pill " + v.reg[1];
+    $("vh-reg-pill").textContent = v.reg[2];
+    $("vh-renew").classList.toggle("hidden", v.reg[1] !== "p-warn");
+    views.forEach(function (x) { $("v-" + x).classList.remove("on"); });
+    $("v-vehicle").classList.add("on");
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("#asset-tbl tbody tr").forEach(function (tr) {
+    tr.style.cursor = "pointer";
+    tr.addEventListener("click", function () {
+      var id = tr.querySelector(".mono").textContent;
+      if (VEH[id]) { openVehicle(id); }
+      else { toast("In this demo, U-104 carries the full detail page — in the real app every unit gets one."); }
+    });
+  });
+  $("veh-back").addEventListener("click", function () { show("assets"); });
+  $("vh-tags").addEventListener("click", function (e) {
+    if (e.target.classList.contains("vh-relink")) {
+      show("tags");
+      toast("Re-link lives here: tap the new blank, pick the same unit — the old code retires, audited.");
+    }
+  });
+  $("vh-renew").addEventListener("click", function () {
+    $("vh-reg-pill").className = "pill p-good"; $("vh-reg-pill").textContent = "Valid";
+    $("vh-reg-exp").textContent = "Exp Sep 8, 2027";
+    $("vh-renew").classList.add("hidden");
+    toast("Marked renewed — next expiration pre-filled at +1 year for you to confirm. Reminder re-armed.");
+  });
+  document.querySelectorAll("[data-toast]").forEach(function (b) {
+    b.addEventListener("click", function () { toast(b.getAttribute("data-toast")); });
+  });
+  var classF = "vehicle", statusF = "all";
+  function assetFilter() {
+    var t = $("asset-tbl");
+    if (!t || !t.__kit) return;
+    t.__kit.state.chipTest = function (tr) {
+      return (classF === "all" || tr.getAttribute("data-t") === classF) &&
+             (statusF === "all" || tr.getAttribute("data-s") === statusF);
+    };
+    t.__kit.state.page = 0;
+    t.__kit.render();
+  }
+  window.__assetFilterInit = assetFilter;
+  document.querySelectorAll("[data-cf]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      classF = b.getAttribute("data-cf");
+      document.querySelectorAll("[data-cf]").forEach(function (x) { x.classList.toggle("on", x === b); });
+      assetFilter();
+    });
+  });
+  document.querySelectorAll("[data-sf]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      statusF = b.getAttribute("data-sf");
+      document.querySelectorAll("[data-sf]").forEach(function (x) { x.classList.toggle("on", x === b); });
+      assetFilter();
+    });
+  });
+  $("asset-search").addEventListener("input", function () {
+    var t = $("asset-tbl");
+    if (t.__kit) { t.__kit.state.q = this.value.trim().toLowerCase(); t.__kit.state.page = 0; t.__kit.render(); }
+  });
+  // ---- assets: add-asset modal (type first, then the full intake form) ----
+  var aaNextUnit = 218, aaNextTr = 14, aaNextEq = 341, aaType = "vehicle";
+  var AA_VIN = {
+    vehicle: { what: "Vehicle", hint: "— locate on the door jamb, or the insurance schedule", code: "1FT8W3BT6NEC45912" },
+    trailer: { what: "Trailer", hint: "— locate on the tongue plate, or the insurance schedule", code: "4P5U71620R1339842" }
+  };
+  function aaSections() {
+    var fin = { h: "Value & financing", tag: "if available", fields: [["Value (purchase)", "$52,300"], ["Financed by", "Ford Credit"], ["Agreement or Loan #", "FC-88112"], ["Financing ends", "2028-06", "month"]] };
+    var finBlank = { h: "Value & financing", tag: "if available", fields: [["Value (purchase)", ""], ["Financed by", ""], ["Agreement or Loan #", ""], ["Financing ends", "", "month"]] };
+    var grp = { h: "Assignment", fields: [["Group", "", "select"]] };
+    return {
+      vehicle: [
+        { h: "Identity", card: '<b>2022 Ford F-350 · Pickup</b> <span class="aa-tag">NHTSA</span><div class="dim" style="font-size:11px;margin-top:3px">Year 2022 · Make Ford · Model F-350 · Class Pickup — filled from the VIN</div>', fields: [["Unit #", "U-" + aaNextUnit, "", "suggested"], ["Plate", ""]],
+          editFields: [["Year", "2022"], ["Make", "Ford"], ["Model", "F-350"], ["Class", "Pickup"]] },
+        { h: "Meter & dates", fields: [["Odometer", "38,400 mi"], ["In service", "2026-08", "month"]] },
+        { h: "Compliance", fields: [["Registration exp", "2026-11-30", "date"], ["Warranty ends", "2027-03", "month"], ["Warranty limit", "60,000 mi"]] },
+        fin, grp
+      ],
+      trailer: [
+        { h: "Identity", card: '<b>2024 PJ 16 ft utility trailer</b> <span class="aa-tag">NHTSA</span><div class="dim" style="font-size:11px;margin-top:3px">Year 2024 · Make PJ · Model 16 ft utility · Class Trailer — filled from the tongue-plate VIN</div>', fields: [["Unit #", "TR-" + aaNextTr, "", "suggested"], ["Plate", ""]],
+          editFields: [["Year", "2024"], ["Make", "PJ"], ["Model", "16 ft utility"], ["Class", "Trailer"]] },
+        { h: "Dates", fields: [["In service", "2026-08", "month"]] },
+        { h: "Compliance", fields: [["Registration exp", "2026-11-30", "date"], ["Warranty ends", "2027-08", "month"]] },
+        finBlank, grp
+      ],
+      heavy: [
+        { h: "Identity", fields: [["Unit #", "EQ-" + aaNextEq, "", "suggested"], ["Name", "Stump grinder"], ["Serial", "88214-C"]] },
+        { h: "Meter & dates", fields: [["Meter type", "Hours"], ["Current meter", "0 hrs"], ["In service", "2026-08", "month"]] },
+        { h: "Compliance", fields: [["Warranty ends", "2027-08", "month"]] },
+        finBlank, grp
+      ],
+      light: [
+        { h: "Identity", fields: [["Unit #", "EQ-" + aaNextEq, "", "suggested"], ["Name", "Stump grinder"], ["Serial", "88214-C"]] },
+        { h: "Meter & dates", fields: [["Meter type", "Hours"], ["Current meter", "0 hrs"], ["In service", "2026-08", "month"]] },
+        { h: "Compliance", fields: [["Warranty ends", "2027-08", "month"]] },
+        finBlank, grp
+      ]
+    }[aaType];
+  }
+  function aaMonthCtl(f) {
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var selM = -1, selY = null;
+    if (f[1]) { var p = f[1].split("-"); selY = +p[0]; selM = +p[1] - 1; }
+    var baseY = new Date().getFullYear();
+    var years = [baseY, baseY + 1, baseY + 2, baseY + 3];
+    var opts = '<option value=""' + (selM < 0 ? " selected" : "") + " disabled>Month</option>" + months.map(function (m, i) { return "<option" + (i === selM ? " selected" : "") + ">" + m + "</option>"; }).join("");
+    var other = selY !== null && years.indexOf(selY) < 0;
+    var pills = years.map(function (y) { return '<button type="button" class="aa-yp' + (y === selY ? " on" : "") + '">' + y + "</button>"; }).join("") +
+      '<button type="button" class="aa-yp aa-yother' + (other ? " on" : "") + '">Other…</button>' +
+      '<input class="aa-yin' + (other ? "" : " hidden") + '" type="number" placeholder="Year"' + (other ? ' value="' + selY + '"' : "") + '>';
+    return '<div class="aa-f aa-mf"><label>' + f[0] + (f[3] ? ' <span class="aa-tag">' + f[3] + "</span>" : "") + '</label><div class="aa-mrow"><select class="aa-msel">' + opts + '</select><span class="aa-ypills" style="display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap">' + pills + "</span></div></div>";
+  }
+  function aaRenderForm() {
+    $("aa-form").innerHTML = aaSections().map(function (s) {
+      var head = '<div class="aa-sec">' + s.h + (s.tag ? ' <span class="aa-tag">' + s.tag + "</span>" : "") + "</div>";
+      var card = "";
+      if (s.card) {
+        card = s.editFields
+          ? '<div class="aa-card" style="display:flex;align-items:center;gap:10px"><span style="flex:1">' + s.card + '</span><button class="fchip aa-edit" type="button" style="flex:none">Edit</button></div>'
+          : '<div class="aa-card">' + s.card + "</div>";
+      }
+      var grid = '<div class="aa-grid">' + s.fields.map(function (f) {
+        if (f[2] === "select") {
+          return '<div class="aa-f"><label>' + f[0] + '</label><select class="aa-group"><option>Madison — main yard</option><option>Snow fleet</option><option value="+new">+ New group…</option></select></div>';
+        }
+        if (f[2] === "month") return aaMonthCtl(f);
+        var cls = f[0] === "Unit #" ? ' class="aa-unit"' : f[0] === "Name" ? ' class="aa-name"' : "";
+        var type = f[2] === "date" ? "date" : "text";
+        return '<div class="aa-f"><label>' + f[0] + (f[3] ? ' <span class="aa-tag">' + f[3] + "</span>" : "") + '</label><input' + cls + ' type="' + type + '" value="' + f[1] + '"' + (f[1] === "" && type === "text" ? ' placeholder="type it"' : "") + "></div>";
+      }).join("") + "</div>";
+      var editGrid = s.editFields
+        ? '<div class="aa-grid aa-editgrid hidden">' + s.editFields.map(function (f) {
+            return '<div class="aa-f"><label>' + f[0] + ' <span class="aa-tag">NHTSA</span></label><input value="' + f[1] + '"></div>';
+          }).join("") + "</div>"
+        : "";
+      return head + card + grid + editGrid;
+    }).join("");
+    $("aa-form").querySelectorAll(".aa-ypills").forEach(function (g) {
+      g.querySelectorAll(".aa-yp").forEach(function (p) {
+        p.addEventListener("click", function () {
+          g.querySelectorAll(".aa-yp").forEach(function (x) { x.classList.toggle("on", x === p); });
+          var yin = g.querySelector(".aa-yin");
+          if (p.classList.contains("aa-yother")) { yin.classList.remove("hidden"); yin.focus(); }
+          else { yin.classList.add("hidden"); }
+        });
+      });
+    });
+    var eb = $("aa-form").querySelector(".aa-edit");
+    if (eb) eb.addEventListener("click", function () {
+      var g = $("aa-form").querySelector(".aa-editgrid");
+      var hiddenNow = g.classList.toggle("hidden");
+      this.textContent = hiddenNow ? "Edit" : "Done";
+      if (!hiddenNow) toast("Manual parity — anything the decode filled, a human can fix.");
+    });
+    var sel = $("aa-form").querySelector(".aa-group");
+    if (sel) sel.addEventListener("change", function () {
+      if (this.value === "+new") {
+        toast("In the real app this opens a small create step — name the group once and it exists everywhere: dispatch, reports, entitlements, this register.");
+        this.selectedIndex = 0;
+      }
+    });
+    $("aa-note").textContent = "Nothing here is required except the identity — registration arms the renewal loop, warranty arms the work-order banner, and Value seeds the replace-vs-repair math.";
+    $("aa-formwrap").classList.remove("hidden");
+  }
+  function aaReset() {
+    $("aa-1").classList.remove("hidden");
+    $("aa-formwrap").classList.add("hidden");
+    $("aa-vinstrip").classList.remove("open");
+    document.querySelectorAll("[data-aat]").forEach(function (x) { x.classList.remove("on"); });
+  }
+  $("aa-open").addEventListener("click", function () { aaReset(); $("aa-modal").classList.remove("hidden"); });
+  $("aa-cancel").addEventListener("click", function () { $("aa-modal").classList.add("hidden"); });
+  $("aa-modal").addEventListener("click", function (e) { if (e.target === this) this.classList.add("hidden"); });
+  document.querySelectorAll("[data-aat]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      aaType = b.getAttribute("data-aat");
+      document.querySelectorAll("[data-aat]").forEach(function (x) { x.classList.toggle("on", x === b); });
+      if (aaType === "vehicle" || aaType === "trailer") {
+        var v = AA_VIN[aaType];
+        $("aa-vin-what").textContent = v.what;
+        $("aa-vin-hint").textContent = v.hint;
+        $("aa-vin-code").textContent = v.code;
+        $("aa-formwrap").classList.add("hidden");
+        $("aa-vinstrip").classList.add("open");
+      } else {
+        $("aa-vinstrip").classList.remove("open");
+        $("aa-1").classList.add("hidden");
+        aaRenderForm();
+      }
+    });
+  });
+  $("aa-decode").addEventListener("click", function () {
+    $("aa-1").classList.add("hidden");
+    aaRenderForm();
+    toast("Found it — the free NHTSA lookup fills the specs; the same call runs on every real asset create.");
+  });
+  $("aa-add").addEventListener("click", function () {
+    var unitEl = $("aa-form").querySelector(".aa-unit") || $("aa-form").querySelector("input");
+    var unit = unitEl.value.trim() || "U-?";
+    var row, msg;
+    if (aaType === "vehicle") {
+      aaNextUnit++;
+      row = '<tr data-t="vehicle" data-s="active"><td class="mono">' + unit + '</td><td>2022 Ford F-350 · Pickup</td><td><span class="pill p-good">Active</span></td><td class="dim">—</td><td class="num mono">38,400 mi</td><td><span class="pill p-good">No defects</span></td><td class="num dim">5,000 mi</td></tr>';
+      msg = unit + " added — audited; registration and warranty reminders armed. Next: commission a dash tag in the Tag manager.";
+    } else if (aaType === "trailer") {
+      aaNextTr++;
+      row = '<tr data-t="trailer" data-s="active"><td class="mono">' + unit + '</td><td>2024 PJ 16 ft utility trailer</td><td><span class="pill p-good">Active</span></td><td class="dim">—</td><td class="num dim">—</td><td><span class="pill p-good">No defects</span></td><td class="num dim">Nov</td></tr>';
+      msg = unit + " added — find it under the Trailers tab; the registration-renewal reminder is armed.";
+    } else {
+      aaNextEq++;
+      var nmEl = $("aa-form").querySelector(".aa-name") || $("aa-form").querySelectorAll("input")[1];
+      var nm = nmEl.value.trim() || "Equipment";
+      row = '<tr data-t="' + aaType + '" data-s="active"><td class="mono">' + unit + '</td><td>' + nm + '</td><td><span class="pill p-good">Active</span></td><td class="dim">—</td><td class="num mono">0 hrs</td><td><span class="pill p-good">No defects</span></td><td class="num dim">50 hrs</td></tr>';
+      msg = unit + " added — find it under " + (aaType === "heavy" ? "Heavy" : "Light") + " equipment; hour-meter PM from day one.";
+    }
+    var tbody = $("asset-tbl").tBodies[0];
+    tbody.insertAdjacentHTML("beforeend", row);
+    var tr = tbody.rows[tbody.rows.length - 1];
+    tr.style.cursor = "pointer";
+    tr.addEventListener("click", function () { toast("In this demo, U-104 carries the full detail page — in the real app every unit gets one."); });
+    if ($("asset-tbl").__kit) $("asset-tbl").__kit.render();
+    $("aa-modal").classList.add("hidden");
+    toast(msg);
+  });
+  // ---- people: PTO yes/no ----
+  document.querySelectorAll(".yn").forEach(function (g) {
+    var y = g.querySelector(".y"), n = g.querySelector(".n");
+    y.addEventListener("click", function () {
+      y.classList.toggle("on"); n.classList.remove("on");
+      if (y.classList.contains("on")) toast("8h PTO approved — recorded, feeds the balance and the ADP export.");
+    });
+    n.addEventListener("click", function () {
+      n.classList.toggle("on"); y.classList.remove("on");
+      if (n.classList.contains("on")) toast("Recorded as no — the reason column is yours if you want it.");
+    });
+  });
+  // ---- reports: pull ----
+  document.querySelectorAll(".pull").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var name = b.closest(".docrow").querySelector("b").textContent;
+      if (name === "Punctuality PTO") {
+        $("pulled-punct").classList.remove("hidden");
+        $("pulled-punct").scrollIntoView({ behavior: "smooth", block: "nearest" });
+        toast("Punctuality PTO — July generated. The yes/no column is yours to fill.");
+        return;
+      }
+      toast(name + " generated — in the real app: CSV/PDF, emailable, schedulable.");
+    });
+  });
+  // ---- people: drivers/all-staff chips, expiring filter, search, punch fix ----
+  function peopleView(staff) {
+    $("drivers-wrap").classList.toggle("hidden", staff);
+    $("staff-wrap").classList.toggle("hidden", !staff);
+    $("chip-drivers").classList.toggle("on", !staff);
+    $("chip-staff").classList.toggle("on", staff);
+  }
+  $("chip-drivers").addEventListener("click", function () { peopleView(false); });
+  $("chip-staff").addEventListener("click", function () { peopleView(true); });
+  var expOn = false;
+  $("chip-exp").addEventListener("click", function () {
+    expOn = !expOn;
+    this.classList.toggle("on", expOn);
+    peopleView(false);
+    var t = $("drivers-tbl");
+    if (t.__kit) {
+      t.__kit.state.chipTest = expOn ? function (tr) { return tr.hasAttribute("data-exp"); } : null;
+      t.__kit.state.page = 0;
+      t.__kit.render();
+    }
+  });
+  $("people-search").addEventListener("input", function () {
+    var q = this.value.trim().toLowerCase();
+    ["drivers-tbl", "staff-tbl"].forEach(function (id) {
+      var t = $(id);
+      if (t && t.__kit) { t.__kit.state.q = q; t.__kit.state.page = 0; t.__kit.render(); }
+    });
+  });
+  $("chip-pins").addEventListener("click", function () { $("fuel-pins").scrollIntoView({ behavior: "smooth", block: "center" }); });
+  $("chip-exc").addEventListener("click", function () { $("fuel-exceptions").scrollIntoView({ behavior: "smooth", block: "center" }); });
+  $("fix-add").addEventListener("click", function () {
+    $("fix-out-row").innerHTML = '<td class="mono">Out · 4:00p</td><td class="dim">Added by Alesha · reason: "kiosk missed him — last GPS ping at the shop, 4:00p"</td><td><span class="pill p-good">Fixed</span></td><td class="num dim" style="font-size:11px">D. Whitfield notified · audited</td>';
+    toast("Punch added — the week recalculates, and the corrected total is what exports to ADP.");
+  });
+  // ---- tags: wizard ----
+  var asset = null, color = null, n2 = 3;
+  $("btn-new").addEventListener("click", function () {
+    $("wiz").classList.remove("hidden");
+    $("wz-1").classList.remove("hidden");
+    $("wz-2").classList.add("hidden");
+    $("wz-3").classList.add("hidden");
+  });
+  $("wz-tap").addEventListener("click", function () {
+    $("wz-1").classList.add("hidden");
+    $("wz-2").classList.remove("hidden");
+  });
+  function refresh() { $("wz-save").disabled = !(asset && color); }
+  document.querySelectorAll("[data-asset]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      asset = b.getAttribute("data-asset");
+      document.querySelectorAll("[data-asset]").forEach(function (x) { x.classList.toggle("on", x === b); });
+      refresh();
+    });
+  });
+  document.querySelectorAll("[data-color]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      color = b.getAttribute("data-color");
+      document.querySelectorAll("[data-color]").forEach(function (x) { x.classList.toggle("on", x === b); });
+      refresh();
+    });
+  });
+  $("wz-save").addEventListener("click", function () {
+    var id = "AX-" + Math.floor(4096 + (n2 * 2749) % 61439).toString(16).toUpperCase();
+    n2++;
+    var names = { blue: "check-in", yellow: "supply", red: "problem", green: "service" };
+    var tr = document.createElement("tr");
+    tr.innerHTML = '<td class="mono"></td><td><span class="dot d-' + color + '"></span></td><td class="dim"></td>';
+    tr.querySelector(".mono").textContent = id;
+    tr.querySelector("td:nth-child(2)").appendChild(document.createTextNode(asset));
+    tr.querySelector(".dim").textContent = names[color];
+    $("reg-tbl").tBodies[0].appendChild(tr);
+    if ($("reg-tbl").__kit) $("reg-tbl").__kit.render();
+    $("reg-count").textContent = n2 + " active";
+    $("wz-done-id").textContent = id;
+    $("wz-2").classList.add("hidden");
+    $("wz-3").classList.remove("hidden");
+    asset = null; color = null;
+    document.querySelectorAll(".choice.on").forEach(function (x) { x.classList.remove("on"); });
+    refresh();
+    toast(id + " commissioned — mis-links fix with a 10-second re-link.");
+  });
+  $("wz-again").addEventListener("click", function () {
+    $("wz-3").classList.add("hidden");
+    $("wz-1").classList.remove("hidden");
+  });
+  // ---- tags: resolution + hash ----
+  var RES = {
+    "U-104": "<b>Truck 7 — U-104</b> · blue tag → the crew phone opens the manifest: driver confirmed, riders tap the same tag, trailer and equipment attach next.",
+    "TR-12": "<b>TR-12 trailer</b> · blue tag → attaches to the active trip; the inspection grows hitch, chains &amp; breakaway items automatically.",
+    "OIL": "<b>2-cycle oil — U-104 rack</b> · yellow tag → <b>the tap IS the request</b>: office sees one open item with a tap count; the crew sees a receipt, not a form.",
+    "EQ-208": "<b>EQ-208 skid steer</b> · red tag → problem report pre-filled with the machine, the person, GPS, and history. Photos, severity, send — lands in triage."
+  };
+  function resolveTap(id, physical) {
+    if (!RES[id]) return;
+    $("res-body").innerHTML = '<div style="font-size:13px;line-height:1.6">' + RES[id] + "</div>";
+    $("res-sub").textContent = "resolved: " + id;
+    $("real-badge").classList.toggle("hidden", !physical);
+    show("tags");
+  }
+  document.querySelectorAll("[data-tap]").forEach(function (b) {
+    b.addEventListener("click", function () { resolveTap(b.getAttribute("data-tap"), false); });
+  });
+  var h = (location.hash || "").replace("#t=", "");
+  if (h && RES[h]) resolveTap(h, true);
+  try { $("howto-url").textContent = location.href.split("#")[0] + "#t=U-104"; } catch (e) {}
+})();
+</script>
+
+<script>
+/* Dashboard charts — ported from the proposal (screen 1) so the demo matches it exactly. */
+(function () {
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg";
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(NS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+
+  /* ---- sparklines ---- */
+  document.querySelectorAll("svg.spark").forEach(function (svg) {
+    var data = svg.getAttribute("data-spark").split(",").map(Number);
+    var w = 100, h = 30, pad = 3;
+    svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+    svg.setAttribute("preserveAspectRatio", "none");
+    var min = Math.min.apply(null, data), max = Math.max.apply(null, data);
+    var span = (max - min) || 1;
+    var pts = data.map(function (v, i) {
+      return [pad + i * (w - 2 * pad) / (data.length - 1), h - pad - (v - min) / span * (h - 2 * pad)];
+    });
+    el("polyline", {
+      points: pts.map(function (p) { return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" "),
+      fill: "none", style: "stroke:var(--s1)", "stroke-width": 1.6,
+      "stroke-linecap": "round", "stroke-linejoin": "round",
+      "vector-effect": "non-scaling-stroke"
+    }, svg);
+    var last = pts[pts.length - 1];
+    var dot = el("circle", { cx: last[0], cy: last[1], r: 2.4, style: "fill:var(--s1)" }, svg);
+    dot.setAttribute("vector-effect", "non-scaling-stroke");
+  });
+
+  /* ---- shared tooltip helper ---- */
+  function makeTip(box) {
+    var tip = document.createElement("div");
+    tip.className = "tip";
+    box.appendChild(tip);
+    return tip;
+  }
+
+  /* ---- line chart: cost per mile ---- */
+  (function () {
+    var box = document.getElementById("cpm-chart");
+    if (!box) return;
+    var labels = ["May 8","May 15","May 22","May 29","Jun 5","Jun 12","Jun 19","Jun 26","Jul 3","Jul 10","Jul 17","Jul 24"];
+    var fuel  = [0.412,0.405,0.418,0.396,0.401,0.389,0.394,0.402,0.387,0.379,0.383,0.371];
+    var maint = [0.176,0.181,0.169,0.201,0.214,0.188,0.172,0.169,0.181,0.164,0.158,0.152];
+    var W = 640, H = 210, L = 44, R = 78, T = 14, B = 26;
+    var y0 = 0.10, y1 = 0.45;
+    var X = function (i) { return L + i * (W - L - R) / (labels.length - 1); };
+    var Y = function (v) { return T + (y1 - v) / (y1 - y0) * (H - T - B); };
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img",
+      "aria-label": "Line chart of weekly fuel and maintenance cost per mile over 12 weeks; fuel trends down from about 41 to 37 cents, maintenance from about 18 to 15 cents." }, box);
+    [0.1, 0.2, 0.3, 0.4].forEach(function (v) {
+      el("line", { x1: L, x2: W - R, y1: Y(v), y2: Y(v), style: "stroke:var(--grid)", "stroke-width": 1 }, svg);
+      el("text", { x: L - 7, y: Y(v) + 3.5, "text-anchor": "end", "font-size": 10,
+        style: "fill:var(--muted)", "font-family": "ui-monospace,Menlo,monospace" }, svg).textContent = v.toFixed(2);
+    });
+    el("line", { x1: L, x2: W - R, y1: Y(y0), y2: Y(y0), style: "stroke:var(--axis)", "stroke-width": 1 }, svg);
+    labels.forEach(function (lb, i) {
+      if (i % 2) return;
+      el("text", { x: X(i), y: H - 8, "text-anchor": "middle", "font-size": 9.5,
+        style: "fill:var(--muted)", "font-family": "system-ui" }, svg).textContent = lb;
+    });
+    function line(data, colorVar, label) {
+      var d = data.map(function (v, i) { return (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(v).toFixed(1); }).join(" ");
+      el("path", { d: d, fill: "none", style: "stroke:var(" + colorVar + ")", "stroke-width": 2,
+        "stroke-linecap": "round", "stroke-linejoin": "round" }, svg);
+      var li = data.length - 1;
+      el("circle", { cx: X(li), cy: Y(data[li]), r: 3.5, style: "fill:var(" + colorVar + ")" }, svg);
+      el("rect", { x: W - R + 8, y: Y(data[li]) - 4.5, width: 9, height: 9, rx: 2.5, style: "fill:var(" + colorVar + ")" }, svg);
+      el("text", { x: W - R + 21, y: Y(data[li]) + 4, "font-size": 10.5, "font-weight": 600,
+        style: "fill:var(--ink-2)", "font-family": "system-ui" }, svg).textContent = label + " $" + data[li].toFixed(2);
+    }
+    line(fuel, "--s1", "Fuel");
+    line(maint, "--s2", "Maint");
+    var cross = el("line", { y1: T, y2: H - B, style: "stroke:var(--axis)", "stroke-width": 1, opacity: 0 }, svg);
+    var tip = makeTip(box);
+    svg.addEventListener("mousemove", function (e) {
+      var r = svg.getBoundingClientRect();
+      var mx = (e.clientX - r.left) / r.width * W;
+      var i = Math.round((mx - L) / ((W - L - R) / (labels.length - 1)));
+      i = Math.max(0, Math.min(labels.length - 1, i));
+      cross.setAttribute("x1", X(i)); cross.setAttribute("x2", X(i));
+      cross.setAttribute("opacity", 0.6);
+      tip.innerHTML = "<b>Week of " + labels[i] + "</b>" +
+        "<div class='trow'><i style='background:var(--s1)'></i>Fuel $" + fuel[i].toFixed(3) + "/mi</div>" +
+        "<div class='trow'><i style='background:var(--s2)'></i>Maintenance $" + maint[i].toFixed(3) + "/mi</div>";
+      tip.style.left = (X(i) / W * 100) + "%";
+      tip.style.top = (Y(Math.max(fuel[i], maint[i])) / H * 100) + "%";
+      tip.style.opacity = 1;
+    });
+    svg.addEventListener("mouseleave", function () { tip.style.opacity = 0; cross.setAttribute("opacity", 0); });
+  })();
+
+  /* ---- stacked bars: monthly spend ---- */
+  (function () {
+    var box = document.getElementById("spend-chart");
+    if (!box) return;
+    var months = ["Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+    var cats = [
+      { name: "Fuel", v: [41.2, 43.8, 40.1, 42.6, 39.4, 38.2], c: "--s1" },
+      { name: "Maintenance", v: [14.8, 12.1, 17.9, 13.4, 15.2, 12.8], c: "--s2" },
+      { name: "Insurance", v: [8.4, 8.4, 8.4, 8.4, 8.4, 8.4], c: "--s3" },
+      { name: "Tolls & other", v: [3.9, 4.4, 3.6, 4.8, 4.1, 3.7], c: "--s4" }
+    ];
+    var W = 520, H = 210, L = 40, R = 12, T = 14, B = 26, GAP = 2;
+    var maxTotal = 75;
+    var bw = 34;
+    var step = (W - L - R) / months.length;
+    var Y = function (v) { return T + (1 - v / maxTotal) * (H - T - B); };
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img",
+      "aria-label": "Stacked bar chart of monthly fleet spend, February through July 2026, split into fuel, maintenance, insurance, and tolls; totals range from about 64 to 69 thousand dollars." }, box);
+    [0, 25, 50, 75].forEach(function (v) {
+      el("line", { x1: L, x2: W - R, y1: Y(v), y2: Y(v), style: "stroke:var(--grid)", "stroke-width": 1 }, svg);
+      el("text", { x: L - 7, y: Y(v) + 3.5, "text-anchor": "end", "font-size": 10,
+        style: "fill:var(--muted)", "font-family": "ui-monospace,Menlo,monospace" }, svg).textContent = v;
+    });
+    el("line", { x1: L, x2: W - R, y1: Y(0), y2: Y(0), style: "stroke:var(--axis)", "stroke-width": 1 }, svg);
+    var tip = makeTip(box);
+    months.forEach(function (m, mi) {
+      var cx = L + step * (mi + 0.5);
+      var x = cx - bw / 2;
+      var acc = 0;
+      var total = 0;
+      cats.forEach(function (c) { total += c.v[mi]; });
+      cats.forEach(function (c, ci) {
+        var yTop = Y(acc + c.v[mi]);
+        var yBot = Y(acc) - (ci ? GAP : 0);
+        var hgt = Math.max(1, yBot - yTop);
+        var isTop = ci === cats.length - 1;
+        if (isTop) {
+          var rr = 4;
+          el("path", { d: "M" + x + " " + (yTop + rr) + " a" + rr + " " + rr + " 0 0 1 " + rr + " " + (-rr) +
+            " h" + (bw - 2 * rr) + " a" + rr + " " + rr + " 0 0 1 " + rr + " " + rr +
+            " v" + (hgt - rr) + " h" + (-bw) + " Z", style: "fill:var(" + c.c + ")" }, svg);
+        } else {
+          el("rect", { x: x, y: yTop, width: bw, height: hgt, style: "fill:var(" + c.c + ")" }, svg);
+        }
+        acc += c.v[mi];
+      });
+      el("text", { x: cx, y: H - 8, "text-anchor": "middle", "font-size": 10,
+        style: "fill:var(--muted)", "font-family": "system-ui" }, svg).textContent = m;
+      el("text", { x: cx, y: Y(total) - 6, "text-anchor": "middle", "font-size": 9.5, "font-weight": 600,
+        style: "fill:var(--ink-2)", "font-family": "system-ui" }, svg).textContent = "$" + Math.round(total) + "k";
+      var hit = el("rect", { x: cx - step / 2, y: T, width: step, height: H - T - B, fill: "transparent" }, svg);
+      hit.addEventListener("mouseenter", function () {
+        var rows = cats.slice().reverse().map(function (c) {
+          return "<div class='trow'><i style='background:var(" + c.c + ")'></i>" + c.name + " $" + c.v[mi].toFixed(1) + "k</div>";
+        }).join("");
+        tip.innerHTML = "<b>" + m + " 2026 — $" + total.toFixed(1) + "k</b>" + rows;
+        tip.style.left = (cx / W * 100) + "%";
+        tip.style.top = (Y(total) / H * 100) + "%";
+        tip.style.opacity = 1;
+      });
+      hit.addEventListener("mouseleave", function () { tip.style.opacity = 0; });
+    });
+  })();
+})();
+</script>
+
+<script>
+/* Global table kit — every data table sorts, filters, and paginates (Tyler's global standard).
+   Chrome auto-hides when a table fits in one page; sort headers stay live everywhere.
+   Deliberately skipped: the dashboard's Past due / Coming up (curated triage — View report
+   is the full table) — they carry no <thead>, which is the kit's opt-out signal. */
+(function () {
+  "use strict";
+  var PAGE = 10;
+
+  function sortVal(td) {
+    var t = td ? td.textContent.trim() : "";
+    var d = t.match(/(\d+(?:\.\d+)?)\s*(day|week|month|year)s?\b/i);
+    if (d) {
+      var mult = { day: 1, week: 7, month: 30, year: 365 }[d[2].toLowerCase()];
+      return { n: parseFloat(d[1]) * mult, t: t };
+    }
+    var m = t.replace(/[$,%,]/g, "").match(/-?\d+(\.\d+)?/);
+    return { n: m ? parseFloat(m[0]) : null, t: t };
+  }
+
+  function enhance(tbl) {
+    var tbody = tbl.tBodies[0], head = tbl.tHead;
+    if (!tbody || !head) return;
+    var ths = Array.prototype.slice.call(head.rows[0].cells);
+    var state = { col: -1, dir: 1, q: "", page: 0, all: false, chipTest: null };
+
+    var bar = document.createElement("div");
+    bar.className = "tkit-bar";
+    var q = document.createElement("input");
+    q.className = "tkit-q"; q.type = "search"; q.placeholder = "Filter…";
+    q.setAttribute("aria-label", "Filter table rows");
+    bar.appendChild(q);
+    tbl.parentNode.insertBefore(bar, tbl);
+    q.addEventListener("input", function () { state.q = q.value.trim().toLowerCase(); state.page = 0; render(); });
+
+    var foot = document.createElement("div");
+    foot.className = "tkit-foot";
+    foot.innerHTML = '<span class="tkit-count"></span><span class="sp"></span>' +
+      '<button type="button" class="fchip tkit-all">Show all</button>' +
+      '<button type="button" class="fchip tkit-prev">‹ Prev</button>' +
+      '<button type="button" class="fchip tkit-next">Next ›</button>';
+    tbl.parentNode.insertBefore(foot, tbl.nextSibling);
+    var count = foot.querySelector(".tkit-count"),
+        allBtn = foot.querySelector(".tkit-all"),
+        prev = foot.querySelector(".tkit-prev"),
+        next = foot.querySelector(".tkit-next");
+    allBtn.addEventListener("click", function () { state.all = !state.all; state.page = 0; allBtn.textContent = state.all ? "Show pages" : "Show all"; render(); });
+    prev.addEventListener("click", function () { if (state.page > 0) { state.page--; render(); } });
+    next.addEventListener("click", function () { state.page++; render(); });
+
+    ths.forEach(function (th, i) {
+      th.classList.add("tkit-th");
+      th.addEventListener("click", function () {
+        if (state.col === i) { state.dir = -state.dir; } else { state.col = i; state.dir = 1; }
+        ths.forEach(function (x) { x.removeAttribute("data-tkdir"); });
+        th.setAttribute("data-tkdir", state.dir === 1 ? "asc" : "desc");
+        state.page = 0;
+        render();
+      });
+    });
+
+    function render() {
+      var rs = Array.prototype.slice.call(tbody.rows);
+      if (state.col >= 0) {
+        rs.sort(function (a, b) {
+          var A = sortVal(a.cells[state.col]), B = sortVal(b.cells[state.col]);
+          var c = (A.n !== null && B.n !== null) ? A.n - B.n : A.t.localeCompare(B.t, undefined, { sensitivity: "base" });
+          return c * state.dir;
+        });
+        rs.forEach(function (r) { tbody.appendChild(r); });
+      }
+      var visible = rs.filter(function (r) {
+        if (state.chipTest && !state.chipTest(r)) return false;
+        if (state.q && r.textContent.toLowerCase().indexOf(state.q) < 0) return false;
+        return true;
+      });
+      var total = visible.length;
+      var pages = Math.max(1, Math.ceil(total / PAGE));
+      if (state.page > pages - 1) state.page = pages - 1;
+      var lo = state.all ? 0 : state.page * PAGE;
+      var hi = state.all ? total : Math.min(total, lo + PAGE);
+      rs.forEach(function (r) { r.style.display = "none"; });
+      visible.forEach(function (r, i) { if (i >= lo && i < hi) r.style.display = ""; });
+
+      bar.style.display = (tbody.rows.length > PAGE) ? "" : "none";
+      var paging = total > PAGE || state.all;
+      foot.style.display = paging ? "flex" : "none";
+      if (paging) {
+        count.textContent = total === 0 ? "0 rows" : (lo + 1) + "–" + hi + " of " + total;
+        prev.disabled = state.all || state.page === 0;
+        next.disabled = state.all || hi >= total;
+      }
+    }
+    tbl.__kit = { render: render, state: state };
+    render();
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll("table.tbl")).forEach(function (t) {
+    if (!t.hasAttribute("data-nokit")) enhance(t);
+  });
+  if (window.__assetFilterInit) window.__assetFilterInit();
+})();
+</script>
