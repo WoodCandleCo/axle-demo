@@ -35,7 +35,9 @@
   .demo-tag { font-size: 9px; font-weight: 800; letter-spacing: 0.08em; color: var(--accent-ink); background: var(--accent-wash); border-radius: 5px; padding: 2px 7px; }
   .main { flex: 1; padding: 16px 16px 40px; }
   .view { display: none; position: relative; }
-  .view.on { display: block; }
+  .view.on { display: block; animation: appin 0.22s ease; }
+  @keyframes appin { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .view.on { animation: none; } }
   .k { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-ink); }
   h2 { font-family: var(--display); font-size: 21px; font-weight: 700; margin: 2px 0 2px; }
   .sub { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
@@ -85,6 +87,17 @@
   .d-blue { background: var(--s1); } .d-yellow { background: var(--s4); } .d-red { background: var(--crit); }
   .undo { font-family: var(--mono); }
 
+  .sbar, .hbar, .deskcap { display: none; }
+  @media (min-width: 700px) {
+    body { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 26px 0 20px; box-sizing: border-box; }
+    .app { width: 388px; flex: none; height: min(820px, 90vh); min-height: 560px; border: 11px solid #141416; border-radius: 44px; box-shadow: 0 24px 60px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.22); overflow: hidden; position: relative; background: var(--page); }
+    .sbar { display: flex; justify-content: space-between; align-items: baseline; padding: 11px 24px 6px; font-size: 13px; font-weight: 700; background: var(--surface); font-variant-numeric: tabular-nums; }
+    .sbar .sb-r { font-weight: 600; color: var(--muted); font-size: 10.5px; }
+    .top { position: static; }
+    .main { overflow-y: auto; padding-bottom: 36px; min-height: 0; }
+    .hbar { display: block; position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); width: 118px; height: 5px; border-radius: 999px; background: var(--ink); opacity: 0.35; z-index: 9; pointer-events: none; }
+    .deskcap { display: block; margin: 14px auto 0; font-size: 12px; color: var(--muted); text-align: center; max-width: 440px; padding: 0 16px; }
+  }
 </style>
 
 <svg style="display:none" aria-hidden="true">
@@ -92,6 +105,7 @@
 </svg>
 
 <div class="app">
+  <div class="sbar" aria-hidden="true"><span>6:02</span><span class="sb-r">LTE · 92%</span></div>
   <div class="top">
     <span class="brand"><svg width="18" height="18"><use href="#i-hex"/></svg>Axle · Driver</span>
     <span class="demo-tag">DEMO</span>
@@ -319,7 +333,9 @@
     </section>
 
   </div>
+  <div class="hbar" aria-hidden="true"></div>
 </div>
+<p class="deskcap">The crew phone, simulated — a real tag or QR opens these exact flows full-screen on any phone.</p>
 <div class="toast" id="toast"></div>
 
 <script>
