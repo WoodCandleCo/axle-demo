@@ -49,7 +49,7 @@
   body { font-family: var(--body); color: var(--ink); background: var(--page); margin: 0; font-size: 14px; line-height: 1.5; }
   .demo-note { text-align: center; font-size: 11.5px; color: var(--muted); padding: 8px 14px; border-bottom: 1px solid var(--line); background: var(--surface); }
   .app { display: flex; min-height: 100vh; }
-  .side { width: 196px; flex: none; background: var(--surface); border-right: 1px solid var(--line); padding: 16px 10px; display: flex; flex-direction: column; gap: 2px; position: sticky; top: 0; align-self: flex-start; height: 100vh; box-sizing: border-box; }
+  .side { width: 214px; flex: none; background: var(--surface); border-right: 1px solid var(--line); padding: 16px 10px; display: flex; flex-direction: column; gap: 2px; position: sticky; top: 0; align-self: flex-start; height: 100vh; box-sizing: border-box; }
   .brand { display: flex; align-items: center; gap: 8px; padding: 4px 10px 2px; font-family: var(--display); font-weight: 700; letter-spacing: 0.03em; font-size: 15px; }
   .brand i { color: var(--accent); font-style: normal; }
   .org { padding: 0 10px 12px; font-size: 11px; color: var(--muted); }
@@ -58,13 +58,20 @@
   .nav-item.on { background: var(--accent-tint); color: var(--accent-ink); font-weight: 600; }
   .nav-item.on svg { color: var(--accent); }
   .nav-item.off { opacity: 0.45; }
-  .nav-item .ph { margin-left: auto; font-family: var(--mono); font-size: 9px; font-weight: 700; color: var(--muted); background: var(--surface-2); border-radius: 999px; padding: 1px 6px; }
+  .nav-item .ph { margin-left: auto; font-family: var(--mono); font-size: 8.5px; font-weight: 700; color: var(--muted); background: var(--surface-2); border-radius: 999px; padding: 1px 5px; white-space: nowrap; flex: none; }
+  .nav-item { white-space: nowrap; }
   .nav-item.on .ph { color: var(--accent-ink); background: var(--surface); }
   .roadmap { background: var(--surface-2); border: 1px solid var(--hair); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
   .roadmap h6 { margin: 0 0 4px; font-family: var(--display); font-size: 12.5px; font-weight: 700; color: var(--ink); }
+  .roadmap h6 + .rm-sub { font-size: 12px; color: var(--ink-2); margin: 0 0 2px; }
   .roadmap ul { margin: 6px 0 0; padding: 0; list-style: none; font-size: 12.5px; color: var(--ink-2); }
   .roadmap li { padding: 3px 0; display: flex; gap: 8px; align-items: baseline; }
   .roadmap li b { font-family: var(--mono); font-size: 9.5px; font-weight: 700; color: var(--accent-ink); background: var(--accent-wash); border-radius: 999px; padding: 1px 7px; flex: none; }
+  .roadmap .rm-sec { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .roadmap .rm-sec:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+  .roadmap li.ok b { color: var(--good-text); background: rgba(12,163,12,0.13); }
+  .roadmap li.gap { padding-left: 26px; color: var(--muted); font-size: 11.5px; }
+  .roadmap li.gap b { color: var(--muted); background: var(--surface); border: 1px solid var(--line); font-size: 9px; }
   .roadmap .empty-h { font-family: var(--display); font-size: 17px; font-weight: 700; color: var(--ink); margin: 0 0 4px; }
   .side .gap { flex: 1; }
   .whoami { margin: 0 10px 6px; padding: 9px 11px; border-radius: 9px; background: var(--surface-2); font-size: 11px; color: var(--ink-2); }
@@ -286,13 +293,13 @@
   .ck-tx small { display: block; font-size: 11.5px; color: var(--muted); line-height: 1.45; }
   .spec { display: inline-block; max-width: 100%; }
   .spec-row { display: flex; gap: 26px; align-items: flex-start; flex-wrap: wrap; }
-  .spec-lab-v { width: 180px; height: 360px; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; padding: 11px 11px 0; color: #fff; border-radius: 6px; overflow: hidden; }
+  .spec-lab-v { width: 180px; height: 360px; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; padding: 18px 11px 0; color: #fff; border-radius: 6px; overflow: hidden; }
   .spec-lab-v.lpc-yellow { color: #332000; }
   .spec-lab-v .vnm { font-size: 15px; font-weight: 800; text-align: center; line-height: 1.2; display: block; }
   .spec-lab-v .vid { font-family: var(--mono); font-size: 9px; opacity: 0.92; text-align: center; display: block; margin-top: 2px; }
-  .spec-lab-v .qr { width: 144px; height: 144px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex: none; margin-top: 7px; }
+  .spec-lab-v .qr { width: 144px; height: 144px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex: none; margin-top: auto; }
   .spec-lab-v .qr img, .spec-lab-v .qr canvas { width: 135px !important; height: 135px !important; display: block; }
-  .spec-lab-v .tap { width: 99px; height: 99px; flex: none; background: #fff; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; margin: auto 0; }
+  .spec-lab-v .tap { width: 99px; height: 99px; flex: none; background: #fff; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; margin: 11px 0 auto; }
   .spec-lab-v .tap svg { width: 30px; height: 30px; }
   .spec-lab-v .tap b { font-size: 7.5px; font-weight: 800; letter-spacing: 1.2px; }
   .spec-lab-v .vband { align-self: stretch; height: 30px; flex: none; margin: 0 -11px 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; letter-spacing: 2px; color: #fff; }
@@ -391,12 +398,12 @@
     .lp-label .qr img, .lp-label .qr canvas { width: 0.95in !important; height: 0.95in !important; display: block; }
     .lp-label .band { align-self: stretch; flex: none; width: 0.58in; margin: 0 0 0 0.02in; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; transform: rotate(180deg); font-size: 0.135in; font-weight: 800; letter-spacing: 0.028in; color: #fff; }
     .lp-label.vert { padding: 0; display: block; }
-    .lp-label.vert .lpv { position: absolute; left: 50%; top: 50%; width: 2in; height: 4in; transform: translate(-50%, -50%) rotate(-90deg); display: flex; flex-direction: column; align-items: center; box-sizing: border-box; padding: 0.12in 0.12in 0; }
+    .lp-label.vert .lpv { position: absolute; left: 50%; top: 50%; width: 2in; height: 4in; transform: translate(-50%, -50%) rotate(-90deg); display: flex; flex-direction: column; align-items: center; box-sizing: border-box; padding: 0.2in 0.12in 0; }
     .lp-label .lpv .vnm { font-size: 0.17in; font-weight: 800; text-align: center; line-height: 1.2; }
     .lp-label .lpv .vid { font-family: ui-monospace, Menlo, monospace; font-size: 0.1in; text-align: center; opacity: 0.92; margin-top: 0.02in; }
-    .lp-label .lpv .qr { width: 1.6in; height: 1.6in; margin-top: 0.08in; }
+    .lp-label .lpv .qr { width: 1.6in; height: 1.6in; margin-top: auto; }
     .lp-label .lpv .qr img, .lp-label .lpv .qr canvas { width: 1.5in !important; height: 1.5in !important; }
-    .lp-label .lpv .tap { margin: auto 0; }
+    .lp-label .lpv .tap { margin: 0.12in 0 auto; }
     .lp-label .lpv .vband { align-self: stretch; height: 0.34in; flex: none; margin-top: 0; display: flex; align-items: center; justify-content: center; font-size: 0.135in; font-weight: 800; letter-spacing: 0.028in; color: #fff; }
   }
 /* hidden bigfoot — find them all (silhouette: Tyler's Bigfoot.svg) */
@@ -530,7 +537,7 @@
           <div class="panel-f"><a data-view="reports" class="navlink">View report →</a></div>
         </div>
       </div>
-      <div class="roadmap"><h6>Still to come on the dashboard</h6><ul><li><b>P2</b><span>Live crew map tile and storm-mode board</span></li><li><b>P2</b><span>Incidents queue chip once the accident kit ships</span></li><li><b>P3</b><span>Leaderboard + points standings once engagement unlocks</span></li><li><b>P4</b><span>Custom report widgets you arrange yourself</span></li></ul></div>
+      <div class="roadmap"><div class="rm-sec"><h6>At launch</h6><p class="rm-sub">Everything you see on this screen works on day one.</p><ul><li class="ok"><b>Live</b><span>Live queue chips — what's waiting on someone, right now</span></li><li class="ok"><b>Live</b><span>Six stat tiles: on the clock, vehicles active, utilization, cost/mile, open defects, PM compliance</span></li><li class="gap"><b>Note</b><span>Utilization and PM compliance stay thin until a few weeks of trips and services accumulate</span></li><li class="ok"><b>Live</b><span>Urgent broadcast banner with acknowledgement tracking</span></li><li class="ok"><b>Live</b><span>Needs-attention feed — defects, expiring licenses, fuel exceptions, weather</span></li><li class="ok"><b>Live</b><span>Cost-per-mile and spend charts</span></li><li class="gap"><b>Note</b><span>Maintenance costs join the chart in phase 2 — day one it's fuel only</span></li></ul></div><div class="rm-sec"><h6>Still to come on the dashboard</h6><ul><li><b>P2</b><span>Live crew map tile and storm-mode board</span></li><li><b>P2</b><span>Incidents queue chip once the accident kit ships</span></li><li><b>P3</b><span>Leaderboard + points standings once engagement unlocks</span></li><li><b>P4</b><span>Custom report widgets you arrange yourself</span></li></ul></div></div>
     </section>
 
     <!-- ============ ASSETS ============ -->
@@ -572,7 +579,7 @@
         </table>
         <div class="note-sm">Click U-104 for the full detail page — the same layout as proposal screen 7 (other rows are placeholders in this demo; every unit gets one in the real app). The class tabs and status chips filter live; counts show the proposal's 142-asset fleet fiction.</div>
       </div>
-      <div class="roadmap"><h6>Still to come in Assets</h6><ul><li><b>P2</b><span>Maintenance: work orders, PM schedules, vendor history</span></li><li><b>P2</b><span>Inventory: parts, tools, and supply stock per asset</span></li><li><b>P2</b><span>Deep-check photo surveys attached to each unit</span></li><li><b>P3</b><span>Replace-vs-repair analysis with book-value thresholds</span></li></ul></div>
+      <div class="roadmap"><div class="rm-sec"><h6>At launch</h6><p class="rm-sub">Everything you see on this screen works on day one.</p><ul><li class="ok"><b>Live</b><span>The full asset register — vehicles, trailers, heavy and light equipment</span></li><li class="ok"><b>Live</b><span>Add asset with VIN lookup, or bulk CSV import from the insurance schedule</span></li><li class="ok"><b>Live</b><span>Filter chips by class and status, sort by any column, search everything</span></li><li class="ok"><b>Live</b><span>Vehicle detail: identity, compliance docs, assigned driver, meter</span></li><li class="gap"><b>Note</b><span>Service history and cost totals fill in as phase-2 work orders start posting</span></li></ul></div><div class="rm-sec"><h6>Still to come in Assets</h6><ul><li><b>P2</b><span>Maintenance: work orders, PM schedules, vendor history</span></li><li><b>P2</b><span>Inventory: parts, tools, and supply stock per asset</span></li><li><b>P2</b><span>Deep-check photo surveys attached to each unit</span></li><li><b>P3</b><span>Replace-vs-repair analysis with book-value thresholds</span></li></ul></div></div>
     </section>
 
     <!-- ============ FUEL ============ -->
@@ -615,7 +622,7 @@
             </div>
           </div>
         </div>
-      <div class="roadmap"><h6>Still to come in Fuel & costs</h6><ul><li><b>P3</b><span>Unified cost ledger — every repair, part, and fee posts here</span></li><li><b>P2</b><span>Live WEX API sync replacing the manual import</span></li><li><b>P2</b><span>Configurable exception rules (capacity, hours, PIN mismatch)</span></li><li><b>P4</b><span>Accounting export and per-unit budget targets</span></li></ul></div>
+      <div class="roadmap"><div class="rm-sec"><h6>At launch</h6><p class="rm-sub">Everything you see on this screen works on day one.</p><ul><li class="ok"><b>Live</b><span>Fuel transactions imported from WEX — card, vehicle, person, gallons, price</span></li><li class="gap"><b>Note</b><span>Day one this is a scheduled import; live API sync lands in phase 2</span></li><li class="ok"><b>Live</b><span>Exceptions auto-flagged: overfills, unrecognized PINs, price outliers</span></li><li class="ok"><b>Live</b><span>Cards & PINs registry mirroring WEX</span></li><li class="ok"><b>Live</b><span>Spend, price, and MPG stat tiles</span></li><li class="gap"><b>Note</b><span>Fleet MPG needs pump odometer readings — accuracy improves over the first month</span></li></ul></div><div class="rm-sec"><h6>Still to come in Fuel & costs</h6><ul><li><b>P3</b><span>Unified cost ledger — every repair, part, and fee posts here</span></li><li><b>P2</b><span>Live WEX API sync replacing the manual import</span></li><li><b>P2</b><span>Configurable exception rules (capacity, hours, PIN mismatch)</span></li><li><b>P4</b><span>Accounting export and per-unit budget targets</span></li></ul></div></div>
     </section>
 
     <!-- ============ PEOPLE ============ -->
@@ -693,7 +700,7 @@
         </table>
         <p style="font-size:11.5px;color:var(--muted);margin:10px 14px 12px">4:00p is suggested from his last GPS ping at the shop. The reason is required, D. Whitfield is notified of the change, the week recalculates, and the corrected total is what exports to ADP.</p>
       </div>
-      <div class="roadmap"><h6>Still to come in People</h6><ul><li><b>P2</b><span>Time-off calendar and approvals in-app</span></li><li><b>P2</b><span>Injury reports, incident cases, and emergency contacts</span></li><li><b>P3</b><span>Engagement tab: leaderboard, points bank, deep-check bonuses</span></li><li><b>P3</b><span>Knowledge base authoring — the crew's searchable Q&A</span></li><li><b>P3</b><span>Employee manual uploads with tracked acknowledgement</span></li></ul></div>
+      <div class="roadmap"><div class="rm-sec"><h6>At launch</h6><p class="rm-sub">Everything you see on this screen works on day one.</p><ul><li class="ok"><b>Live</b><span>Driver and staff directory with license and medical-cert expiry tracking</span></li><li class="ok"><b>Live</b><span>Time clock — punches with location, live on-the-clock view</span></li><li class="ok"><b>Live</b><span>Timesheets with blended overtime, edit-in-place corrections with required reasons</span></li><li class="ok"><b>Live</b><span>Time-off requests replacing the Google Form</span></li><li class="ok"><b>Live</b><span>Safety scores imported from CMT / Federated DriveSAFE</span></li><li class="gap"><b>Note</b><span>Entered from the insurer portal until an API path is arranged</span></li></ul></div><div class="rm-sec"><h6>Still to come in People</h6><ul><li><b>P2</b><span>Time-off calendar and approvals in-app</span></li><li><b>P2</b><span>Injury reports, incident cases, and emergency contacts</span></li><li><b>P3</b><span>Engagement tab: leaderboard, points bank, deep-check bonuses</span></li><li><b>P3</b><span>Knowledge base authoring — the crew's searchable Q&A</span></li><li><b>P3</b><span>Employee manual uploads with tracked acknowledgement</span></li></ul></div></div>
     </section>
 
     <!-- ============ REPORTS ============ -->
@@ -759,7 +766,7 @@
           <div class="docrow"><b>Monthly fleet review</b><span class="dim">Owners · 1st of month</span><span class="sp"></span><span class="pill p-good">On</span></div>
         </div>
       </div>
-      <div class="roadmap"><h6>Still to come in Reports</h6><ul><li><b>P2</b><span>Scheduled email delivery on your cadence</span></li><li><b>P2</b><span>Incident and injury history joins the quick pulls</span></li><li><b>P4</b><span>Custom report builder — pick fields, filters, and grouping</span></li><li><b>P4</b><span>Public API access for your own tooling</span></li></ul></div>
+      <div class="roadmap"><div class="rm-sec"><h6>At launch</h6><p class="rm-sub">Everything you see on this screen works on day one.</p><ul><li class="ok"><b>Live</b><span>Quick pulls — timesheets, fuel, punctuality, asset register, compliance</span></li><li class="ok"><b>Live</b><span>Export to CSV or PDF, ready for payroll and the insurer</span></li><li class="ok"><b>Live</b><span>Punctuality and PTO reports feeding the points decisions</span></li><li class="gap"><b>Note</b><span>Trend depth grows with history — the first month is a baseline, not a comparison</span></li></ul></div><div class="rm-sec"><h6>Still to come in Reports</h6><ul><li><b>P2</b><span>Scheduled email delivery on your cadence</span></li><li><b>P2</b><span>Incident and injury history joins the quick pulls</span></li><li><b>P4</b><span>Custom report builder — pick fields, filters, and grouping</span></li><li><b>P4</b><span>Public API access for your own tooling</span></li></ul></div></div>
     </section>
 
     <!-- ============ VEHICLE DETAIL ============ -->
@@ -892,7 +899,7 @@
       <div class="howto">
         <b>Real-tap test:</b> write this URL onto a blank NTAG with an NFC Tools-class app — <code>https://demo.axlehq.io/driver.html#t=U-104</code> — then tap it with any phone: the crew flow opens, no sign-in. Variants: <code>#t=TR-12</code> · <code>#t=OIL</code> · <code>#t=EQ-208</code>; the admin view resolves them too: <code>demo.axlehq.io/#t=U-104</code>. The tag is just a URL; the phone is the reader; the software decides what it means.
       </div>
-      <div class="roadmap"><h6>Still to come in Tag manager</h6><ul><li><b>P2</b><span>Lifecycle status (blank → active → retired) with filters</span></li><li><b>P2</b><span>Last-seen scan dates and possibly-dead tag detection</span></li><li><b>P3</b><span>Bulk edit: retire, re-link, or recategorize many tags at once</span></li><li><b>P3</b><span>In-app tag writing from a USB reader — no phone needed</span></li><li><b>P3</b><span>Tag detail drawer with the full audit trail</span></li></ul></div>
+      <div class="roadmap"><div class="rm-sec"><h6>At launch</h6><p class="rm-sub">Everything you see on this screen works on day one.</p><ul><li class="ok"><b>Live</b><span>Tag registry — every commissioned tag, what it's linked to, and its action</span></li><li class="ok"><b>Live</b><span>Commission a blank tag: tap it, search the asset register, pick a category</span></li><li class="ok"><b>Live</b><span>Color categories you can add, recolor, and rename yourself</span></li><li class="ok"><b>Live</b><span>Label generator — Avery 5523 sheets, horizontal or vertical, start-slot picker</span></li><li class="ok"><b>Live</b><span>Tag detail: re-link, recategorize, reprint, retire</span></li><li class="gap"><b>Note</b><span>Scan counts and last-seen dates begin accumulating the day tags go on assets</span></li></ul></div><div class="rm-sec"><h6>Still to come in Tag manager</h6><ul><li><b>P2</b><span>Lifecycle status (blank → active → retired) with filters</span></li><li><b>P2</b><span>Last-seen scan dates and possibly-dead tag detection</span></li><li><b>P3</b><span>Bulk edit: retire, re-link, or recategorize many tags at once</span></li><li><b>P3</b><span>In-app tag writing from a USB reader — no phone needed</span></li><li><b>P3</b><span>Tag detail drawer with the full audit trail</span></li></ul></div></div>
     </section>
   </div>
 </div>
