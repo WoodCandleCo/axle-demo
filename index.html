@@ -241,7 +241,16 @@
   @media (max-width: 900px) { .grid2.dash, .grid2b { grid-template-columns: 1fr; } }
   @media (max-width: 560px) {
     .main { padding: 12px 10px 70px; }
-    .topbar h1 { font-size: 17px; }
+    .topbar { gap: 8px; }
+    .topbar h1 { font-size: 17px; flex: 1; }
+    .topbar .sp { display: none; }
+    .topbar .search { order: 10; flex: 1 1 100%; min-width: 0; box-sizing: border-box; }
+    .topbar .btn.primary { order: 2; }
+    .topbar .fchip, .topbar .datechip { order: 20; }
+    .filters { flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: none; }
+    .filters::-webkit-scrollbar { display: none; }
+    .filters .fchip { white-space: nowrap; flex: none; }
+    .filters > span[style] { display: none; }
     .tiles { grid-template-columns: 1fr 1fr; }
     .tbl th, .tbl td { padding-left: 8px; padding-right: 8px; }
     #reg-tbl th:nth-child(4), #reg-tbl td:nth-child(4) { display: none; }
@@ -738,8 +747,8 @@
 
     <!-- ============ VEHICLE DETAIL ============ -->
     <section class="view" id="v-vehicle"><div class="bf" style="right:48px;top:150px;width:9px;height:12px;background:var(--ink);opacity:.045"></div>
-      <button class="backlink" id="veh-back" type="button">← Assets</button>
-      <div class="vhead"><h1 id="vh-title">—</h1><span id="vh-pill"></span><span class="sp" style="flex:1"></span><button class="fchip" data-toast="Cost logged — lands in the unified ledger, attributed to this unit." type="button">Log cost</button><button class="fchip" data-toast="Work order drafted — vendor, estimate, and the defect that triggered it attach automatically." type="button" style="background:var(--accent);border-color:var(--accent);color:#fff">New work order</button></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap"><button class="backlink" id="veh-back" type="button" style="margin-bottom:0">← Assets</button><span style="flex:1"></span><button class="fchip" data-toast="Cost logged — lands in the unified ledger, attributed to this unit." type="button">Log cost</button><button class="fchip" data-toast="Work order drafted — vendor, estimate, and the defect that triggered it attach automatically." type="button" style="background:var(--accent);border-color:var(--accent);color:#fff">New work order</button></div>
+      <div class="vhead"><h1 id="vh-title">—</h1><span id="vh-pill"></span></div>
       <div class="vmeta" id="vh-meta"></div>
       <div class="tabs"><button class="tab on" type="button">Overview</button><button class="tab" data-toast="Service history — every touch, forever, in the full build." type="button">Service history</button><button class="tab" data-toast="Costs — the unit's slice of the ledger." type="button">Costs</button><button class="tab" data-toast="Trips — every manifest this unit was on." type="button">Trips</button><button class="tab" data-toast="Inspections — every DVIR, with the anomaly engine's notes." type="button">Inspections</button><button class="tab" data-toast="Documents — title, registration, insurance, warranties." type="button">Documents</button></div>
       <div class="tiles" id="vh-tiles"></div>
