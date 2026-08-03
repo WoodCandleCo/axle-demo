@@ -250,8 +250,9 @@
   .lp-cell { aspect-ratio: 2 / 1; border: 1px dashed var(--line); border-radius: 6px; font-size: 9.5px; font-family: ui-monospace, Menlo, monospace; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--muted); background: var(--surface); padding: 0; }
   .lp-cell.skip { background: repeating-linear-gradient(45deg, transparent, transparent 3px, var(--line) 3px, var(--line) 4px); opacity: 0.55; }
   .lp-cell.fill { border-style: solid; border-color: transparent; color: #fff; font-weight: 600; }
-  .lpc-blue { background: var(--s1); } .lpc-red { background: var(--crit); } .lpc-green { background: var(--good); }
-  .lpc-yellow { background: var(--s4); color: #332000; }
+  /* pinned to the PRINT palette — labels must look identical on screen (any theme) and on paper */
+  .lpc-blue { background: #2a78d6; } .lpc-red { background: #d03b3b; } .lpc-green { background: #0ca30c; }
+  .lpc-yellow { background: #eda100; color: #332000; }
   .lp-prev { display: flex; align-items: center; gap: 10px; border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; color: #fff; }
   .lp-prev.lpc-yellow { color: #332000; }
   .lp-prev .qr { background: #fff; border-radius: 6px; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; flex: none; }
