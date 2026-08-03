@@ -1,5 +1,6 @@
 <meta charset="utf-8">
-<title>Axle — Admin Demo (Alesha's view)</title><!-- v1.5 label-v2 -->
+<title>Axle — Admin Demo (Alesha's view)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"><!-- v1.5 label-v2 -->
 <style>
   :root {
     color-scheme: light;
@@ -238,6 +239,16 @@
   .tbl.tight td { padding-top: 5.5px; padding-bottom: 5.5px; font-size: 12.5px; }
   .tbl.tight .dim { white-space: nowrap; }
   @media (max-width: 900px) { .grid2.dash, .grid2b { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) {
+    .main { padding: 12px 10px 70px; }
+    .topbar h1 { font-size: 17px; }
+    .tiles { grid-template-columns: 1fr 1fr; }
+    .tbl th, .tbl td { padding-left: 8px; padding-right: 8px; }
+    #reg-tbl th:nth-child(4), #reg-tbl td:nth-child(4) { display: none; }
+    .fb-pill { right: 8px; bottom: 8px; padding: 5px 9px; font-size: 10px; }
+    .lp-cols { grid-template-columns: 1fr; }
+    .selbar { flex-wrap: wrap; }
+  }
 
   /* ---- tag label generator (Avery 5523) ---- */
   .lp-thck { width: 30px; }
