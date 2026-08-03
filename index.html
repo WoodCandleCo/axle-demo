@@ -218,6 +218,7 @@
   .tip i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
   @media (prefers-reduced-motion: no-preference) { .tip { transition: opacity 0.12s ease; } }
   /* ---- global table kit: sort · filter · pagination ---- */
+  .tabchips { display: inline-flex; align-items: center; gap: 8px; }
   .tkit-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px 0; }
   .tkit-q { flex: 0 1 240px; min-width: 120px; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 5px 11px; font-size: 12px; color: var(--ink); font-family: var(--body); }
   .tkit-q::placeholder { color: var(--muted); }
@@ -247,6 +248,9 @@
     .topbar .search { order: 10; flex: 1 1 100%; min-width: 0; box-sizing: border-box; }
     .topbar .btn.primary { order: 2; }
     .topbar .fchip, .topbar .datechip { order: 20; }
+    .topbar .tabchips { order: 20; flex: 1 1 100%; overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; }
+    .topbar .tabchips::-webkit-scrollbar { display: none; }
+    .topbar .tabchips .fchip { flex: none; white-space: nowrap; }
     .filters { flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: none; }
     .filters::-webkit-scrollbar { display: none; }
     .filters .fchip { white-space: nowrap; flex: none; }
@@ -561,7 +565,7 @@
 
     <!-- ============ FUEL ============ -->
     <section class="view" id="v-fuel"><div class="bf" style="left:30px;bottom:30px;width:10px;height:14px;background:var(--ink);opacity:.05"></div>
-      <div class="topbar"><h1>Fuel &amp; costs</h1><span class="fchip on">Transactions</span><button class="fchip" id="chip-pins" type="button">Cards &amp; PINs</button><button class="fchip" id="chip-exc" type="button">Exceptions <small>3</small></button><button class="fchip" data-toast="The ledger view — every fill posts as a cost entry on its vehicle; the dashboard's cost-per-mile drinks from it." type="button">Ledger</button><span class="sp"></span><span class="datechip">July 2026</span></div>
+      <div class="topbar"><h1>Fuel &amp; costs</h1><span class="tabchips"><span class="fchip on">Transactions</span><button class="fchip" id="chip-pins" type="button">Cards &amp; PINs</button><button class="fchip" id="chip-exc" type="button">Exceptions <small>3</small></button><button class="fchip" data-toast="The ledger view — every fill posts as a cost entry on its vehicle; the dashboard's cost-per-mile drinks from it." type="button">Ledger</button></span><span class="sp"></span><span class="datechip">July 2026</span></div>
       <div class="tiles">
         <div class="tile"><div class="k">Fuel spend · MTD</div><div class="v">$38.2k</div><div class="d"><span class="up">▼ 4.1%</span> vs June</div></div>
         <div class="tile"><div class="k">Avg price / gal</div><div class="v">$3.42</div><div class="d">In-network $3.31 · out $3.58</div></div>
