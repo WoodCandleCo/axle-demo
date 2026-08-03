@@ -249,6 +249,9 @@
   .ck-tx { min-width: 0; }
   .ck-tx b { display: block; font-size: 13px; color: var(--ink); }
   .ck-tx small { display: block; font-size: 11.5px; color: var(--muted); line-height: 1.45; }
+  .ckf-lbl { font-size: 9.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .ck-pick { width: 22px; height: 22px; border-radius: 99px; border: 2px solid transparent; cursor: pointer; display: inline-block; margin-right: 6px; padding: 0; }
+  .ck-pick.on { border-color: var(--ink); }
   .tbl input[type=checkbox] { accent-color: var(--accent); }
   .selbar { display: flex; align-items: center; gap: 8px; padding: 10px 16px 12px; border-top: 1px solid var(--line); font-size: 12.5px; }
   .lp-cols { display: grid; grid-template-columns: 224px 1fr; gap: 18px; }
@@ -690,22 +693,22 @@
         <div class="panel" style="overflow:visible">
           <div class="panel-h"><h5>Tag registry</h5><span class="sub" id="reg-count">14 active</span><span class="sp"></span><button class="fchip" id="btn-new" type="button">+ Commission</button></div>
           <table class="tbl" id="reg-tbl">
-            <thead><tr><th class="lp-thck"><input type="checkbox" id="lp-master" aria-label="Select all tags for label printing"></th><th>Tag ID</th><th>Linked to</th><th>Action</th></tr></thead>
+            <thead><tr><th class="lp-thck"><input type="checkbox" id="lp-master" aria-label="Select all tags for label printing"></th><th>Tag ID</th><th>Linked to</th><th>Action</th><th>Label printed</th></tr></thead>
             <tbody>
-            <tr data-tag="AX-9D41" data-color="blue" data-t="U-104" data-name="U-104 · dash" data-asset="Truck 7"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-9D41"></td><td class="mono">AX-9D41</td><td><span class="dot d-blue"></span>U-104 · dash</td><td class="dim">check-in</td></tr>
-            <tr data-tag="AX-3B77" data-color="blue" data-t="TR-12" data-name="TR-12 · tongue" data-asset="16-ft utility trailer"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-3B77"></td><td class="mono">AX-3B77</td><td><span class="dot d-blue"></span>TR-12 · tongue</td><td class="dim">check-in</td></tr>
-            <tr data-tag="AX-51C8" data-color="yellow" data-t="AX-51C8" data-name="U-104 · trimmer line" data-asset="Trimmer line"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-51C8"></td><td class="mono">AX-51C8</td><td><span class="dot d-yellow"></span>U-104 · trimmer line</td><td class="dim">supply</td></tr>
-            <tr data-tag="AX-2D60" data-color="yellow" data-t="OIL" data-name="Shop · 2-cycle oil rack" data-asset="2-cycle oil rack"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-2D60"></td><td class="mono">AX-2D60</td><td><span class="dot d-yellow"></span>Shop · 2-cycle oil rack</td><td class="dim">supply</td></tr>
-            <tr data-tag="AX-8C19" data-color="red" data-t="EQ-208" data-name="EQ-208 · frame" data-asset="Skid steer"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-8C19"></td><td class="mono">AX-8C19</td><td><span class="dot d-red"></span>EQ-208 · frame</td><td class="dim">problem</td></tr>
-            <tr data-tag="AX-7A02" data-color="blue" data-t="AX-7A02" data-name="U-131 · dash" data-asset="ProMaster van"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-7A02"></td><td class="mono">AX-7A02</td><td><span class="dot d-blue"></span>U-131 · dash</td><td class="dim">check-in</td></tr>
-            <tr data-tag="AX-1F55" data-color="blue" data-t="AX-1F55" data-name="U-155 · dash" data-asset="Transit van"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-1F55"></td><td class="mono">AX-1F55</td><td><span class="dot d-blue"></span>U-155 · dash</td><td class="dim">check-in</td></tr>
-            <tr data-tag="AX-66E3" data-color="blue" data-t="AX-66E3" data-name="TR-08 · tongue" data-asset="Dump trailer"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-66E3"></td><td class="mono">AX-66E3</td><td><span class="dot d-blue"></span>TR-08 · tongue</td><td class="dim">check-in</td></tr>
-            <tr data-tag="AX-C218" data-color="green" data-t="AX-C218" data-name="U-104 · service" data-asset="Truck 7"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-C218"></td><td class="mono">AX-C218</td><td><span class="dot d-green"></span>U-104 · service</td><td class="dim">service</td></tr>
-            <tr data-tag="AX-90BB" data-color="green" data-t="AX-90BB" data-name="EQ-112 · deck" data-asset="Z-turn mower"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-90BB"></td><td class="mono">AX-90BB</td><td><span class="dot d-green"></span>EQ-112 · deck</td><td class="dim">service</td></tr>
-            <tr data-tag="AX-4E71" data-color="yellow" data-t="AX-4E71" data-name="Shop · bar &amp; chain oil" data-asset="Bar &amp; chain oil"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-4E71"></td><td class="mono">AX-4E71</td><td><span class="dot d-yellow"></span>Shop · bar &amp; chain oil</td><td class="dim">supply</td></tr>
-            <tr data-tag="AX-05AD" data-color="red" data-t="AX-05AD" data-name="EQ-315 · frame" data-asset="Stump grinder"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-05AD"></td><td class="mono">AX-05AD</td><td><span class="dot d-red"></span>EQ-315 · frame</td><td class="dim">problem</td></tr>
-            <tr data-tag="AX-B334" data-color="green" data-t="AX-B334" data-name="TR-12 · service" data-asset="16-ft utility trailer"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-B334"></td><td class="mono">AX-B334</td><td><span class="dot d-green"></span>TR-12 · service</td><td class="dim">service</td></tr>
-            <tr data-tag="AX-77D9" data-color="yellow" data-t="AX-77D9" data-name="Shop · glove bin" data-asset="Glove bin"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-77D9"></td><td class="mono">AX-77D9</td><td><span class="dot d-yellow"></span>Shop · glove bin</td><td class="dim">supply</td></tr>
+            <tr data-tag="AX-9D41" data-color="blue" data-t="U-104" data-name="U-104 · dash" data-asset="Truck 7"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-9D41"></td><td class="mono">AX-9D41</td><td><span class="dot d-blue"></span>U-104 · dash</td><td class="dim">check-in</td><td class="dim mono" data-lp>Jul 12</td></tr>
+            <tr data-tag="AX-3B77" data-color="blue" data-t="TR-12" data-name="TR-12 · tongue" data-asset="16-ft utility trailer"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-3B77"></td><td class="mono">AX-3B77</td><td><span class="dot d-blue"></span>TR-12 · tongue</td><td class="dim">check-in</td><td class="dim mono" data-lp>Jul 12</td></tr>
+            <tr data-tag="AX-51C8" data-color="yellow" data-t="AX-51C8" data-name="U-104 · trimmer line" data-asset="Trimmer line"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-51C8"></td><td class="mono">AX-51C8</td><td><span class="dot d-yellow"></span>U-104 · trimmer line</td><td class="dim">supply</td><td class="dim mono" data-lp>Jul 12</td></tr>
+            <tr data-tag="AX-2D60" data-color="yellow" data-t="OIL" data-name="Shop · 2-cycle oil rack" data-asset="2-cycle oil rack"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-2D60"></td><td class="mono">AX-2D60</td><td><span class="dot d-yellow"></span>Shop · 2-cycle oil rack</td><td class="dim">supply</td><td class="dim mono" data-lp>Jul 12</td></tr>
+            <tr data-tag="AX-8C19" data-color="red" data-t="EQ-208" data-name="EQ-208 · frame" data-asset="Skid steer"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-8C19"></td><td class="mono">AX-8C19</td><td><span class="dot d-red"></span>EQ-208 · frame</td><td class="dim">problem</td><td class="dim mono" data-lp>Jul 12</td></tr>
+            <tr data-tag="AX-7A02" data-color="blue" data-t="AX-7A02" data-name="U-131 · dash" data-asset="ProMaster van"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-7A02"></td><td class="mono">AX-7A02</td><td><span class="dot d-blue"></span>U-131 · dash</td><td class="dim">check-in</td><td class="dim mono" data-lp>Jul 12</td></tr>
+            <tr data-tag="AX-1F55" data-color="blue" data-t="AX-1F55" data-name="U-155 · dash" data-asset="Transit van"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-1F55"></td><td class="mono">AX-1F55</td><td><span class="dot d-blue"></span>U-155 · dash</td><td class="dim">check-in</td><td class="dim mono" data-lp>Jul 12</td></tr>
+            <tr data-tag="AX-66E3" data-color="blue" data-t="AX-66E3" data-name="TR-08 · tongue" data-asset="Dump trailer"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-66E3"></td><td class="mono">AX-66E3</td><td><span class="dot d-blue"></span>TR-08 · tongue</td><td class="dim">check-in</td><td class="dim mono" data-lp>Jul 19</td></tr>
+            <tr data-tag="AX-C218" data-color="green" data-t="AX-C218" data-name="U-104 · service" data-asset="Truck 7"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-C218"></td><td class="mono">AX-C218</td><td><span class="dot d-green"></span>U-104 · service</td><td class="dim">service</td><td class="dim mono" data-lp>Jul 19</td></tr>
+            <tr data-tag="AX-90BB" data-color="green" data-t="AX-90BB" data-name="EQ-112 · deck" data-asset="Z-turn mower"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-90BB"></td><td class="mono">AX-90BB</td><td><span class="dot d-green"></span>EQ-112 · deck</td><td class="dim">service</td><td class="dim mono" data-lp>Jul 19</td></tr>
+            <tr data-tag="AX-4E71" data-color="yellow" data-t="AX-4E71" data-name="Shop · bar &amp; chain oil" data-asset="Bar &amp; chain oil"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-4E71"></td><td class="mono">AX-4E71</td><td><span class="dot d-yellow"></span>Shop · bar &amp; chain oil</td><td class="dim">supply</td><td class="dim mono" data-lp>Jul 19</td></tr>
+            <tr data-tag="AX-05AD" data-color="red" data-t="AX-05AD" data-name="EQ-315 · frame" data-asset="Stump grinder"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-05AD"></td><td class="mono">AX-05AD</td><td><span class="dot d-red"></span>EQ-315 · frame</td><td class="dim">problem</td><td class="dim mono" data-lp>—</td></tr>
+            <tr data-tag="AX-B334" data-color="green" data-t="AX-B334" data-name="TR-12 · service" data-asset="16-ft utility trailer"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-B334"></td><td class="mono">AX-B334</td><td><span class="dot d-green"></span>TR-12 · service</td><td class="dim">service</td><td class="dim mono" data-lp>—</td></tr>
+            <tr data-tag="AX-77D9" data-color="yellow" data-t="AX-77D9" data-name="Shop · glove bin" data-asset="Glove bin"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-77D9"></td><td class="mono">AX-77D9</td><td><span class="dot d-yellow"></span>Shop · glove bin</td><td class="dim">supply</td><td class="dim mono" data-lp>Jul 19</td></tr>
             </tbody>
           </table>
           <div class="selbar hidden" id="lp-bar"><b id="lp-count">0 selected</b><span class="dim" style="font-size:11.5px">— selection follows across pages &amp; filters</span><span class="sp"></span><button class="fchip" id="lp-open" type="button" style="background:var(--accent);border-color:var(--accent);color:#fff">Print labels →</button></div>
@@ -739,12 +742,30 @@
             <button class="ck-row" data-tap="OIL" type="button"><span class="ck-sw ck-yellow">SUPPLY</span><span class="ck-tx"><b>Supply</b><small>We're low — one tap logs the refill. A receipt, not a form.</small></span></button>
             <button class="ck-row" data-tap="EQ-208" type="button"><span class="ck-sw ck-red">PROBLEM</span><span class="ck-tx"><b>Problem</b><small>Something's wrong — the defect report opens with the machine pre-filled.</small></span></button>
             <button class="ck-row" data-tap="AX-C218" type="button"><span class="ck-sw ck-green">SERVICE</span><span class="ck-tx"><b>Service</b><small>Work done — logs the touch on the unit's service history.</small></span></button>
+            <button class="fchip" id="ck-add" type="button" style="align-self:flex-start">+ New category</button>
+            <div class="hidden" id="ck-form" style="border:1px dashed var(--line);border-radius:10px;padding:10px 12px">
+              <div class="ckf-lbl">Name</div>
+              <input id="ck-name" placeholder="e.g. Rental return" style="width:100%;box-sizing:border-box;border:1px solid var(--line);background:var(--surface);border-radius:7px;padding:6px 9px;font-size:12.5px;color:var(--ink);font-family:var(--body)">
+              <div class="ckf-lbl" style="margin-top:8px">Color — curated so labels stay readable</div>
+              <div>
+                <button class="ck-pick" data-c="#8e5bd4" type="button" style="background:#8e5bd4" aria-label="Purple"></button>
+                <button class="ck-pick" data-c="#eb6834" type="button" style="background:#eb6834" aria-label="Orange"></button>
+                <button class="ck-pick" data-c="#0e6672" type="button" style="background:#0e6672" aria-label="Teal"></button>
+                <button class="ck-pick" data-c="#d6567b" type="button" style="background:#d6567b" aria-label="Pink"></button>
+                <button class="ck-pick" data-c="#5a6b7a" type="button" style="background:#5a6b7a" aria-label="Slate"></button>
+              </div>
+              <div class="ckf-lbl" style="margin-top:8px">Behaves like</div>
+              <select id="ck-basis" style="border:1px solid var(--line);background:var(--surface);border-radius:7px;padding:6px 9px;font-size:12.5px;color:var(--ink);font-family:var(--body)">
+                <option>Check-in</option><option>Supply</option><option>Problem</option><option selected>Service</option>
+              </select>
+              <div style="margin-top:10px"><button class="fchip" id="ck-save" type="button" style="background:var(--accent);border-color:var(--accent);color:#fff">Add category</button></div>
+            </div>
           </div>
-          <div style="padding:2px 16px 12px" id="res-body"><span class="dim" style="font-size:12.5px">Waiting for a tap…</span></div>
+          <div style="padding:2px 16px 12px" id="res-body" class="hidden"></div>
         </div>
       </div>
       <div class="howto">
-        <b>Real-tap test:</b> write this URL onto a blank NTAG with an NFC Tools-class app — <code id="howto-url">this-page#t=U-104</code> — then tap it with your phone (screen on, signed into claude.ai). Variants: <code>#t=TR-12</code> · <code>#t=OIL</code> · <code>#t=EQ-208</code>. The tag is just a URL; the phone is the reader; the software decides what it means.
+        <b>Real-tap test:</b> write this URL onto a blank NTAG with an NFC Tools-class app — <code>https://demo.axlehq.io/driver.html#t=U-104</code> — then tap it with any phone: the crew flow opens, no sign-in. Variants: <code>#t=TR-12</code> · <code>#t=OIL</code> · <code>#t=EQ-208</code>; the admin view resolves them too: <code>demo.axlehq.io/#t=U-104</code>. The tag is just a URL; the phone is the reader; the software decides what it means.
       </div>
     </section>
   </div>
@@ -1233,6 +1254,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
   };
   function resolveTap(id, physical) {
     if (!RES[id]) return;
+    $("res-body").classList.remove("hidden");
     $("res-body").innerHTML = '<div style="font-size:13px;line-height:1.6">' + RES[id] + "</div>";
     $("res-sub").textContent = "resolved: " + id;
     $("real-badge").classList.toggle("hidden", !physical);
@@ -1241,9 +1263,35 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
   document.querySelectorAll("[data-tap]").forEach(function (b) {
     b.addEventListener("click", function () { resolveTap(b.getAttribute("data-tap"), false); });
   });
+  $("ck-add").addEventListener("click", function () { $("ck-form").classList.toggle("hidden"); });
+  var ckColor = null;
+  document.querySelectorAll(".ck-pick").forEach(function (b) {
+    b.addEventListener("click", function () {
+      ckColor = b.getAttribute("data-c");
+      document.querySelectorAll(".ck-pick").forEach(function (x) { x.classList.toggle("on", x === b); });
+    });
+  });
+  $("ck-save").addEventListener("click", function () {
+    var name = $("ck-name").value.trim();
+    if (!name || !ckColor) { toast("Give it a name and pick a color."); return; }
+    var basis = $("ck-basis").value;
+    var row = document.createElement("button");
+    row.type = "button"; row.className = "ck-row";
+    row.innerHTML = '<span class="ck-sw" style="background:' + ckColor + '">' + name.toUpperCase() + '</span><span class="ck-tx"><b>' + name + '</b><small>Custom category — behaves like ' + basis.toLowerCase() + '; commissioning &amp; labels offer it automatically.</small></span>';
+    row.addEventListener("click", function () {
+      $("res-body").classList.remove("hidden");
+      $("res-body").innerHTML = '<div style="font-size:13px;line-height:1.6"><b>' + name + '</b> · custom tag → runs the ' + basis.toLowerCase() + ' flow; the registry, color key, and label printing picked it up the moment it was added.</div>';
+      $("res-sub").textContent = "resolved: " + name;
+      $("real-badge").classList.add("hidden");
+    });
+    $("ck-form").parentNode.insertBefore(row, $("ck-add"));
+    $("ck-form").classList.add("hidden");
+    $("ck-name").value = ""; ckColor = null;
+    document.querySelectorAll(".ck-pick").forEach(function (x) { x.classList.remove("on"); });
+    toast(name + " added — commissioning and label printing now offer it.");
+  });
   var h = (location.hash || "").replace("#t=", "");
   if (h && RES[h]) resolveTap(h, true);
-  try { $("howto-url").textContent = location.href.split("#")[0] + "#t=U-104"; } catch (e) {}
 })();
 </script>
 
@@ -1494,6 +1542,9 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       L.innerHTML = '<span class="qr"></span><span class="tx"><span class="nm">' + t.asset + '</span><span class="id">' + t.name + '</span><span class="ac">' + ACT[t.color] + '</span><span class="u">' + t.id + ' \u00b7 demo.axlehq.io/driver.html#t=' + t.t + "</span></span><span class=\"tap\">" + NFC + "<b>TAP HERE</b></span><span class=\"band\">" + ACT[t.color].toUpperCase() + "</span>";
       sh[Math.floor(slot / 10)].appendChild(L);
       qr(L.querySelector(".qr"), t.t, 123);
+    });
+    rows().forEach(function (r) {
+      if (sel.has(r.getAttribute("data-tag"))) r.querySelector("[data-lp]").textContent = "Jul 30";
     });
     setTimeout(function () { window.print(); }, 300);
   });
