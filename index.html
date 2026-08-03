@@ -270,7 +270,7 @@
     body > *:not(#print-root) { display: none !important; }
     #print-root { display: block !important; }
     .lp-sheet { width: 8.5in; height: 11in; position: relative; page-break-after: always; }
-    .lp-label { position: absolute; width: 4in; height: 2in; display: flex; align-items: center; gap: 0.11in; padding: 0.14in 0 0.14in 0.14in; box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; color: #fff; }
+    .lp-label { position: absolute; width: 4in; height: 2in; display: flex; align-items: center; gap: 0.09in; padding: 0.14in 0 0.14in 0.12in; box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; color: #fff; }
     .lp-label.lpc-yellow { color: #332000; }
     .lp-label .tap { width: 1in; height: 1in; flex: none; border: 3px dashed currentColor; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.02in; box-sizing: border-box; }
     .lp-label .tap svg { width: 0.34in; height: 0.34in; }
@@ -1461,7 +1461,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     list.slice(0, 4).forEach(function (t) {
       var d = document.createElement("div");
       d.className = "lp-prev lpc-" + t.color;
-      d.innerHTML = '<span class="ptap">' + NFC + '</span><span class="qr"></span><span class="tx"><span class="nm">' + t.asset + '</span><span class="id2">' + t.name + '</span><span class="ac2">' + ACT[t.color] + '</span></span><span class="pband">' + ACT[t.color].toUpperCase() + '</span>';
+      d.innerHTML = '<span class="qr"></span><span class="tx"><span class="nm">' + t.asset + '</span><span class="id2">' + t.name + '</span><span class="ac2">' + ACT[t.color] + '</span></span><span class="ptap">' + NFC + '</span><span class="pband">' + ACT[t.color].toUpperCase() + '</span>';
       pv.appendChild(d);
       qr(d.querySelector(".qr"), t.t, 48);
     });
@@ -1481,7 +1481,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       L.className = "lp-label lpc-" + t.color;
       L.style.left = (0.15625 + col * 4.1875) + "in";
       L.style.top = (0.5 + row * 2) + "in";
-      L.innerHTML = '<span class="tap">' + NFC + '<b>TAP HERE</b></span><span class="tx"><span class="nm">' + t.asset + '</span><span class="id">' + t.name + '</span><span class="ac">' + ACT[t.color] + '</span><span class="u">' + t.id + ' \u00b7 demo.axlehq.io/driver.html#t=' + t.t + "</span></span><span class=\"qr\"></span><span class=\"band\">" + ACT[t.color].toUpperCase() + "</span>";
+      L.innerHTML = '<span class="qr"></span><span class="tx"><span class="nm">' + t.asset + '</span><span class="id">' + t.name + '</span><span class="ac">' + ACT[t.color] + '</span><span class="u">' + t.id + ' \u00b7 demo.axlehq.io/driver.html#t=' + t.t + "</span></span><span class=\"tap\">" + NFC + "<b>TAP HERE</b></span><span class=\"band\">" + ACT[t.color].toUpperCase() + "</span>";
       sh[Math.floor(slot / 10)].appendChild(L);
       qr(L.querySelector(".qr"), t.t, 123);
     });
