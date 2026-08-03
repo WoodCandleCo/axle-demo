@@ -278,6 +278,9 @@
   .ckf-lbl { font-size: 9.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
   .ck-pick { width: 22px; height: 22px; border-radius: 99px; border: 2px solid transparent; cursor: pointer; display: inline-block; margin-right: 6px; padding: 0; }
   .ck-pick.on { border-color: var(--ink); }
+  #reg-tbl tbody tr { cursor: pointer; }
+  tr.retired td { opacity: 0.45; text-decoration: line-through; }
+  tr.retired td:first-child { text-decoration: none; }
   .ck-any { background: conic-gradient(#e33 0deg, #ea0 60deg, #ce2 120deg, #2ca 180deg, #24d 240deg, #c2c 300deg, #e33 360deg); position: relative; overflow: hidden; vertical-align: top; }
   .ck-any input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
   .tbl input[type=checkbox] { accent-color: var(--accent); }
@@ -746,15 +749,11 @@
               <div class="tapzone" id="wz-tap"><svg width="16" height="16" style="vertical-align:-3px;margin-right:6px"><use href="#i-hex"/></svg>Simulate tapping the blank tag</div>
             </div>
             <div class="hidden" id="wz-2">
-              <div style="font-size:12.5px;margin:8px 0 4px"><b>What is it?</b></div>
-              <button class="choice" data-asset="U-104 · dash" type="button">U-104 dash</button>
-              <button class="choice" data-asset="EQ-208 · frame" type="button">EQ-208 frame</button>
-              <button class="choice" data-asset="U-104 · 2-cycle oil" type="button">2-cycle oil bin</button>
-              <div style="font-size:12.5px;margin:8px 0 4px"><b>Action color</b></div>
-              <button class="choice" data-color="blue" type="button"><span class="dot d-blue"></span>Check-in</button>
-              <button class="choice" data-color="yellow" type="button"><span class="dot d-yellow"></span>Supply</button>
-              <button class="choice" data-color="red" type="button"><span class="dot d-red"></span>Problem</button>
-              <button class="choice" data-color="green" type="button"><span class="dot d-green"></span>Service</button>
+              <div style="font-size:12.5px;margin:8px 0 4px"><b>What is it?</b> <span class="dim" style="font-size:11.5px">— searches the asset register</span></div>
+              <input id="wz-q" placeholder="Search units, trailers, equipment, supply points…" style="width:100%;box-sizing:border-box;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 11px;font-size:12.5px;color:var(--ink);font-family:var(--body)">
+              <div id="wz-results" style="margin-top:7px"></div>
+              <div style="font-size:12.5px;margin:8px 0 4px"><b>Action color</b> <span class="dim" style="font-size:11.5px">— from the category registry, custom ones included</span></div>
+              <div id="wz-colors"></div>
               <div style="display:flex;justify-content:flex-end"><button class="fchip" id="wz-save" type="button" disabled>Link it</button></div>
             </div>
             <div class="hidden" id="wz-3">
@@ -848,6 +847,27 @@
         </div>
       </div>
       <div class="aa-foot" style="border:0;padding:12px 0 0"><span class="dim" style="font-size:11px;line-height:1.5">Stick the NFC coin under the printed tap ring — <b>never under the QR</b> (the bump distorts scanning). Then choose <b>Save as PDF</b>, or load the Avery sheet and print directly. If colors don't appear, turn on “Background graphics.”</span><span class="sp" style="flex:1"></span><button class="fchip" id="lp-print" type="button" style="background:var(--accent);border-color:var(--accent);color:#fff;flex:none">Print / Save PDF</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-wrap hidden" id="tg-modal">
+  <div class="modal" style="max-width:520px">
+    <div class="panel-h" style="padding:14px 18px 0"><h5 id="tg-title">Tag</h5><span class="sp"></span><button class="fchip" id="tg-cancel" type="button">Cancel</button></div>
+    <div style="padding:10px 18px 16px">
+      <div class="dim" style="font-size:12px" id="tg-sub"></div>
+      <div class="ckf-lbl" style="margin-top:12px">Linked to</div>
+      <div id="tg-current" style="font-size:13px;margin-bottom:6px"></div>
+      <input id="tg-q" placeholder="Re-link — search the asset register…" style="width:100%;box-sizing:border-box;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 11px;font-size:12.5px;color:var(--ink);font-family:var(--body)">
+      <div id="tg-results" style="margin-top:6px"></div>
+      <div class="ckf-lbl" style="margin-top:12px">Category</div>
+      <div id="tg-colors"></div>
+      <div style="display:flex;align-items:center;gap:8px;border-top:1px solid var(--line);margin-top:14px;padding-top:12px">
+        <button class="fchip" id="tg-retire" type="button" style="border-color:var(--crit);color:var(--crit)">Retire tag</button>
+        <span style="flex:1"></span>
+        <button class="fchip" id="tg-reprint" type="button">Reprint label</button>
+        <button class="fchip" id="tg-save" type="button" style="background:var(--accent);border-color:var(--accent);color:#fff">Save changes</button>
+      </div>
+      <div class="dim" style="font-size:10.5px;margin-top:8px">Tags are never deleted — retiring keeps the history for audit. Every change records who and when.</div>
     </div>
   </div>
 </div>
@@ -1228,7 +1248,56 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     toast("Punch added — the week recalculates, and the corrected total is what exports to ADP.");
   });
   // ---- tags: wizard ----
-  var asset = null, color = null, n2 = 3;
+  var asset = null, assetName = null, color = null, n2 = 14;
+  var WZ_ASSETS = [
+    { code: "U-104", name: "Truck 7 \u2014 2021 Freightliner MT45", spot: "dash" },
+    { code: "U-131", name: "ProMaster van \u2014 2022 Ram 2500", spot: "dash" },
+    { code: "U-155", name: "Transit van \u2014 2024 Ford 250", spot: "dash" },
+    { code: "TR-08", name: "Dump trailer", spot: "tongue" },
+    { code: "TR-12", name: "16-ft utility trailer", spot: "tongue" },
+    { code: "EQ-112", name: "Z-turn mower", spot: "deck" },
+    { code: "EQ-208", name: "Skid steer", spot: "frame" },
+    { code: "EQ-315", name: "Stump grinder", spot: "frame" },
+    { code: "Shop", name: "Shop \u2014 supply rack or bin", spot: "rack" },
+    { code: "Yard", name: "Verona yard \u2014 kiosk & gates", spot: "post" }
+  ];
+  window.__cats = [
+    { k: "blue", n: "Check-in", c: "#2a78d6" },
+    { k: "yellow", n: "Supply", c: "#eda100" },
+    { k: "red", n: "Problem", c: "#d03b3b" },
+    { k: "green", n: "Service", c: "#0ca30c" }
+  ];
+  function wzRenderColors() {
+    var w = $("wz-colors"); w.innerHTML = "";
+    window.__cats.forEach(function (c) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "choice";
+      b.innerHTML = '<span class="dot" style="background:' + c.c + '"></span>' + c.n;
+      b.addEventListener("click", function () {
+        color = c;
+        Array.prototype.slice.call(w.children).forEach(function (x) { x.classList.toggle("on", x === b); });
+        refresh();
+      });
+      w.appendChild(b);
+    });
+  }
+  function wzRenderResults(q) {
+    var r = $("wz-results"); r.innerHTML = "";
+    WZ_ASSETS.filter(function (a) { return !q || (a.code + " " + a.name).toLowerCase().indexOf(q) >= 0; })
+      .slice(0, 6).forEach(function (a) {
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "choice";
+        b.innerHTML = "<b>" + a.code + "</b> \u00b7 " + a.name;
+        b.addEventListener("click", function () {
+          asset = a.code + " \u00b7 " + a.spot;
+          assetName = a.name.split(" \u2014 ")[0];
+          Array.prototype.slice.call(r.children).forEach(function (x) { x.classList.toggle("on", x === b); });
+          refresh();
+        });
+        r.appendChild(b);
+      });
+    if (!r.children.length) r.innerHTML = '<span class="dim" style="font-size:12px">No matches \u2014 add the asset to the register first.</span>';
+  }
   $("btn-new").addEventListener("click", function () {
     $("wiz").classList.remove("hidden");
     $("wz-1").classList.remove("hidden");
@@ -1238,38 +1307,30 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
   $("wz-tap").addEventListener("click", function () {
     $("wz-1").classList.add("hidden");
     $("wz-2").classList.remove("hidden");
+    wzRenderColors();
+    wzRenderResults("");
+    $("wz-q").value = "";
   });
+  $("wz-q").addEventListener("input", function () { asset = null; refresh(); wzRenderResults(this.value.trim().toLowerCase()); });
   function refresh() { $("wz-save").disabled = !(asset && color); }
-  document.querySelectorAll("[data-asset]").forEach(function (b) {
-    b.addEventListener("click", function () {
-      asset = b.getAttribute("data-asset");
-      document.querySelectorAll("[data-asset]").forEach(function (x) { x.classList.toggle("on", x === b); });
-      refresh();
-    });
-  });
-  document.querySelectorAll("[data-color]").forEach(function (b) {
-    b.addEventListener("click", function () {
-      color = b.getAttribute("data-color");
-      document.querySelectorAll("[data-color]").forEach(function (x) { x.classList.toggle("on", x === b); });
-      refresh();
-    });
-  });
   $("wz-save").addEventListener("click", function () {
     var id = "AX-" + Math.floor(4096 + (n2 * 2749) % 61439).toString(16).toUpperCase();
     n2++;
-    var names = { blue: "check-in", yellow: "supply", red: "problem", green: "service" };
     var tr = document.createElement("tr");
-    tr.innerHTML = '<td class="mono"></td><td><span class="dot d-' + color + '"></span></td><td class="dim"></td>';
-    tr.querySelector(".mono").textContent = id;
-    tr.querySelector("td:nth-child(2)").appendChild(document.createTextNode(asset));
-    tr.querySelector(".dim").textContent = names[color];
+    tr.setAttribute("data-tag", id);
+    tr.setAttribute("data-color", color.k);
+    if (color.cc) tr.setAttribute("data-cc", color.c);
+    tr.setAttribute("data-t", id);
+    tr.setAttribute("data-name", asset);
+    tr.setAttribute("data-asset", assetName);
+    tr.innerHTML = '<td><input type="checkbox" class="lp-ck" aria-label="Select ' + id + '"></td><td class="mono">' + id + '</td><td><span class="dot" style="background:' + color.c + '"></span>' + asset + '</td><td class="dim">' + color.n.toLowerCase() + '</td><td class="dim mono" data-lp>\u2014</td>';
     $("reg-tbl").tBodies[0].appendChild(tr);
     if ($("reg-tbl").__kit) $("reg-tbl").__kit.render();
     $("reg-count").textContent = n2 + " active";
     $("wz-done-id").textContent = id;
     $("wz-2").classList.add("hidden");
     $("wz-3").classList.remove("hidden");
-    asset = null; color = null;
+    asset = null; assetName = null; color = null;
     document.querySelectorAll(".choice.on").forEach(function (x) { x.classList.remove("on"); });
     refresh();
     toast(id + " commissioned — mis-links fix with a 10-second re-link.");
@@ -1339,10 +1400,96 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       $("real-badge").classList.add("hidden");
     });
     document.querySelector(".ck").appendChild(row);
+    if (window.__cats) window.__cats.push({ k: "custom", n: name, c: ckColor, cc: true });
     $("ck-form").classList.add("hidden");
     $("ck-name").value = ""; ckColor = null;
     document.querySelectorAll(".ck-pick").forEach(function (x) { x.classList.remove("on"); });
     toast(name + " added — commissioning and label printing now offer it.");
+  });
+  // ---- tag detail: edit / re-link / retire ----
+  var tgRow = null, tgAsset = null, tgAssetName = null, tgCat = null;
+  function tgClose() { $("tg-modal").classList.add("hidden"); }
+  function tgColors(currentKey) {
+    var w = $("tg-colors"); w.innerHTML = "";
+    window.__cats.forEach(function (c) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "choice" + (c.k === currentKey ? " on" : "");
+      b.innerHTML = '<span class="dot" style="background:' + c.c + '"></span>' + c.n;
+      b.addEventListener("click", function () {
+        tgCat = c;
+        Array.prototype.slice.call(w.children).forEach(function (x) { x.classList.toggle("on", x === b); });
+      });
+      w.appendChild(b);
+    });
+  }
+  function tgResults(q) {
+    var r = $("tg-results"); r.innerHTML = "";
+    WZ_ASSETS.filter(function (a) { return !q || (a.code + " " + a.name).toLowerCase().indexOf(q) >= 0; })
+      .slice(0, 4).forEach(function (a) {
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "choice";
+        b.innerHTML = "<b>" + a.code + "</b> \u00b7 " + a.name;
+        b.addEventListener("click", function () {
+          tgAsset = a.code + " \u00b7 " + a.spot;
+          tgAssetName = a.name.split(" \u2014 ")[0];
+          Array.prototype.slice.call(r.children).forEach(function (x) { x.classList.toggle("on", x === b); });
+        });
+        r.appendChild(b);
+      });
+  }
+  document.querySelector("#reg-tbl tbody").addEventListener("click", function (e) {
+    if (e.target.closest(".lp-ck") || e.target.tagName === "INPUT") return;
+    var tr = e.target.closest("tr");
+    if (!tr || !tr.getAttribute("data-tag")) return;
+    tgRow = tr; tgAsset = null; tgAssetName = null; tgCat = null;
+    $("tg-title").textContent = tr.getAttribute("data-tag") + (tr.classList.contains("retired") ? " \u00b7 retired" : "");
+    $("tg-sub").textContent = "Commissioned Jul 12 by Alesha \u00b7 label printed " + tr.querySelector("[data-lp]").textContent + " \u00b7 148 reads";
+    $("tg-current").textContent = tr.getAttribute("data-name") + " \u00b7 " + tr.cells[3].textContent.trim();
+    $("tg-q").value = "";
+    tgResults("");
+    tgColors(tr.getAttribute("data-color"));
+    $("tg-modal").classList.remove("hidden");
+  });
+  $("tg-q").addEventListener("input", function () { tgAsset = null; tgResults(this.value.trim().toLowerCase()); });
+  $("tg-cancel").addEventListener("click", tgClose);
+  $("tg-modal").addEventListener("click", function (e) { if (e.target === $("tg-modal")) tgClose(); });
+  $("tg-save").addEventListener("click", function () {
+    if (!tgRow || (!tgAsset && !tgCat)) { tgClose(); return; }
+    var dot = tgRow.cells[2].querySelector(".dot");
+    if (tgAsset) {
+      tgRow.setAttribute("data-name", tgAsset);
+      tgRow.setAttribute("data-asset", tgAssetName);
+      tgRow.cells[2].innerHTML = "";
+      tgRow.cells[2].appendChild(dot);
+      tgRow.cells[2].appendChild(document.createTextNode(tgAsset));
+      dot = tgRow.cells[2].querySelector(".dot");
+    }
+    if (tgCat) {
+      tgRow.setAttribute("data-color", tgCat.k);
+      if (tgCat.cc) tgRow.setAttribute("data-cc", tgCat.c); else tgRow.removeAttribute("data-cc");
+      dot.className = "dot"; dot.style.background = tgCat.c;
+      tgRow.cells[3].textContent = tgCat.n.toLowerCase();
+    }
+    if ($("reg-tbl").__kit) $("reg-tbl").__kit.render();
+    tgClose();
+    toast(tgRow.getAttribute("data-tag") + " updated \u2014 audited (Alesha, just now). Reprint the face if the color changed.");
+  });
+  $("tg-retire").addEventListener("click", function () {
+    if (!tgRow) return;
+    tgRow.classList.add("retired");
+    var ckb = tgRow.querySelector(".lp-ck");
+    if (ckb.checked) { ckb.checked = false; ckb.dispatchEvent(new Event("change", { bubbles: true })); }
+    ckb.disabled = true;
+    $("reg-count").textContent = document.querySelectorAll("#reg-tbl tbody tr:not(.retired)").length + " active";
+    tgClose();
+    toast(tgRow.getAttribute("data-tag") + " retired \u2014 kept in history; peel the face off the asset when convenient.");
+  });
+  $("tg-reprint").addEventListener("click", function () {
+    if (!tgRow) return;
+    var ckb = tgRow.querySelector(".lp-ck");
+    if (!ckb.checked) { ckb.checked = true; ckb.dispatchEvent(new Event("change", { bubbles: true })); }
+    tgClose();
+    $("lp-open").click();
   });
   var h = (location.hash || "").replace("#t=", "");
   if (h && RES[h]) resolveTap(h, true);
@@ -1526,7 +1673,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
   function rows() { return Array.prototype.slice.call(tbody.rows); }
   function chosen() {
     return rows().filter(function (r) { return sel.has(r.getAttribute("data-tag")); })
-      .map(function (r) { return { id: r.getAttribute("data-tag"), color: r.getAttribute("data-color"), t: r.getAttribute("data-t"), name: r.getAttribute("data-name"), asset: r.getAttribute("data-asset") }; });
+      .map(function (r) { return { id: r.getAttribute("data-tag"), color: r.getAttribute("data-color"), t: r.getAttribute("data-t"), name: r.getAttribute("data-name"), asset: r.getAttribute("data-asset"), cc: r.getAttribute("data-cc"), act: r.cells[3] ? r.cells[3].textContent.trim() : "" }; });
   }
   function bar() {
     $("lp-bar").classList.toggle("hidden", sel.size === 0);
@@ -1561,7 +1708,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         c.type = "button"; c.className = "lp-cell";
         var k = i - start;
         if (i < start) { c.classList.add("skip"); c.title = "Skipped — already used"; }
-        else if (k < n) { c.classList.add("fill", "lpc-" + list[k].color); c.textContent = list[k].id; }
+        else if (k < n) { c.classList.add("fill", "lpc-" + list[k].color); if (list[k].cc) c.style.background = list[k].cc; c.textContent = list[k].id; }
         else { c.textContent = i + 1; }
         c.addEventListener("click", function () { start = i; renderModal(); });
         mini.appendChild(c);
@@ -1573,6 +1720,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     list.slice(0, 4).forEach(function (t) {
       var d = document.createElement("div");
       d.className = "lp-prev lpc-" + t.color;
+      if (t.cc) d.style.background = t.cc;
       d.innerHTML = '<span class="qr"></span><span class="tx"><span class="nm">' + t.asset + '</span><span class="id2">' + t.name + '</span><span class="ac2">' + ACT[t.color] + '</span></span><span class="ptap">' + NFC + '</span><span class="pband">' + ACT[t.color].toUpperCase() + '</span>';
       pv.appendChild(d);
       qr(d.querySelector(".qr"), t.t, 48);
@@ -1591,6 +1739,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       var slot = start + i, pos = slot % 10, col = pos % 2, row = Math.floor(pos / 2);
       var L = document.createElement("div");
       L.className = "lp-label lpc-" + t.color;
+      if (t.cc) L.style.background = t.cc;
       L.style.left = (0.15625 + col * 4.1875) + "in";
       L.style.top = (0.5 + row * 2) + "in";
       L.innerHTML = '<span class="qr"></span><span class="tx"><span class="nm">' + t.asset + '</span><span class="id">' + t.name + '</span><span class="ac">' + ACT[t.color] + '</span><span class="u">' + t.id + ' \u00b7 demo.axlehq.io/driver.html#t=' + t.t + "</span></span><span class=\"tap\">" + NFC + "<b>TAP HERE</b></span><span class=\"band\">" + ACT[t.color].toUpperCase() + "</span>";
