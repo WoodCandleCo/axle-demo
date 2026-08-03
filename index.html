@@ -761,6 +761,7 @@
               <div style="margin-top:10px"><button class="fchip" id="ck-save" type="button" style="background:var(--accent);border-color:var(--accent);color:#fff">Add category</button></div>
             </div>
           </div>
+          <div class="hidden" id="res-prev" style="padding:0 16px 2px"></div>
           <div style="padding:2px 16px 12px" id="res-body" class="hidden"></div>
         </div>
       </div>
@@ -1252,8 +1253,17 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     "EQ-208": "<b>EQ-208 skid steer</b> · red tag → problem report pre-filled with the machine, the person, GPS, and history. Photos, severity, send — lands in triage.",
     "AX-C218": "<b>Truck 7 — U-104 · service</b> · green tag → logs a service touch on the unit's history — oil change, blade swap, grease — timestamped to whoever did it."
   };
+  var NFC2 = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="4.5" cy="12" r="1.7" fill="currentColor" stroke="none"/><path d="M8.5 7.5a7.2 7.2 0 0 1 0 9"/><path d="M12 5a11.5 11.5 0 0 1 0 14"/><path d="M15.5 2.6a16 16 0 0 1 0 18.8"/></svg>';
   function resolveTap(id, physical) {
     if (!RES[id]) return;
+    var row = document.querySelector('#reg-tbl tbody tr[data-t="' + id + '"]');
+    var pv = $("res-prev");
+    if (row) {
+      var act = row.cells[3].textContent.trim();
+      pv.classList.remove("hidden");
+      pv.innerHTML = '<div class="lp-prev lpc-' + row.getAttribute("data-color") + '"><span class="qr"></span><span class="tx"><span class="nm">' + row.getAttribute("data-asset") + '</span><span class="id2">' + row.getAttribute("data-name") + " \u00b7 " + row.getAttribute("data-tag") + '</span></span><span class="ptap">' + NFC2 + '</span><span class="pband">' + act.toUpperCase() + "</span></div>";
+      new QRCode(pv.querySelector(".qr"), { text: "https://demo.axlehq.io/driver.html#t=" + encodeURIComponent(id), width: 48, height: 48, colorDark: "#0b0b0b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+    } else { pv.classList.add("hidden"); }
     $("res-body").classList.remove("hidden");
     $("res-body").innerHTML = '<div style="font-size:13px;line-height:1.6">' + RES[id] + "</div>";
     $("res-sub").textContent = "resolved: " + id;
@@ -1279,6 +1289,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     row.type = "button"; row.className = "ck-row";
     row.innerHTML = '<span class="ck-sw" style="background:' + ckColor + '">' + name.toUpperCase() + '</span><span class="ck-tx"><b>' + name + '</b><small>Custom category — behaves like ' + basis.toLowerCase() + '; commissioning &amp; labels offer it automatically.</small></span>';
     row.addEventListener("click", function () {
+      document.getElementById("res-prev").classList.add("hidden");
       $("res-body").classList.remove("hidden");
       $("res-body").innerHTML = '<div style="font-size:13px;line-height:1.6"><b>' + name + '</b> · custom tag → runs the ' + basis.toLowerCase() + ' flow; the registry, color key, and label printing picked it up the moment it was added.</div>';
       $("res-sub").textContent = "resolved: " + name;
