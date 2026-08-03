@@ -241,6 +241,14 @@
 
   /* ---- tag label generator (Avery 5523) ---- */
   .lp-thck { width: 30px; }
+  .ck { display: flex; flex-direction: column; gap: 7px; padding: 10px 16px 8px; }
+  .ck-row { display: flex; align-items: center; gap: 11px; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 8px 10px; cursor: pointer; text-align: left; font-family: var(--body); width: 100%; }
+  .ck-row:hover { border-color: var(--accent); }
+  .ck-sw { flex: none; width: 64px; border-radius: 7px; text-align: center; font-size: 8.5px; font-weight: 800; letter-spacing: 0.06em; color: #fff; padding: 9px 0; }
+  .ck-blue { background: #2a78d6; } .ck-yellow { background: #eda100; color: #332000; } .ck-red { background: #d03b3b; } .ck-green { background: #0ca30c; }
+  .ck-tx { min-width: 0; }
+  .ck-tx b { display: block; font-size: 13px; color: var(--ink); }
+  .ck-tx small { display: block; font-size: 11.5px; color: var(--muted); line-height: 1.45; }
   .tbl input[type=checkbox] { accent-color: var(--accent); }
   .selbar { display: flex; align-items: center; gap: 8px; padding: 10px 16px 12px; border-top: 1px solid var(--line); font-size: 12.5px; }
   .lp-cols { display: grid; grid-template-columns: 224px 1fr; gap: 18px; }
@@ -724,15 +732,15 @@
           </div>
         </div>
         <div class="panel" style="overflow:visible">
-          <div class="panel-h"><h5>What a tap becomes</h5><span class="sp"></span><span class="sub" id="res-sub">choose a tag — or open this page from a real one</span></div>
+          <div class="panel-h"><h5>Color key — what a tap becomes</h5><span class="sp"></span><span class="sub" id="res-sub">tap a color — or open this page from a real tag</span></div>
           <div class="okline hidden" id="real-badge" style="margin:10px 16px 0">📶 Opened by a physical tag — this URL's hash came from an NTAG sticker.</div>
-          <div style="padding:10px 16px 4px" id="res-body"><span class="dim" style="font-size:12.5px">Waiting for a tap…</span></div>
-          <div style="padding:0 16px 12px">
-            <button class="choice" data-tap="U-104" type="button"><span class="dot d-blue"></span>U-104 dash</button>
-            <button class="choice" data-tap="TR-12" type="button"><span class="dot d-blue"></span>TR-12 tongue</button>
-            <button class="choice" data-tap="OIL" type="button"><span class="dot d-yellow"></span>Oil bin</button>
-            <button class="choice" data-tap="EQ-208" type="button"><span class="dot d-red"></span>EQ-208 problem</button>
+          <div class="ck">
+            <button class="ck-row" data-tap="U-104" type="button"><span class="ck-sw ck-blue">CHECK-IN</span><span class="ck-tx"><b>Check-in</b><small>Who's aboard what — dash &amp; tongue tags start or join a trip.</small></span></button>
+            <button class="ck-row" data-tap="OIL" type="button"><span class="ck-sw ck-yellow">SUPPLY</span><span class="ck-tx"><b>Supply</b><small>We're low — one tap logs the refill. A receipt, not a form.</small></span></button>
+            <button class="ck-row" data-tap="EQ-208" type="button"><span class="ck-sw ck-red">PROBLEM</span><span class="ck-tx"><b>Problem</b><small>Something's wrong — the defect report opens with the machine pre-filled.</small></span></button>
+            <button class="ck-row" data-tap="AX-C218" type="button"><span class="ck-sw ck-green">SERVICE</span><span class="ck-tx"><b>Service</b><small>Work done — logs the touch on the unit's service history.</small></span></button>
           </div>
+          <div style="padding:2px 16px 12px" id="res-body"><span class="dim" style="font-size:12.5px">Waiting for a tap…</span></div>
         </div>
       </div>
       <div class="howto">
@@ -1220,7 +1228,8 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     "U-104": "<b>Truck 7 — U-104</b> · blue tag → the crew phone opens the manifest: driver confirmed, riders tap the same tag, trailer and equipment attach next.",
     "TR-12": "<b>TR-12 trailer</b> · blue tag → attaches to the active trip; the inspection grows hitch, chains &amp; breakaway items automatically.",
     "OIL": "<b>2-cycle oil — U-104 rack</b> · yellow tag → <b>the tap IS the request</b>: office sees one open item with a tap count; the crew sees a receipt, not a form.",
-    "EQ-208": "<b>EQ-208 skid steer</b> · red tag → problem report pre-filled with the machine, the person, GPS, and history. Photos, severity, send — lands in triage."
+    "EQ-208": "<b>EQ-208 skid steer</b> · red tag → problem report pre-filled with the machine, the person, GPS, and history. Photos, severity, send — lands in triage.",
+    "AX-C218": "<b>Truck 7 — U-104 · service</b> · green tag → logs a service touch on the unit's history — oil change, blade swap, grease — timestamped to whoever did it."
   };
   function resolveTap(id, physical) {
     if (!RES[id]) return;
