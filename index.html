@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>Axle — Admin Demo (Alesha's view)</title>
+<title>Axle — Admin Demo (Alesha's view)</title><!-- v1.4 label-gen -->
 <style>
   :root {
     color-scheme: light;
@@ -238,6 +238,45 @@
   .tbl.tight td { padding-top: 5.5px; padding-bottom: 5.5px; font-size: 12.5px; }
   .tbl.tight .dim { white-space: nowrap; }
   @media (max-width: 900px) { .grid2.dash, .grid2b { grid-template-columns: 1fr; } }
+
+  /* ---- tag label generator (Avery 5523) ---- */
+  .lp-thck { width: 30px; }
+  .tbl input[type=checkbox] { accent-color: var(--accent); }
+  .selbar { display: flex; align-items: center; gap: 8px; padding: 10px 16px 12px; border-top: 1px solid var(--line); font-size: 12.5px; }
+  .lp-cols { display: grid; grid-template-columns: 224px 1fr; gap: 18px; }
+  @media (max-width: 640px) { .lp-cols { grid-template-columns: 1fr; } }
+  .lp-sec { margin: 8px 0 6px; font-size: 12.5px; }
+  .lp-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
+  .lp-cell { aspect-ratio: 2 / 1; border: 1px dashed var(--line); border-radius: 6px; font-size: 9.5px; font-family: ui-monospace, Menlo, monospace; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--muted); background: var(--surface); padding: 0; }
+  .lp-cell.skip { background: repeating-linear-gradient(45deg, transparent, transparent 3px, var(--line) 3px, var(--line) 4px); opacity: 0.55; }
+  .lp-cell.fill { border-style: solid; border-color: transparent; color: #fff; font-weight: 600; }
+  .lpc-blue { background: var(--s1); } .lpc-red { background: var(--crit); } .lpc-green { background: var(--good); }
+  .lpc-yellow { background: var(--s4); color: #332000; }
+  .lp-prev { display: flex; align-items: center; gap: 10px; border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; color: #fff; }
+  .lp-prev.lpc-yellow { color: #332000; }
+  .lp-prev .qr { background: #fff; border-radius: 6px; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .lp-prev .qr img, .lp-prev .qr canvas { width: 48px !important; height: 48px !important; display: block; }
+  .lp-prev .nm { font-weight: 700; font-size: 13px; }
+  .lp-prev .id { font-family: ui-monospace, Menlo, monospace; font-size: 11px; opacity: 0.85; }
+  #print-root { display: none; }
+  @media print {
+    @page { size: letter; margin: 0; }
+    body > *:not(#print-root) { display: none !important; }
+    #print-root { display: block !important; }
+    .lp-sheet { width: 8.5in; height: 11in; position: relative; page-break-after: always; }
+    .lp-label { position: absolute; width: 4in; height: 2in; display: flex; align-items: center; gap: 0.2in; padding: 0.22in; box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; color: #fff; }
+    .lp-label.lpc-yellow { color: #332000; }
+    .lp-label .qr { width: 1.45in; height: 1.45in; background: #fff; border-radius: 0.1in; display: flex; align-items: center; justify-content: center; flex: none; }
+    .lp-label .qr img, .lp-label .qr canvas { width: 1.28in !important; height: 1.28in !important; display: block; }
+    .lp-label .tx { min-width: 0; line-height: 1.3; }
+    .lp-label .tx span { display: block; }
+    .lp-label .nm { font-size: 0.24in; font-weight: 700; }
+    .lp-label .id { font-family: ui-monospace, Menlo, monospace; font-size: 0.15in; opacity: 0.9; }
+    .lp-label .ac { font-size: 0.12in; text-transform: uppercase; letter-spacing: 0.02in; opacity: 0.9; margin-top: 0.03in; }
+    .lp-label .u { font-size: 0.09in; opacity: 0.75; word-break: break-all; margin-top: 0.04in; }
+  }
+/* hidden bigfoot — find them all (silhouette: Tyler's Bigfoot.svg) */
+.bf{position:absolute;pointer-events:none;-webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20564%20770'%3E%3Cpath%20d='M70.4,220.3c-3.6,1.8-5.4,2.6-7.2,3.5c13.7-33.2,26.8-66.5,53.7-91.8c-3.1-1.6-5.4,3.1-8.3,0.6c7.2-12.4,28.7-29.3,46.2-36.9c3-1.3,6.8-0.9,7.8-7c0.6-4.1,9.6-3.5,14.9-4.4c15.9-2.5,31.9-1.9,47.9-2.5c2.1-0.1,8.3,2.6,4.7-4.6c-0.9-1.8,2.8-2.5,4.4-3.3c10.4-4.9,21-9.5,31.6-14c5.1-2.2,9.9-4.9,13.8-8.9c2.5-2.5,2.4-2.8,1.4-7.7c-0.4-2,1.7-2.8,3.1-3.6c7-4,14.1-7.9,21.3-11.9c-1.7-2.8-4.6-0.4-6.6-1.8c0-0.4-0.1-1.1,0.2-1.3c15.9-8.2,30.3-19.1,48.3-23.1C367.8-3,384.8,2.4,397.7,19c9.3,12.1,14.9,26,17.4,41.1c1.1,7.1,5.8,12.6,8.4,19c3.1,7.5,4.3,14.4-4.2,19.6c-4.4,2.7-2.4,5.5,0.5,8.4c9.1,8.8,8.9,15-0.8,23.6c-2.3,2-2.3,3.7-1.4,6c5.5,14.3-0.8,26.6-6.7,38.9c-3.1,6.4-8.1,1.4-13,1.6c12.6,15.5,13.9,33.8,15.3,51.8c0.1,1.4,2.6,7.2-3.6,3.6c-1.9-1.1-1.5,1.3-1.3,1.9c4.2,13.6-0.7,26.3-3.5,39.2c-0.7,3.2-0.3,6,3,8.3c14.3,9.8,25.5,23.1,37.8,34.9c11.8,11.3,23.9,22.1,36.7,32.2c9.2,7.2,18,14.6,25.3,23.9c7.7,10,19.1,16.1,28.9,23.7c15.2,11.7,22,28.4,22.2,46.1c0.1,7-5,16.1-12,23.6c-8.6,9.3-20.3,8.7-28.8,15.5c-2.3,1.9-5.6,3.1-9,2.8c-5.9-0.6-7.9-3.8-5.6-8.9c1.4-3.1,4.5-5.3,6.5-8.1c2.9-4,7.7-7.8,2.1-13.3c-0.8-0.8-0.7-2.8-0.6-4.2c0.7-13.6-3.1-20.3-15.9-25.4c-4.3-1.7-9.4-8.6-13.7-2.8c-4.5,5.9-3,13.9-0.1,20.8c3.4,8.2,2,12.2-5.2,14.7c-3,1-3.9,0.3-5.5-2c-8.1-11.4-16-23.1-18.1-37.1c-2.1-14.1-10.6-22.9-22.2-29.3c-11.2-6-22.5-11.9-34.1-16.8c-4.5-1.9-10-0.5-14.8-3c-14.7-7.8-31.5-12.6-40-29.6c-4.1,3.7-4.5,8.4-6,12.5c-1.5,4.1-3,8.2-4.4,12.3c-0.8,2.4-1.4,5-2.4,7.4c-0.7,1.5-1.7,3.7-2.8,3.9c-2.8,0.5,0.4-3.9-2.9-4c-2.3,5.4-0.7,9.5,3.5,13.6c27.3,26.6,55,53.1,77.1,84.3c9,12.9,21.1,23.1,29.6,36.1c2.7,4.1,5.5,8.3,7.3,12.8c0.7,1.6,6.6,6.2-1.4,6.7c0.2,1.4,0.1,2.8,0.6,4.1c2,5.7,5.3,11.1,6.3,16.9c3.4,19.9,7.2,39.7,10.6,59.5c4,22.9,7.2,46,4.3,69.4c-0.6,4.7,2.1,7,6.1,8.2c14.4,4.2,29.1,7.4,44,9.5c14.5,2,28.5,2.2,42.4-4.6c7.2-3.5,10.9,0,10.3,8.4c-0.4,6.2-2,12.1-4.7,18c-1.7,3.8-5.6,8.2-4.4,13.3c1,4.4-3.8,4.4-5.2,7.1c-9.4,17.3-26.5,21.4-43.8,23.9c-9.4,1.3-19.2,0.9-28.7-0.9c-8.7-1.7-17.3-0.5-25.3,4c-12.6,7.1-26.3,8.6-40.4,7.6c-17.5-1.3-31.2-16.6-32.9-36.9c-0.7-7.8-1-15.6-1.1-23.5c-0.2-16.8-8.2-30.8-18.2-43.6c-1.1-1.4-2.1-2.8-2.7-4.3c-9.7-26-12.1-52.6-7.1-80.1c1.8-9.8,5.3-19.9,0.9-29.9c-0.7-1.7-0.5-8.7-5.2-2.2c-1.6,2-2.6,0.1-2.9-1c-3.1-11.5-12.6-17-21.8-22.4c-9.8-5.7-19.9-10.5-31.2-16.4c0,25.7-0.3,50.7-14.7,74.2c-0.8-3.1-1.3-4.6-1.7-5.7c-18.1,29.5-43.1,53.2-70.2,73.1c-19.9,14.6-38.9,31.5-63.1,41.9c19.7,12.8,38.5,23.8,58.4,33c7,3.3,13.1,7.2,16.2,14.8c4.8,11.8-2.3,23.1-14.4,19.9c-15.4-4.1-29.6-0.1-44.4,1.6c-15.8,1.8-31.5-2.5-44.6-11.5c-15.1-10.4-31.4-16.7-48.9-21.3c-8.4-2.1-16.5-5.3-23.2-11.3C24,705,23,689.3,35.5,674.3c7.8-9.3,18-15.5,27.9-22.1c14-9.4,25.2-21.4,33.8-35.8c3-4.9,6.2-9.8,9.4-14.6c1.5-2.3,1.5-2.1-0.3-5.6c-1-2.1,0.8-3.8,2.1-5.1c4.6-4.7,9.5-9.3,14.2-13.9c-2.1-2.6-5.7,0-6.3-2.8c-0.7-2.6,2.1-3.9,3.7-5.5c12.2-12,27-19.9,42.6-26.5c5.6-2.3,11.1-4.9,16.6-7.3c7.2-3.1,11.2-7.5,5.4-16c-1.7-0.7-1.1,3.9-4,2.6c-5.9-27.6-11.6-55.5-17.7-83.4c-0.9-4.4-0.7-9.3-4.5-12.7c-22.1-20.3-23.6-45.1-15.4-71.9c2.5-8.2,5.2-16.3,7.8-24.2c-3.8-2-3.3,3.7-5.9,2.1c-2.4-1.4-1.3-4.3-1.3-6.4c-0.4-19.3,5.3-37.7,9.6-56.3c0.6-2.5,0.9-5,0.2-8.1c-2,3-3.5,6.2-5.9,8.9c-2.2,2.4-2.1,9.2-8.5,5.4c-0.8,2-2,3.9-2.6,6c-3.8,14.5-6.8,29.3-12.1,43.3c-1.7,4.4-3.2,8.6-6.1,13c-1.3-2.4-2.3-4.6-3.9-7.5c-12.6,17.6-22.6,35.6-26.8,56.3c-1,4.8,1,9.1,3.4,13.2c6.2,10.6,10.6,21.7,11.3,34.2c0.4,6-0.1,11.6-2.9,16.8c-1.5,2.9-2.2,7.9-6.1,7.3c-4-0.5-8-3.1-9.9-7.6c-1.8-4.3-3.9-8.4-5.9-12.5c-0.7-1.2-1.8-3.3-2.5-3.3c-4.1,0.5-6,4.5-6.1,7.2c-0.1,4.5-7.3,8.7-0.7,13.2c4,2.7,10.3,3.1,7,11.1c-1.4,3.2,3,3.9,5.7,4.9c4.3,1.7,9.3,0.9,12.8,4.8c2,2.1,2.9,4.4,2.3,7.1c-0.7,3-3.3,2.7-5.6,3.2c-18.6,3.7-36.8,2.4-54.3-5.2c-0.6-0.2-1.1-0.5-1.5-0.8c-9.8-12.1-25.3-18.9-31.5-34.2C-2,432.4-0.2,419,3.5,405.7c4.1-14.7,8.9-29.3,12.6-44.1c1.7-6.7,0.3-13.8,1.4-20.8c4.5-28.5,12.4-55.8,27.9-80.3c1.2-1.9,5-4-1.5-3.6c-3,0.2-0.3-3,0.5-4.3c6-9.8,14.8-17.2,21.7-26.1C67.6,225,68.3,223.5,70.4,220.3z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20564%20770'%3E%3Cpath%20d='M70.4,220.3c-3.6,1.8-5.4,2.6-7.2,3.5c13.7-33.2,26.8-66.5,53.7-91.8c-3.1-1.6-5.4,3.1-8.3,0.6c7.2-12.4,28.7-29.3,46.2-36.9c3-1.3,6.8-0.9,7.8-7c0.6-4.1,9.6-3.5,14.9-4.4c15.9-2.5,31.9-1.9,47.9-2.5c2.1-0.1,8.3,2.6,4.7-4.6c-0.9-1.8,2.8-2.5,4.4-3.3c10.4-4.9,21-9.5,31.6-14c5.1-2.2,9.9-4.9,13.8-8.9c2.5-2.5,2.4-2.8,1.4-7.7c-0.4-2,1.7-2.8,3.1-3.6c7-4,14.1-7.9,21.3-11.9c-1.7-2.8-4.6-0.4-6.6-1.8c0-0.4-0.1-1.1,0.2-1.3c15.9-8.2,30.3-19.1,48.3-23.1C367.8-3,384.8,2.4,397.7,19c9.3,12.1,14.9,26,17.4,41.1c1.1,7.1,5.8,12.6,8.4,19c3.1,7.5,4.3,14.4-4.2,19.6c-4.4,2.7-2.4,5.5,0.5,8.4c9.1,8.8,8.9,15-0.8,23.6c-2.3,2-2.3,3.7-1.4,6c5.5,14.3-0.8,26.6-6.7,38.9c-3.1,6.4-8.1,1.4-13,1.6c12.6,15.5,13.9,33.8,15.3,51.8c0.1,1.4,2.6,7.2-3.6,3.6c-1.9-1.1-1.5,1.3-1.3,1.9c4.2,13.6-0.7,26.3-3.5,39.2c-0.7,3.2-0.3,6,3,8.3c14.3,9.8,25.5,23.1,37.8,34.9c11.8,11.3,23.9,22.1,36.7,32.2c9.2,7.2,18,14.6,25.3,23.9c7.7,10,19.1,16.1,28.9,23.7c15.2,11.7,22,28.4,22.2,46.1c0.1,7-5,16.1-12,23.6c-8.6,9.3-20.3,8.7-28.8,15.5c-2.3,1.9-5.6,3.1-9,2.8c-5.9-0.6-7.9-3.8-5.6-8.9c1.4-3.1,4.5-5.3,6.5-8.1c2.9-4,7.7-7.8,2.1-13.3c-0.8-0.8-0.7-2.8-0.6-4.2c0.7-13.6-3.1-20.3-15.9-25.4c-4.3-1.7-9.4-8.6-13.7-2.8c-4.5,5.9-3,13.9-0.1,20.8c3.4,8.2,2,12.2-5.2,14.7c-3,1-3.9,0.3-5.5-2c-8.1-11.4-16-23.1-18.1-37.1c-2.1-14.1-10.6-22.9-22.2-29.3c-11.2-6-22.5-11.9-34.1-16.8c-4.5-1.9-10-0.5-14.8-3c-14.7-7.8-31.5-12.6-40-29.6c-4.1,3.7-4.5,8.4-6,12.5c-1.5,4.1-3,8.2-4.4,12.3c-0.8,2.4-1.4,5-2.4,7.4c-0.7,1.5-1.7,3.7-2.8,3.9c-2.8,0.5,0.4-3.9-2.9-4c-2.3,5.4-0.7,9.5,3.5,13.6c27.3,26.6,55,53.1,77.1,84.3c9,12.9,21.1,23.1,29.6,36.1c2.7,4.1,5.5,8.3,7.3,12.8c0.7,1.6,6.6,6.2-1.4,6.7c0.2,1.4,0.1,2.8,0.6,4.1c2,5.7,5.3,11.1,6.3,16.9c3.4,19.9,7.2,39.7,10.6,59.5c4,22.9,7.2,46,4.3,69.4c-0.6,4.7,2.1,7,6.1,8.2c14.4,4.2,29.1,7.4,44,9.5c14.5,2,28.5,2.2,42.4-4.6c7.2-3.5,10.9,0,10.3,8.4c-0.4,6.2-2,12.1-4.7,18c-1.7,3.8-5.6,8.2-4.4,13.3c1,4.4-3.8,4.4-5.2,7.1c-9.4,17.3-26.5,21.4-43.8,23.9c-9.4,1.3-19.2,0.9-28.7-0.9c-8.7-1.7-17.3-0.5-25.3,4c-12.6,7.1-26.3,8.6-40.4,7.6c-17.5-1.3-31.2-16.6-32.9-36.9c-0.7-7.8-1-15.6-1.1-23.5c-0.2-16.8-8.2-30.8-18.2-43.6c-1.1-1.4-2.1-2.8-2.7-4.3c-9.7-26-12.1-52.6-7.1-80.1c1.8-9.8,5.3-19.9,0.9-29.9c-0.7-1.7-0.5-8.7-5.2-2.2c-1.6,2-2.6,0.1-2.9-1c-3.1-11.5-12.6-17-21.8-22.4c-9.8-5.7-19.9-10.5-31.2-16.4c0,25.7-0.3,50.7-14.7,74.2c-0.8-3.1-1.3-4.6-1.7-5.7c-18.1,29.5-43.1,53.2-70.2,73.1c-19.9,14.6-38.9,31.5-63.1,41.9c19.7,12.8,38.5,23.8,58.4,33c7,3.3,13.1,7.2,16.2,14.8c4.8,11.8-2.3,23.1-14.4,19.9c-15.4-4.1-29.6-0.1-44.4,1.6c-15.8,1.8-31.5-2.5-44.6-11.5c-15.1-10.4-31.4-16.7-48.9-21.3c-8.4-2.1-16.5-5.3-23.2-11.3C24,705,23,689.3,35.5,674.3c7.8-9.3,18-15.5,27.9-22.1c14-9.4,25.2-21.4,33.8-35.8c3-4.9,6.2-9.8,9.4-14.6c1.5-2.3,1.5-2.1-0.3-5.6c-1-2.1,0.8-3.8,2.1-5.1c4.6-4.7,9.5-9.3,14.2-13.9c-2.1-2.6-5.7,0-6.3-2.8c-0.7-2.6,2.1-3.9,3.7-5.5c12.2-12,27-19.9,42.6-26.5c5.6-2.3,11.1-4.9,16.6-7.3c7.2-3.1,11.2-7.5,5.4-16c-1.7-0.7-1.1,3.9-4,2.6c-5.9-27.6-11.6-55.5-17.7-83.4c-0.9-4.4-0.7-9.3-4.5-12.7c-22.1-20.3-23.6-45.1-15.4-71.9c2.5-8.2,5.2-16.3,7.8-24.2c-3.8-2-3.3,3.7-5.9,2.1c-2.4-1.4-1.3-4.3-1.3-6.4c-0.4-19.3,5.3-37.7,9.6-56.3c0.6-2.5,0.9-5,0.2-8.1c-2,3-3.5,6.2-5.9,8.9c-2.2,2.4-2.1,9.2-8.5,5.4c-0.8,2-2,3.9-2.6,6c-3.8,14.5-6.8,29.3-12.1,43.3c-1.7,4.4-3.2,8.6-6.1,13c-1.3-2.4-2.3-4.6-3.9-7.5c-12.6,17.6-22.6,35.6-26.8,56.3c-1,4.8,1,9.1,3.4,13.2c6.2,10.6,10.6,21.7,11.3,34.2c0.4,6-0.1,11.6-2.9,16.8c-1.5,2.9-2.2,7.9-6.1,7.3c-4-0.5-8-3.1-9.9-7.6c-1.8-4.3-3.9-8.4-5.9-12.5c-0.7-1.2-1.8-3.3-2.5-3.3c-4.1,0.5-6,4.5-6.1,7.2c-0.1,4.5-7.3,8.7-0.7,13.2c4,2.7,10.3,3.1,7,11.1c-1.4,3.2,3,3.9,5.7,4.9c4.3,1.7,9.3,0.9,12.8,4.8c2,2.1,2.9,4.4,2.3,7.1c-0.7,3-3.3,2.7-5.6,3.2c-18.6,3.7-36.8,2.4-54.3-5.2c-0.6-0.2-1.1-0.5-1.5-0.8c-9.8-12.1-25.3-18.9-31.5-34.2C-2,432.4-0.2,419,3.5,405.7c4.1-14.7,8.9-29.3,12.6-44.1c1.7-6.7,0.3-13.8,1.4-20.8c4.5-28.5,12.4-55.8,27.9-80.3c1.2-1.9,5-4-1.5-3.6c-3,0.2-0.3-3,0.5-4.3c6-9.8,14.8-17.2,21.7-26.1C67.6,225,68.3,223.5,70.4,220.3z'/%3E%3C/svg%3E") center/contain no-repeat}
 </style>
 
 <svg style="display:none" aria-hidden="true">
@@ -296,7 +335,7 @@
 
   <div class="main">
     <!-- ============ DASHBOARD ============ -->
-    <section class="view on" id="v-dash">
+    <section class="view on" id="v-dash"><div class="bf" style="right:28px;bottom:22px;width:12px;height:16px;background:var(--ink);opacity:.05"></div>
       <div class="topbar"><h1>Good morning, Alesha</h1><span class="sp"></span><span class="search"><svg width="13" height="13"><use href="#i-search"/></svg>Search units, drivers, VINs…</span><span class="datechip">Jul 30, 2026</span><span class="avatar">AB</span></div>
       <div class="urgent" id="urgentbar"><span class="tag">URGENT</span><span><b>Alesha:</b> all crews back to the shop by 2 pm — severe storms. Secure loads before you roll.</span><span class="ack"><button class="btn primary" id="ackbtn" type="button">Acknowledge</button><span class="dim" style="font-size:11px;margin-left:8px" id="ackcount">41/61 acked</span></span></div>
       <div class="queues">
@@ -370,7 +409,7 @@
     </section>
 
     <!-- ============ ASSETS ============ -->
-    <section class="view" id="v-assets">
+    <section class="view" id="v-assets"><div class="bf" style="right:64px;top:70px;width:9px;height:12px;background:var(--ink);opacity:.045"></div>
       <div class="topbar"><h1>Assets</h1><span class="sp"></span><input class="search" id="asset-search" type="search" placeholder="Unit, VIN, serial, plate…" aria-label="Search assets"><button class="fchip" data-toast="Bulk CSV import — minimal columns: unit #, VIN, class, current meter. The NHTSA decode fills year/make/model per row; the truthful seed list is the insurance policy's vehicle schedule." type="button">Import CSV</button><button class="btn primary" id="aa-open" type="button">+ Add asset</button></div>
       <div class="panel">
         <div class="filters" style="border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;padding:12px 14px;flex-wrap:wrap">
@@ -411,7 +450,7 @@
     </section>
 
     <!-- ============ FUEL ============ -->
-    <section class="view" id="v-fuel">
+    <section class="view" id="v-fuel"><div class="bf" style="left:30px;bottom:30px;width:10px;height:14px;background:var(--ink);opacity:.05"></div>
       <div class="topbar"><h1>Fuel &amp; costs</h1><span class="fchip on">Transactions</span><button class="fchip" id="chip-pins" type="button">Cards &amp; PINs</button><button class="fchip" id="chip-exc" type="button">Exceptions <small>3</small></button><button class="fchip" data-toast="The ledger view — every fill posts as a cost entry on its vehicle; the dashboard's cost-per-mile drinks from it." type="button">Ledger</button><span class="sp"></span><span class="datechip">July 2026</span></div>
       <div class="tiles">
         <div class="tile"><div class="k">Fuel spend · MTD</div><div class="v">$38.2k</div><div class="d"><span class="up">▼ 4.1%</span> vs June</div></div>
@@ -455,7 +494,7 @@
     </section>
 
     <!-- ============ PEOPLE ============ -->
-    <section class="view" id="v-people">
+    <section class="view" id="v-people"><div class="bf" style="right:34px;bottom:120px;width:8px;height:11px;background:var(--ink);opacity:.045"></div>
       <div class="topbar"><h1>People</h1><button class="fchip on" id="chip-drivers" type="button">Drivers <small>24</small></button><button class="fchip" id="chip-staff" type="button">All staff <small>61</small></button><span class="sp"></span><input class="search" id="people-search" type="search" placeholder="Name, license…" aria-label="Search people"><button class="fchip" id="chip-exp" type="button">Expiring ≤ 60 days <small>2</small></button><button class="btn primary" data-toast="Enrollment works by phone or email — the free path is a QR off Alesha's screen at onboarding; passkey from day one." type="button">+ Add person</button></div>
       <div id="drivers-wrap">
       <div class="panel">
@@ -532,7 +571,7 @@
     </section>
 
     <!-- ============ REPORTS ============ -->
-    <section class="view" id="v-reports">
+    <section class="view" id="v-reports"><div class="bf" style="left:44%;bottom:18px;width:10px;height:13px;background:var(--ink);opacity:.05"></div>
       <div class="topbar"><h1>Reports</h1><span class="sp"></span><button class="fchip" data-toast="Exports what's on screen — CSV, current filters applied." type="button">Export CSV</button></div>
       <div class="tiles">
         <div class="tile"><div class="k">Cost per mile · fleet</div><div class="v">$0.612</div><div class="d"><span class="up">▼ 3.4%</span> vs June</div></div>
@@ -597,7 +636,7 @@
     </section>
 
     <!-- ============ VEHICLE DETAIL ============ -->
-    <section class="view" id="v-vehicle">
+    <section class="view" id="v-vehicle"><div class="bf" style="right:48px;top:150px;width:9px;height:12px;background:var(--ink);opacity:.045"></div>
       <button class="backlink" id="veh-back" type="button">← Assets</button>
       <div class="vhead"><h1 id="vh-title">—</h1><span id="vh-pill"></span><span class="sp" style="flex:1"></span><button class="fchip" data-toast="Cost logged — lands in the unified ledger, attributed to this unit." type="button">Log cost</button><button class="fchip" data-toast="Work order drafted — vendor, estimate, and the defect that triggered it attach automatically." type="button" style="background:var(--accent);border-color:var(--accent);color:#fff">New work order</button></div>
       <div class="vmeta" id="vh-meta"></div>
@@ -626,19 +665,31 @@
     </section>
 
     <!-- ============ TAGS ============ -->
-    <section class="view" id="v-tags">
+    <section class="view" id="v-tags"><div class="bf" style="right:36px;bottom:44px;width:13px;height:18px;background:var(--accent);opacity:.10"></div>
       <div class="topbar"><h1>Tag manager</h1><span class="sp"></span><span class="datechip">Manager-entitled · commissioning is a 30-second job</span></div>
       <div class="grid2">
         <div class="panel" style="overflow:visible">
-          <div class="panel-h"><h5>Tag registry</h5><span class="sub" id="reg-count">3 active</span><span class="sp"></span><button class="fchip" id="btn-new" type="button">+ Commission</button></div>
+          <div class="panel-h"><h5>Tag registry</h5><span class="sub" id="reg-count">14 active</span><span class="sp"></span><button class="fchip" id="btn-new" type="button">+ Commission</button></div>
           <table class="tbl" id="reg-tbl">
-            <thead><tr><th>Tag ID</th><th>Linked to</th><th>Action</th></tr></thead>
+            <thead><tr><th class="lp-thck"><input type="checkbox" id="lp-master" aria-label="Select all tags for label printing"></th><th>Tag ID</th><th>Linked to</th><th>Action</th></tr></thead>
             <tbody>
-            <tr><td class="mono">AX-9D41</td><td><span class="dot d-blue"></span>U-104 · dash</td><td class="dim">check-in</td></tr>
-            <tr><td class="mono">AX-3B77</td><td><span class="dot d-blue"></span>TR-12 · tongue</td><td class="dim">check-in</td></tr>
-            <tr><td class="mono">AX-51C8</td><td><span class="dot d-yellow"></span>U-104 · trimmer line</td><td class="dim">supply</td></tr>
+            <tr data-tag="AX-9D41" data-color="blue" data-t="U-104" data-name="U-104 · dash"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-9D41"></td><td class="mono">AX-9D41</td><td><span class="dot d-blue"></span>U-104 · dash</td><td class="dim">check-in</td></tr>
+            <tr data-tag="AX-3B77" data-color="blue" data-t="TR-12" data-name="TR-12 · tongue"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-3B77"></td><td class="mono">AX-3B77</td><td><span class="dot d-blue"></span>TR-12 · tongue</td><td class="dim">check-in</td></tr>
+            <tr data-tag="AX-51C8" data-color="yellow" data-t="AX-51C8" data-name="U-104 · trimmer line"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-51C8"></td><td class="mono">AX-51C8</td><td><span class="dot d-yellow"></span>U-104 · trimmer line</td><td class="dim">supply</td></tr>
+            <tr data-tag="AX-2D60" data-color="yellow" data-t="OIL" data-name="Shop · 2-cycle oil rack"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-2D60"></td><td class="mono">AX-2D60</td><td><span class="dot d-yellow"></span>Shop · 2-cycle oil rack</td><td class="dim">supply</td></tr>
+            <tr data-tag="AX-8C19" data-color="red" data-t="EQ-208" data-name="EQ-208 · frame"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-8C19"></td><td class="mono">AX-8C19</td><td><span class="dot d-red"></span>EQ-208 · frame</td><td class="dim">problem</td></tr>
+            <tr data-tag="AX-7A02" data-color="blue" data-t="AX-7A02" data-name="U-131 · dash"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-7A02"></td><td class="mono">AX-7A02</td><td><span class="dot d-blue"></span>U-131 · dash</td><td class="dim">check-in</td></tr>
+            <tr data-tag="AX-1F55" data-color="blue" data-t="AX-1F55" data-name="U-155 · dash"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-1F55"></td><td class="mono">AX-1F55</td><td><span class="dot d-blue"></span>U-155 · dash</td><td class="dim">check-in</td></tr>
+            <tr data-tag="AX-66E3" data-color="blue" data-t="AX-66E3" data-name="TR-08 · tongue"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-66E3"></td><td class="mono">AX-66E3</td><td><span class="dot d-blue"></span>TR-08 · tongue</td><td class="dim">check-in</td></tr>
+            <tr data-tag="AX-C218" data-color="green" data-t="AX-C218" data-name="U-104 · service"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-C218"></td><td class="mono">AX-C218</td><td><span class="dot d-green"></span>U-104 · service</td><td class="dim">service</td></tr>
+            <tr data-tag="AX-90BB" data-color="green" data-t="AX-90BB" data-name="EQ-112 · deck"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-90BB"></td><td class="mono">AX-90BB</td><td><span class="dot d-green"></span>EQ-112 · deck</td><td class="dim">service</td></tr>
+            <tr data-tag="AX-4E71" data-color="yellow" data-t="AX-4E71" data-name="Shop · bar &amp; chain oil"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-4E71"></td><td class="mono">AX-4E71</td><td><span class="dot d-yellow"></span>Shop · bar &amp; chain oil</td><td class="dim">supply</td></tr>
+            <tr data-tag="AX-05AD" data-color="red" data-t="AX-05AD" data-name="EQ-315 · frame"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-05AD"></td><td class="mono">AX-05AD</td><td><span class="dot d-red"></span>EQ-315 · frame</td><td class="dim">problem</td></tr>
+            <tr data-tag="AX-B334" data-color="green" data-t="AX-B334" data-name="TR-12 · service"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-B334"></td><td class="mono">AX-B334</td><td><span class="dot d-green"></span>TR-12 · service</td><td class="dim">service</td></tr>
+            <tr data-tag="AX-77D9" data-color="yellow" data-t="AX-77D9" data-name="Shop · glove bin"><td><input type="checkbox" class="lp-ck" aria-label="Select AX-77D9"></td><td class="mono">AX-77D9</td><td><span class="dot d-yellow"></span>Shop · glove bin</td><td class="dim">supply</td></tr>
             </tbody>
           </table>
+          <div class="selbar hidden" id="lp-bar"><b id="lp-count">0 selected</b><span class="dim" style="font-size:11.5px">— selection follows across pages &amp; filters</span><span class="sp"></span><button class="fchip" id="lp-open" type="button" style="background:var(--accent);border-color:var(--accent);color:#fff">Print labels →</button></div>
           <div style="padding:0 16px 14px" class="hidden" id="wiz">
             <div id="wz-1">
               <div class="tapzone" id="wz-tap"><svg width="16" height="16" style="vertical-align:-3px;margin-right:6px"><use href="#i-hex"/></svg>Simulate tapping the blank tag</div>
@@ -706,7 +757,30 @@
     </div>
   </div>
 </div>
+<div class="modal-wrap hidden" id="lp-modal">
+  <div class="modal" style="max-width:660px">
+    <div class="panel-h" style="padding:14px 18px 0"><h5>Print labels</h5><span class="sp"></span><button class="fchip" id="lp-cancel" type="button">Cancel</button></div>
+    <div style="padding:10px 18px 18px">
+      <div class="lp-cols">
+        <div>
+          <div class="lp-sec"><b>Avery 5523</b> · 2&quot; × 4&quot; · 10 per sheet</div>
+          <div class="lp-sec dim" style="font-size:11.5px;line-height:1.5">Click the slot where printing should <b>start</b> — skip die-cuts already peeled off a partly used sheet.</div>
+          <div class="lp-mini" id="lp-mini"></div>
+          <div class="lp-sec dim" style="font-size:11.5px" id="lp-flow"></div>
+        </div>
+        <div>
+          <div class="lp-sec"><b id="lp-n">0 labels</b> · full-bleed by action color · QR + tag name</div>
+          <div id="lp-prevs"></div>
+        </div>
+      </div>
+      <div class="aa-foot" style="border:0;padding:12px 0 0"><span class="dim" style="font-size:11px;line-height:1.5">Opens your print dialog — choose <b>Save as PDF</b>, or load the Avery sheet and print directly. If colors don't appear, turn on “Background graphics.”</span><span class="sp" style="flex:1"></span><button class="fchip" id="lp-print" type="button" style="background:var(--accent);border-color:var(--accent);color:#fff;flex:none">Print / Save PDF</button></div>
+    </div>
+  </div>
+</div>
+<div id="print-root"></div>
 
+<script>/* qrcodejs (davidshimjs, MIT) — inlined: artifact CSP blocks CDN loads */
+var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this.parsedData=[];for(var b=[],d=0,e=this.data.length;e>d;d++){var f=this.data.charCodeAt(d);f>65536?(b[0]=240|(1835008&f)>>>18,b[1]=128|(258048&f)>>>12,b[2]=128|(4032&f)>>>6,b[3]=128|63&f):f>2048?(b[0]=224|(61440&f)>>>12,b[1]=128|(4032&f)>>>6,b[2]=128|63&f):f>128?(b[0]=192|(1984&f)>>>6,b[1]=128|63&f):b[0]=f,this.parsedData=this.parsedData.concat(b)}this.parsedData.length!=this.data.length&&(this.parsedData.unshift(191),this.parsedData.unshift(187),this.parsedData.unshift(239))}function b(a,b){this.typeNumber=a,this.errorCorrectLevel=b,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}function i(a,b){if(void 0==a.length)throw new Error(a.length+"/"+b);for(var c=0;c<a.length&&0==a[c];)c++;this.num=new Array(a.length-c+b);for(var d=0;d<a.length-c;d++)this.num[d]=a[d+c]}function j(a,b){this.totalCount=a,this.dataCount=b}function k(){this.buffer=[],this.length=0}function m(){return"undefined"!=typeof CanvasRenderingContext2D}function n(){var a=!1,b=navigator.userAgent;return/android/i.test(b)&&(a=!0,aMat=b.toString().match(/android ([0-9]\.[0-9])/i),aMat&&aMat[1]&&(a=parseFloat(aMat[1]))),a}function r(a,b){for(var c=1,e=s(a),f=0,g=l.length;g>=f;f++){var h=0;switch(b){case d.L:h=l[f][0];break;case d.M:h=l[f][1];break;case d.Q:h=l[f][2];break;case d.H:h=l[f][3]}if(h>=e)break;c++}if(c>l.length)throw new Error("Too long data");return c}function s(a){var b=encodeURI(a).toString().replace(/\%[0-9a-fA-F]{2}/g,"a");return b.length+(b.length!=a?3:0)}a.prototype={getLength:function(){return this.parsedData.length},write:function(a){for(var b=0,c=this.parsedData.length;c>b;b++)a.put(this.parsedData[b],8)}},b.prototype={addData:function(b){var c=new a(b);this.dataList.push(c),this.dataCache=null},isDark:function(a,b){if(0>a||this.moduleCount<=a||0>b||this.moduleCount<=b)throw new Error(a+","+b);return this.modules[a][b]},getModuleCount:function(){return this.moduleCount},make:function(){this.makeImpl(!1,this.getBestMaskPattern())},makeImpl:function(a,c){this.moduleCount=4*this.typeNumber+17,this.modules=new Array(this.moduleCount);for(var d=0;d<this.moduleCount;d++){this.modules[d]=new Array(this.moduleCount);for(var e=0;e<this.moduleCount;e++)this.modules[d][e]=null}this.setupPositionProbePattern(0,0),this.setupPositionProbePattern(this.moduleCount-7,0),this.setupPositionProbePattern(0,this.moduleCount-7),this.setupPositionAdjustPattern(),this.setupTimingPattern(),this.setupTypeInfo(a,c),this.typeNumber>=7&&this.setupTypeNumber(a),null==this.dataCache&&(this.dataCache=b.createData(this.typeNumber,this.errorCorrectLevel,this.dataList)),this.mapData(this.dataCache,c)},setupPositionProbePattern:function(a,b){for(var c=-1;7>=c;c++)if(!(-1>=a+c||this.moduleCount<=a+c))for(var d=-1;7>=d;d++)-1>=b+d||this.moduleCount<=b+d||(this.modules[a+c][b+d]=c>=0&&6>=c&&(0==d||6==d)||d>=0&&6>=d&&(0==c||6==c)||c>=2&&4>=c&&d>=2&&4>=d?!0:!1)},getBestMaskPattern:function(){for(var a=0,b=0,c=0;8>c;c++){this.makeImpl(!0,c);var d=f.getLostPoint(this);(0==c||a>d)&&(a=d,b=c)}return b},createMovieClip:function(a,b,c){var d=a.createEmptyMovieClip(b,c),e=1;this.make();for(var f=0;f<this.modules.length;f++)for(var g=f*e,h=0;h<this.modules[f].length;h++){var i=h*e,j=this.modules[f][h];j&&(d.beginFill(0,100),d.moveTo(i,g),d.lineTo(i+e,g),d.lineTo(i+e,g+e),d.lineTo(i,g+e),d.endFill())}return d},setupTimingPattern:function(){for(var a=8;a<this.moduleCount-8;a++)null==this.modules[a][6]&&(this.modules[a][6]=0==a%2);for(var b=8;b<this.moduleCount-8;b++)null==this.modules[6][b]&&(this.modules[6][b]=0==b%2)},setupPositionAdjustPattern:function(){for(var a=f.getPatternPosition(this.typeNumber),b=0;b<a.length;b++)for(var c=0;c<a.length;c++){var d=a[b],e=a[c];if(null==this.modules[d][e])for(var g=-2;2>=g;g++)for(var h=-2;2>=h;h++)this.modules[d+g][e+h]=-2==g||2==g||-2==h||2==h||0==g&&0==h?!0:!1}},setupTypeNumber:function(a){for(var b=f.getBCHTypeNumber(this.typeNumber),c=0;18>c;c++){var d=!a&&1==(1&b>>c);this.modules[Math.floor(c/3)][c%3+this.moduleCount-8-3]=d}for(var c=0;18>c;c++){var d=!a&&1==(1&b>>c);this.modules[c%3+this.moduleCount-8-3][Math.floor(c/3)]=d}},setupTypeInfo:function(a,b){for(var c=this.errorCorrectLevel<<3|b,d=f.getBCHTypeInfo(c),e=0;15>e;e++){var g=!a&&1==(1&d>>e);6>e?this.modules[e][8]=g:8>e?this.modules[e+1][8]=g:this.modules[this.moduleCount-15+e][8]=g}for(var e=0;15>e;e++){var g=!a&&1==(1&d>>e);8>e?this.modules[8][this.moduleCount-e-1]=g:9>e?this.modules[8][15-e-1+1]=g:this.modules[8][15-e-1]=g}this.modules[this.moduleCount-8][8]=!a},mapData:function(a,b){for(var c=-1,d=this.moduleCount-1,e=7,g=0,h=this.moduleCount-1;h>0;h-=2)for(6==h&&h--;;){for(var i=0;2>i;i++)if(null==this.modules[d][h-i]){var j=!1;g<a.length&&(j=1==(1&a[g]>>>e));var k=f.getMask(b,d,h-i);k&&(j=!j),this.modules[d][h-i]=j,e--,-1==e&&(g++,e=7)}if(d+=c,0>d||this.moduleCount<=d){d-=c,c=-c;break}}}},b.PAD0=236,b.PAD1=17,b.createData=function(a,c,d){for(var e=j.getRSBlocks(a,c),g=new k,h=0;h<d.length;h++){var i=d[h];g.put(i.mode,4),g.put(i.getLength(),f.getLengthInBits(i.mode,a)),i.write(g)}for(var l=0,h=0;h<e.length;h++)l+=e[h].dataCount;if(g.getLengthInBits()>8*l)throw new Error("code length overflow. ("+g.getLengthInBits()+">"+8*l+")");for(g.getLengthInBits()+4<=8*l&&g.put(0,4);0!=g.getLengthInBits()%8;)g.putBit(!1);for(;;){if(g.getLengthInBits()>=8*l)break;if(g.put(b.PAD0,8),g.getLengthInBits()>=8*l)break;g.put(b.PAD1,8)}return b.createBytes(g,e)},b.createBytes=function(a,b){for(var c=0,d=0,e=0,g=new Array(b.length),h=new Array(b.length),j=0;j<b.length;j++){var k=b[j].dataCount,l=b[j].totalCount-k;d=Math.max(d,k),e=Math.max(e,l),g[j]=new Array(k);for(var m=0;m<g[j].length;m++)g[j][m]=255&a.buffer[m+c];c+=k;var n=f.getErrorCorrectPolynomial(l),o=new i(g[j],n.getLength()-1),p=o.mod(n);h[j]=new Array(n.getLength()-1);for(var m=0;m<h[j].length;m++){var q=m+p.getLength()-h[j].length;h[j][m]=q>=0?p.get(q):0}}for(var r=0,m=0;m<b.length;m++)r+=b[m].totalCount;for(var s=new Array(r),t=0,m=0;d>m;m++)for(var j=0;j<b.length;j++)m<g[j].length&&(s[t++]=g[j][m]);for(var m=0;e>m;m++)for(var j=0;j<b.length;j++)m<h[j].length&&(s[t++]=h[j][m]);return s};for(var c={MODE_NUMBER:1,MODE_ALPHA_NUM:2,MODE_8BIT_BYTE:4,MODE_KANJI:8},d={L:1,M:0,Q:3,H:2},e={PATTERN000:0,PATTERN001:1,PATTERN010:2,PATTERN011:3,PATTERN100:4,PATTERN101:5,PATTERN110:6,PATTERN111:7},f={PATTERN_POSITION_TABLE:[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],G15:1335,G18:7973,G15_MASK:21522,getBCHTypeInfo:function(a){for(var b=a<<10;f.getBCHDigit(b)-f.getBCHDigit(f.G15)>=0;)b^=f.G15<<f.getBCHDigit(b)-f.getBCHDigit(f.G15);return(a<<10|b)^f.G15_MASK},getBCHTypeNumber:function(a){for(var b=a<<12;f.getBCHDigit(b)-f.getBCHDigit(f.G18)>=0;)b^=f.G18<<f.getBCHDigit(b)-f.getBCHDigit(f.G18);return a<<12|b},getBCHDigit:function(a){for(var b=0;0!=a;)b++,a>>>=1;return b},getPatternPosition:function(a){return f.PATTERN_POSITION_TABLE[a-1]},getMask:function(a,b,c){switch(a){case e.PATTERN000:return 0==(b+c)%2;case e.PATTERN001:return 0==b%2;case e.PATTERN010:return 0==c%3;case e.PATTERN011:return 0==(b+c)%3;case e.PATTERN100:return 0==(Math.floor(b/2)+Math.floor(c/3))%2;case e.PATTERN101:return 0==b*c%2+b*c%3;case e.PATTERN110:return 0==(b*c%2+b*c%3)%2;case e.PATTERN111:return 0==(b*c%3+(b+c)%2)%2;default:throw new Error("bad maskPattern:"+a)}},getErrorCorrectPolynomial:function(a){for(var b=new i([1],0),c=0;a>c;c++)b=b.multiply(new i([1,g.gexp(c)],0));return b},getLengthInBits:function(a,b){if(b>=1&&10>b)switch(a){case c.MODE_NUMBER:return 10;case c.MODE_ALPHA_NUM:return 9;case c.MODE_8BIT_BYTE:return 8;case c.MODE_KANJI:return 8;default:throw new Error("mode:"+a)}else if(27>b)switch(a){case c.MODE_NUMBER:return 12;case c.MODE_ALPHA_NUM:return 11;case c.MODE_8BIT_BYTE:return 16;case c.MODE_KANJI:return 10;default:throw new Error("mode:"+a)}else{if(!(41>b))throw new Error("type:"+b);switch(a){case c.MODE_NUMBER:return 14;case c.MODE_ALPHA_NUM:return 13;case c.MODE_8BIT_BYTE:return 16;case c.MODE_KANJI:return 12;default:throw new Error("mode:"+a)}}},getLostPoint:function(a){for(var b=a.getModuleCount(),c=0,d=0;b>d;d++)for(var e=0;b>e;e++){for(var f=0,g=a.isDark(d,e),h=-1;1>=h;h++)if(!(0>d+h||d+h>=b))for(var i=-1;1>=i;i++)0>e+i||e+i>=b||(0!=h||0!=i)&&g==a.isDark(d+h,e+i)&&f++;f>5&&(c+=3+f-5)}for(var d=0;b-1>d;d++)for(var e=0;b-1>e;e++){var j=0;a.isDark(d,e)&&j++,a.isDark(d+1,e)&&j++,a.isDark(d,e+1)&&j++,a.isDark(d+1,e+1)&&j++,(0==j||4==j)&&(c+=3)}for(var d=0;b>d;d++)for(var e=0;b-6>e;e++)a.isDark(d,e)&&!a.isDark(d,e+1)&&a.isDark(d,e+2)&&a.isDark(d,e+3)&&a.isDark(d,e+4)&&!a.isDark(d,e+5)&&a.isDark(d,e+6)&&(c+=40);for(var e=0;b>e;e++)for(var d=0;b-6>d;d++)a.isDark(d,e)&&!a.isDark(d+1,e)&&a.isDark(d+2,e)&&a.isDark(d+3,e)&&a.isDark(d+4,e)&&!a.isDark(d+5,e)&&a.isDark(d+6,e)&&(c+=40);for(var k=0,e=0;b>e;e++)for(var d=0;b>d;d++)a.isDark(d,e)&&k++;var l=Math.abs(100*k/b/b-50)/5;return c+=10*l}},g={glog:function(a){if(1>a)throw new Error("glog("+a+")");return g.LOG_TABLE[a]},gexp:function(a){for(;0>a;)a+=255;for(;a>=256;)a-=255;return g.EXP_TABLE[a]},EXP_TABLE:new Array(256),LOG_TABLE:new Array(256)},h=0;8>h;h++)g.EXP_TABLE[h]=1<<h;for(var h=8;256>h;h++)g.EXP_TABLE[h]=g.EXP_TABLE[h-4]^g.EXP_TABLE[h-5]^g.EXP_TABLE[h-6]^g.EXP_TABLE[h-8];for(var h=0;255>h;h++)g.LOG_TABLE[g.EXP_TABLE[h]]=h;i.prototype={get:function(a){return this.num[a]},getLength:function(){return this.num.length},multiply:function(a){for(var b=new Array(this.getLength()+a.getLength()-1),c=0;c<this.getLength();c++)for(var d=0;d<a.getLength();d++)b[c+d]^=g.gexp(g.glog(this.get(c))+g.glog(a.get(d)));return new i(b,0)},mod:function(a){if(this.getLength()-a.getLength()<0)return this;for(var b=g.glog(this.get(0))-g.glog(a.get(0)),c=new Array(this.getLength()),d=0;d<this.getLength();d++)c[d]=this.get(d);for(var d=0;d<a.getLength();d++)c[d]^=g.gexp(g.glog(a.get(d))+b);return new i(c,0).mod(a)}},j.RS_BLOCK_TABLE=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],j.getRSBlocks=function(a,b){var c=j.getRsBlockTable(a,b);if(void 0==c)throw new Error("bad rs block @ typeNumber:"+a+"/errorCorrectLevel:"+b);for(var d=c.length/3,e=[],f=0;d>f;f++)for(var g=c[3*f+0],h=c[3*f+1],i=c[3*f+2],k=0;g>k;k++)e.push(new j(h,i));return e},j.getRsBlockTable=function(a,b){switch(b){case d.L:return j.RS_BLOCK_TABLE[4*(a-1)+0];case d.M:return j.RS_BLOCK_TABLE[4*(a-1)+1];case d.Q:return j.RS_BLOCK_TABLE[4*(a-1)+2];case d.H:return j.RS_BLOCK_TABLE[4*(a-1)+3];default:return void 0}},k.prototype={get:function(a){var b=Math.floor(a/8);return 1==(1&this.buffer[b]>>>7-a%8)},put:function(a,b){for(var c=0;b>c;c++)this.putBit(1==(1&a>>>b-c-1))},getLengthInBits:function(){return this.length},putBit:function(a){var b=Math.floor(this.length/8);this.buffer.length<=b&&this.buffer.push(0),a&&(this.buffer[b]|=128>>>this.length%8),this.length++}};var l=[[17,14,11,7],[32,26,20,14],[53,42,32,24],[78,62,46,34],[106,84,60,44],[134,106,74,58],[154,122,86,64],[192,152,108,84],[230,180,130,98],[271,213,151,119],[321,251,177,137],[367,287,203,155],[425,331,241,177],[458,362,258,194],[520,412,292,220],[586,450,322,250],[644,504,364,280],[718,560,394,310],[792,624,442,338],[858,666,482,382],[929,711,509,403],[1003,779,565,439],[1091,857,611,461],[1171,911,661,511],[1273,997,715,535],[1367,1059,751,593],[1465,1125,805,625],[1528,1190,868,658],[1628,1264,908,698],[1732,1370,982,742],[1840,1452,1030,790],[1952,1538,1112,842],[2068,1628,1168,898],[2188,1722,1228,958],[2303,1809,1283,983],[2431,1911,1351,1051],[2563,1989,1423,1093],[2699,2099,1499,1139],[2809,2213,1579,1219],[2953,2331,1663,1273]],o=function(){var a=function(a,b){this._el=a,this._htOption=b};return a.prototype.draw=function(a){function g(a,b){var c=document.createElementNS("http://www.w3.org/2000/svg",a);for(var d in b)b.hasOwnProperty(d)&&c.setAttribute(d,b[d]);return c}var b=this._htOption,c=this._el,d=a.getModuleCount();Math.floor(b.width/d),Math.floor(b.height/d),this.clear();var h=g("svg",{viewBox:"0 0 "+String(d)+" "+String(d),width:"100%",height:"100%",fill:b.colorLight});h.setAttributeNS("http://www.w3.org/2000/xmlns/","xmlns:xlink","http://www.w3.org/1999/xlink"),c.appendChild(h),h.appendChild(g("rect",{fill:b.colorDark,width:"1",height:"1",id:"template"}));for(var i=0;d>i;i++)for(var j=0;d>j;j++)if(a.isDark(i,j)){var k=g("use",{x:String(i),y:String(j)});k.setAttributeNS("http://www.w3.org/1999/xlink","href","#template"),h.appendChild(k)}},a.prototype.clear=function(){for(;this._el.hasChildNodes();)this._el.removeChild(this._el.lastChild)},a}(),p="svg"===document.documentElement.tagName.toLowerCase(),q=p?o:m()?function(){function a(){this._elImage.src=this._elCanvas.toDataURL("image/png"),this._elImage.style.display="block",this._elCanvas.style.display="none"}function d(a,b){var c=this;if(c._fFail=b,c._fSuccess=a,null===c._bSupportDataURI){var d=document.createElement("img"),e=function(){c._bSupportDataURI=!1,c._fFail&&_fFail.call(c)},f=function(){c._bSupportDataURI=!0,c._fSuccess&&c._fSuccess.call(c)};return d.onabort=e,d.onerror=e,d.onload=f,d.src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",void 0}c._bSupportDataURI===!0&&c._fSuccess?c._fSuccess.call(c):c._bSupportDataURI===!1&&c._fFail&&c._fFail.call(c)}if(this._android&&this._android<=2.1){var b=1/window.devicePixelRatio,c=CanvasRenderingContext2D.prototype.drawImage;CanvasRenderingContext2D.prototype.drawImage=function(a,d,e,f,g,h,i,j){if("nodeName"in a&&/img/i.test(a.nodeName))for(var l=arguments.length-1;l>=1;l--)arguments[l]=arguments[l]*b;else"undefined"==typeof j&&(arguments[1]*=b,arguments[2]*=b,arguments[3]*=b,arguments[4]*=b);c.apply(this,arguments)}}var e=function(a,b){this._bIsPainted=!1,this._android=n(),this._htOption=b,this._elCanvas=document.createElement("canvas"),this._elCanvas.width=b.width,this._elCanvas.height=b.height,a.appendChild(this._elCanvas),this._el=a,this._oContext=this._elCanvas.getContext("2d"),this._bIsPainted=!1,this._elImage=document.createElement("img"),this._elImage.style.display="none",this._el.appendChild(this._elImage),this._bSupportDataURI=null};return e.prototype.draw=function(a){var b=this._elImage,c=this._oContext,d=this._htOption,e=a.getModuleCount(),f=d.width/e,g=d.height/e,h=Math.round(f),i=Math.round(g);b.style.display="none",this.clear();for(var j=0;e>j;j++)for(var k=0;e>k;k++){var l=a.isDark(j,k),m=k*f,n=j*g;c.strokeStyle=l?d.colorDark:d.colorLight,c.lineWidth=1,c.fillStyle=l?d.colorDark:d.colorLight,c.fillRect(m,n,f,g),c.strokeRect(Math.floor(m)+.5,Math.floor(n)+.5,h,i),c.strokeRect(Math.ceil(m)-.5,Math.ceil(n)-.5,h,i)}this._bIsPainted=!0},e.prototype.makeImage=function(){this._bIsPainted&&d.call(this,a)},e.prototype.isPainted=function(){return this._bIsPainted},e.prototype.clear=function(){this._oContext.clearRect(0,0,this._elCanvas.width,this._elCanvas.height),this._bIsPainted=!1},e.prototype.round=function(a){return a?Math.floor(1e3*a)/1e3:a},e}():function(){var a=function(a,b){this._el=a,this._htOption=b};return a.prototype.draw=function(a){for(var b=this._htOption,c=this._el,d=a.getModuleCount(),e=Math.floor(b.width/d),f=Math.floor(b.height/d),g=['<table style="border:0;border-collapse:collapse;">'],h=0;d>h;h++){g.push("<tr>");for(var i=0;d>i;i++)g.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+"px;background-color:"+(a.isDark(h,i)?b.colorDark:b.colorLight)+';"></td>');g.push("</tr>")}g.push("</table>"),c.innerHTML=g.join("");var j=c.childNodes[0],k=(b.width-j.offsetWidth)/2,l=(b.height-j.offsetHeight)/2;k>0&&l>0&&(j.style.margin=l+"px "+k+"px")},a.prototype.clear=function(){this._el.innerHTML=""},a}();QRCode=function(a,b){if(this._htOption={width:256,height:256,typeNumber:4,colorDark:"#000000",colorLight:"#ffffff",correctLevel:d.H},"string"==typeof b&&(b={text:b}),b)for(var c in b)this._htOption[c]=b[c];"string"==typeof a&&(a=document.getElementById(a)),this._android=n(),this._el=a,this._oQRCode=null,this._oDrawing=new q(this._el,this._htOption),this._htOption.text&&this.makeCode(this._htOption.text)},QRCode.prototype.makeCode=function(a){this._oQRCode=new b(r(a,this._htOption.correctLevel),this._htOption.correctLevel),this._oQRCode.addData(a),this._oQRCode.make(),this._el.title=a,this._oDrawing.draw(this._oQRCode),this.makeImage()},QRCode.prototype.makeImage=function(){"function"==typeof this._oDrawing.makeImage&&(!this._android||this._android>=3)&&this._oDrawing.makeImage()},QRCode.prototype.clear=function(){this._oDrawing.clear()},QRCode.CorrectLevel=d}();</script>
 <script>
 (function () {
   "use strict";
@@ -1317,6 +1391,93 @@
 </script>
 
 <script>
+
+/* ---- Tag label generator — Avery 5523, multi-select follows across pages ---- */
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var tbl = $("reg-tbl"); if (!tbl) return;
+  var tbody = tbl.tBodies[0];
+  var sel = new Set(), start = 0;
+  var ACT = { blue: "check-in", yellow: "supply", red: "problem", green: "service" };
+  function rows() { return Array.prototype.slice.call(tbody.rows); }
+  function chosen() {
+    return rows().filter(function (r) { return sel.has(r.getAttribute("data-tag")); })
+      .map(function (r) { return { id: r.getAttribute("data-tag"), color: r.getAttribute("data-color"), t: r.getAttribute("data-t"), name: r.getAttribute("data-name") }; });
+  }
+  function bar() {
+    $("lp-bar").classList.toggle("hidden", sel.size === 0);
+    $("lp-count").textContent = sel.size + " selected";
+  }
+  tbody.addEventListener("change", function (e) {
+    if (!e.target.classList.contains("lp-ck")) return;
+    var r = e.target.closest("tr");
+    if (e.target.checked) sel.add(r.getAttribute("data-tag")); else sel.delete(r.getAttribute("data-tag"));
+    $("lp-master").checked = rows().every(function (x) { return sel.has(x.getAttribute("data-tag")); });
+    bar();
+  });
+  $("lp-master").addEventListener("click", function (e) { e.stopPropagation(); });
+  $("lp-master").addEventListener("change", function () {
+    var on = $("lp-master").checked;
+    rows().forEach(function (r) {
+      r.querySelector(".lp-ck").checked = on;
+      if (on) sel.add(r.getAttribute("data-tag")); else sel.delete(r.getAttribute("data-tag"));
+    });
+    bar();
+  });
+  function qr(el, t, px) {
+    new QRCode(el, { text: "https://demo.axlehq.io/driver.html#t=" + encodeURIComponent(t), width: px, height: px, colorDark: "#0b0b0b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+  }
+  function renderModal() {
+    var list = chosen(), n = list.length;
+    $("lp-n").textContent = n + (n === 1 ? " label" : " labels");
+    var mini = $("lp-mini"); mini.innerHTML = "";
+    for (var i = 0; i < 10; i++) {
+      (function (i) {
+        var c = document.createElement("button");
+        c.type = "button"; c.className = "lp-cell";
+        var k = i - start;
+        if (i < start) { c.classList.add("skip"); c.title = "Skipped — already used"; }
+        else if (k < n) { c.classList.add("fill", "lpc-" + list[k].color); c.textContent = list[k].id; }
+        else { c.textContent = i + 1; }
+        c.addEventListener("click", function () { start = i; renderModal(); });
+        mini.appendChild(c);
+      })(i);
+    }
+    var sheets = Math.ceil((start + n) / 10);
+    $("lp-flow").textContent = n === 0 ? "" : (sheets > 1 ? "+" + (start + n - 10) + " flow onto sheet " + (sheets > 2 ? "s 2\u2013" + sheets : "2") + "." : "Fits on one sheet.");
+    var pv = $("lp-prevs"); pv.innerHTML = "";
+    list.slice(0, 4).forEach(function (t) {
+      var d = document.createElement("div");
+      d.className = "lp-prev lpc-" + t.color;
+      d.innerHTML = '<span class="qr"></span><span class="tx"><span class="nm">' + t.name + '</span><br><span class="id">' + t.id + " \u00b7 " + ACT[t.color] + "</span></span>";
+      pv.appendChild(d);
+      qr(d.querySelector(".qr"), t.t, 48);
+    });
+    if (n > 4) { var m = document.createElement("div"); m.className = "dim"; m.style.fontSize = "11.5px"; m.textContent = "\u2026and " + (n - 4) + " more"; pv.appendChild(m); }
+  }
+  $("lp-open").addEventListener("click", function () { start = 0; renderModal(); $("lp-modal").classList.remove("hidden"); });
+  $("lp-cancel").addEventListener("click", function () { $("lp-modal").classList.add("hidden"); });
+  $("lp-modal").addEventListener("click", function (e) { if (e.target === $("lp-modal")) $("lp-modal").classList.add("hidden"); });
+  $("lp-print").addEventListener("click", function () {
+    var list = chosen(); if (!list.length) return;
+    var root = $("print-root"); root.innerHTML = "";
+    var sheets = Math.ceil((start + list.length) / 10), sh = [];
+    for (var i = 0; i < sheets; i++) { var d = document.createElement("div"); d.className = "lp-sheet"; root.appendChild(d); sh.push(d); }
+    list.forEach(function (t, i) {
+      var slot = start + i, pos = slot % 10, col = pos % 2, row = Math.floor(pos / 2);
+      var L = document.createElement("div");
+      L.className = "lp-label lpc-" + t.color;
+      L.style.left = (0.15625 + col * 4.1875) + "in";
+      L.style.top = (0.5 + row * 2) + "in";
+      L.innerHTML = '<span class="qr"></span><span class="tx"><span class="nm">' + t.name + '</span><span class="id">' + t.id + '</span><span class="ac">' + ACT[t.color] + '</span><span class="u">demo.axlehq.io/driver.html#t=' + t.t + "</span></span>";
+      sh[Math.floor(slot / 10)].appendChild(L);
+      qr(L.querySelector(".qr"), t.t, 123);
+    });
+    setTimeout(function () { window.print(); }, 300);
+  });
+})();
+
 /* Global table kit — every data table sorts, filters, and paginates (Tyler's global standard).
    Chrome auto-hides when a table fits in one page; sort headers stay live everywhere.
    Deliberately skipped: the dashboard's Past due / Coming up (curated triage — View report
