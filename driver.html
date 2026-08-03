@@ -152,6 +152,10 @@
       <h2>You're aboard, Diego</h2>
       <div class="sub">Truck 7 — U-104 · rider · 6:02 am</div>
       <div class="sent"><b>That's it — nothing else to do.</b><div class="to">The manifest has you; your hours keep counting.</div></div>
+      <div class="sec">Loading the truck? Your taps count too</div>
+      <div class="group" id="rider-loads">
+        <div class="row"><button class="add" id="rider-tap-eq" type="button">+ Tap a trailer or equipment tag to load it</button></div>
+      </div>
       <button class="cta ghost" data-home type="button">Back to Home</button>
     </section>
 
@@ -350,6 +354,16 @@
   // ---- blue: role ----
   $("b-rider").addEventListener("click", function () { show("rider"); });
   $("b-driver").addEventListener("click", function () { show("manifest"); });
+
+  // ---- rider loads equipment ----
+  $("rider-tap-eq").addEventListener("click", function () {
+    var row = document.createElement("div");
+    row.className = "row";
+    row.innerHTML = '<span class="who"><b>EQ-208 · Skid steer</b><small>Loaded by you · onto U-104’s trip · the driver’s inspection just grew tie-down items</small></span><span class="check">✓</span>';
+    $("rider-loads").insertBefore(row, this.closest(".row"));
+    towing = true;
+    toast("EQ-208 on the manifest — attributed to you; nothing else to do.");
+  });
 
   // ---- manual start ----
   $("manual-start").addEventListener("click", function () { show("pickveh"); });
