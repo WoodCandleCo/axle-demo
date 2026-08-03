@@ -58,7 +58,14 @@
   .nav-item.on { background: var(--accent-wash); color: var(--accent-ink); font-weight: 600; }
   .nav-item.on svg { color: var(--accent); }
   .nav-item.off { opacity: 0.45; }
-  .nav-item.off .na { margin-left: auto; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .nav-item .ph { margin-left: auto; font-family: var(--mono); font-size: 9px; font-weight: 700; color: var(--muted); background: var(--surface-2); border-radius: 999px; padding: 1px 6px; }
+  .nav-item.on .ph { color: var(--accent-ink); background: var(--surface); }
+  .roadmap { background: var(--surface-2); border: 1px solid var(--hair); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+  .roadmap h6 { margin: 0 0 4px; font-family: var(--display); font-size: 12.5px; font-weight: 700; color: var(--ink); }
+  .roadmap ul { margin: 6px 0 0; padding: 0; list-style: none; font-size: 12.5px; color: var(--ink-2); }
+  .roadmap li { padding: 3px 0; display: flex; gap: 8px; align-items: baseline; }
+  .roadmap li b { font-family: var(--mono); font-size: 9.5px; font-weight: 700; color: var(--accent-ink); background: var(--accent-wash); border-radius: 999px; padding: 1px 7px; flex: none; }
+  .roadmap .empty-h { font-family: var(--display); font-size: 17px; font-weight: 700; color: var(--ink); margin: 0 0 4px; }
   .side .gap { flex: 1; }
   .whoami { margin: 0 10px 6px; padding: 9px 11px; border-radius: 9px; background: var(--surface-2); font-size: 11px; color: var(--ink-2); }
   .whoami b { display: block; font-size: 12px; color: var(--ink); }
@@ -116,6 +123,8 @@
   .panel-f a { font-size: 12px; font-weight: 600; color: var(--accent-ink); text-decoration: none; cursor: pointer; }
   .fchip { font-size: 12px; font-weight: 600; color: var(--ink-2); border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 12px; cursor: pointer; font-family: var(--body); }
   .fchip.on { background: var(--accent-wash); border-color: transparent; color: var(--accent-ink); }
+  .fchip small, .qchip i { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--accent-ink); background: var(--accent-wash); border-radius: 999px; padding: 1px 7px; margin-left: 3px; font-style: normal; }
+  .fchip.on small { background: var(--surface); }
   .feed { list-style: none; margin: 6px 0 8px; padding: 0 8px; font-size: 12px; }
   .feed li { display: flex; gap: 9px; padding: 7px 8px; border-radius: 8px; align-items: flex-start; }
   .feed .sig { flex: none; width: 17px; height: 17px; border-radius: 5px; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center; color: #fff; margin-top: 1px; }
@@ -420,17 +429,17 @@
   <nav class="side">
     <div class="brand"><svg width="20" height="20"><use href="#i-hex"/></svg>AXLE</div>
     <div class="org">Madison Commercial Landscapes</div>
-    <button class="nav-item on" data-view="dash" type="button"><svg width="16" height="16"><use href="#i-dash"/></svg>Dashboard</button>
-    <button class="nav-item" data-view="assets" type="button"><svg width="16" height="16"><use href="#i-truck"/></svg>Assets</button>
-    <button class="nav-item off" data-na="Live map" type="button"><svg width="16" height="16"><use href="#i-pin"/></svg>Live map<span class="na">soon</span></button>
-    <button class="nav-item off" data-na="Dispatch" type="button"><svg width="16" height="16"><use href="#i-route"/></svg>Dispatch<span class="na">soon</span></button>
-    <button class="nav-item off" data-na="Messages" type="button"><svg width="16" height="16"><use href="#i-msg"/></svg>Messages<span class="na">soon</span></button>
-    <button class="nav-item off" data-na="Maintenance" type="button"><svg width="16" height="16"><use href="#i-wrench"/></svg>Maintenance<span class="na">soon</span></button>
-    <button class="nav-item" data-view="fuel" type="button"><svg width="16" height="16"><use href="#i-fuel"/></svg>Fuel &amp; costs</button>
-    <button class="nav-item off" data-na="Inventory" type="button"><svg width="16" height="16"><use href="#i-doc"/></svg>Inventory<span class="na">soon</span></button>
-    <button class="nav-item" data-view="people" type="button"><svg width="16" height="16"><use href="#i-id"/></svg>People</button>
-    <button class="nav-item" data-view="reports" type="button"><svg width="16" height="16"><use href="#i-chart"/></svg>Reports</button>
-    <button class="nav-item" data-view="tags" type="button"><svg width="16" height="16"><use href="#i-hex"/></svg>Tag manager</button>
+    <button class="nav-item on" data-view="dash" type="button"><svg width="16" height="16"><use href="#i-dash"/></svg>Dashboard<span class="ph">P1</span></button>
+    <button class="nav-item" data-view="assets" type="button"><svg width="16" height="16"><use href="#i-truck"/></svg>Assets<span class="ph">P1, 2</span></button>
+    <button class="nav-item" data-view="map" type="button"><svg width="16" height="16"><use href="#i-pin"/></svg>Live map<span class="ph">P1</span></button>
+    <button class="nav-item" data-view="dispatch" type="button"><svg width="16" height="16"><use href="#i-route"/></svg>Dispatch<span class="ph">P2</span></button>
+    <button class="nav-item" data-view="messages" type="button"><svg width="16" height="16"><use href="#i-msg"/></svg>Messages<span class="ph">P2</span></button>
+    <button class="nav-item" data-view="maint" type="button"><svg width="16" height="16"><use href="#i-wrench"/></svg>Maintenance<span class="ph">P2</span></button>
+    <button class="nav-item" data-view="fuel" type="button"><svg width="16" height="16"><use href="#i-fuel"/></svg>Fuel &amp; costs<span class="ph">P1, 2</span></button>
+    <button class="nav-item" data-view="inv" type="button"><svg width="16" height="16"><use href="#i-doc"/></svg>Inventory<span class="ph">P2</span></button>
+    <button class="nav-item" data-view="people" type="button"><svg width="16" height="16"><use href="#i-id"/></svg>People<span class="ph">P1, 2, 3</span></button>
+    <button class="nav-item" data-view="reports" type="button"><svg width="16" height="16"><use href="#i-chart"/></svg>Reports<span class="ph">P1, 4</span></button>
+    <button class="nav-item" data-view="tags" type="button"><svg width="16" height="16"><use href="#i-hex"/></svg>Tag manager<span class="ph">P1, 3</span></button>
     <span class="gap"></span>
     <div class="wx-tile">
       <span class="wxt-k">Weather · Madison shop</span>
@@ -443,7 +452,7 @@
       </div>
       <div class="wxt-alert">▲ T-storm watch until 8p</div>
     </div>
-    <button class="nav-item off" data-na="Settings" type="button"><svg width="16" height="16"><use href="#i-gear"/></svg>Settings<span class="na">soon</span></button>
+    <button class="nav-item" data-view="settings" type="button"><svg width="16" height="16"><use href="#i-gear"/></svg>Settings<span class="ph">P1</span></button>
     <div class="whoami" style="margin-top:8px"><b>Alesha B.</b>Manager · sees everything operational — no keys, no deploys (those are the product-owner's seat)</div>
     <div class="ver"><b>v0.2.0-demo</b> · Aug 1</div>
   </nav>
@@ -452,6 +461,7 @@
     <!-- ============ DASHBOARD ============ -->
     <section class="view on" id="v-dash"><div class="bf" style="right:28px;bottom:22px;width:12px;height:16px;background:var(--ink);opacity:.05"></div>
       <div class="topbar"><h1>Good morning, Alesha</h1><span class="sp"></span><span class="search"><svg width="13" height="13"><use href="#i-search"/></svg>Search units, drivers, VINs…</span><span class="datechip">Jul 30, 2026</span><span class="avatar">AB</span></div>
+      <div class="roadmap"><h6>Still to come on the dashboard</h6><ul><li><b>P2</b><span>Live crew map tile and storm-mode board</span></li><li><b>P2</b><span>Incidents queue chip once the accident kit ships</span></li><li><b>P3</b><span>Leaderboard + points standings once engagement unlocks</span></li><li><b>P4</b><span>Custom report widgets you arrange yourself</span></li></ul></div>
       <div class="urgent" id="urgentbar"><span class="tag">URGENT</span><span><b>Alesha:</b> all crews back to the shop by 2 pm — severe storms. Secure loads before you roll.</span><span class="ack"><button class="btn primary" id="ackbtn" type="button">Acknowledge</button><span class="dim" style="font-size:11px;margin-left:8px" id="ackcount">41/61 acked</span></span></div>
       <div class="queues">
         <span class="lbl">Waiting on someone</span>
@@ -526,6 +536,7 @@
     <!-- ============ ASSETS ============ -->
     <section class="view" id="v-assets"><div class="bf" style="right:64px;top:70px;width:9px;height:12px;background:var(--ink);opacity:.045"></div>
       <div class="topbar"><h1>Assets</h1><span class="sp"></span><input class="search" id="asset-search" type="search" placeholder="Unit, VIN, serial, plate…" aria-label="Search assets"><button class="fchip" data-toast="Bulk CSV import — minimal columns: unit #, VIN, class, current meter. The NHTSA decode fills year/make/model per row; the truthful seed list is the insurance policy's vehicle schedule." type="button">Import CSV</button><button class="btn primary" id="aa-open" type="button">+ Add asset</button></div>
+      <div class="roadmap"><h6>Still to come in Assets</h6><ul><li><b>P2</b><span>Maintenance: work orders, PM schedules, vendor history</span></li><li><b>P2</b><span>Inventory: parts, tools, and supply stock per asset</span></li><li><b>P2</b><span>Deep-check photo surveys attached to each unit</span></li><li><b>P3</b><span>Replace-vs-repair analysis with book-value thresholds</span></li></ul></div>
       <div class="panel">
         <div class="filters" style="border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;padding:12px 14px;flex-wrap:wrap">
           <button class="fchip on" data-cf="vehicle" type="button">Vehicles <small>142</small></button>
@@ -567,14 +578,14 @@
     <!-- ============ FUEL ============ -->
     <section class="view" id="v-fuel"><div class="bf" style="left:30px;bottom:30px;width:10px;height:14px;background:var(--ink);opacity:.05"></div>
       <div class="topbar"><h1>Fuel &amp; costs</h1><span class="sp"></span><span class="datechip">July 2026</span></div>
+      <div class="roadmap"><h6>Still to come in Fuel & costs</h6><ul><li><b>P2</b><span>Unified cost ledger — every repair, part, and fee posts here</span></li><li><b>P2</b><span>Live WEX API sync replacing the manual import</span></li><li><b>P2</b><span>Configurable exception rules (capacity, hours, PIN mismatch)</span></li><li><b>P4</b><span>Accounting export and per-unit budget targets</span></li></ul></div>
       <div class="tiles">
         <div class="tile"><div class="k">Fuel spend · MTD</div><div class="v">$38.2k</div><div class="d"><span class="up">▼ 4.1%</span> vs June</div></div>
         <div class="tile"><div class="k">Avg price / gal</div><div class="v">$3.42</div><div class="d">In-network $3.31 · out $3.58</div></div>
         <div class="tile"><div class="k">Fleet MPG</div><div class="v">12.8</div><div class="d"><span class="up">▲ 0.3</span> from pump odometers</div></div>
         <div class="tile"><div class="k">Exceptions</div><div class="v">3</div><div class="d"><span class="down">1 open</span> · 2 resolved</div></div>
       </div>
-      <div class="grid2 dash">
-        <div class="panel">
+      <div class="panel">
           <div class="panel-h"><h5>Transactions</h5><span class="sp"></span><span class="sub">WEX API · synced 6:12a</span></div>
           <table class="tbl">
             <thead><tr><th>When</th><th>Card → vehicle</th><th>Person (PIN)</th><th class="num">Gal</th><th class="num">$/gal</th><th class="num">Total</th><th class="num">Network</th><th class="num">Flag</th></tr></thead>
@@ -587,8 +598,8 @@
             </tbody>
           </table>
         </div>
-        <div>
-          <div class="panel" style="margin-bottom:12px" id="fuel-exceptions">
+        <div class="grid2b">
+          <div class="panel" id="fuel-exceptions">
             <div class="panel-h"><h5>Exceptions</h5><span class="sp"></span><span class="sub">Auto-flagged by rules</span></div>
             <ul class="feed">
               <li><span class="sig crit">!</span><div><b>Overfill — U-092:</b> 41 gal purchased; tank holds 34. Card used at 11:48 pm.<p>Assigned to Alesha · driver response requested</p></div><span class="when">Jul 29</span></li>
@@ -605,12 +616,12 @@
             </div>
           </div>
         </div>
-      </div>
     </section>
 
     <!-- ============ PEOPLE ============ -->
     <section class="view" id="v-people"><div class="bf" style="right:34px;bottom:120px;width:8px;height:11px;background:var(--ink);opacity:.045"></div>
       <div class="topbar"><h1>People</h1><button class="fchip on" id="chip-drivers" type="button">Drivers <small>24</small></button><button class="fchip" id="chip-staff" type="button">All staff <small>61</small></button><span class="sp"></span><input class="search" id="people-search" type="search" placeholder="Name, license…" aria-label="Search people"><button class="fchip" id="chip-exp" type="button">Expiring ≤ 60 days <small>2</small></button><button class="btn primary" data-toast="Enrollment works by phone or email — the free path is a QR off Alesha's screen at onboarding; passkey from day one." type="button">+ Add person</button></div>
+      <div class="roadmap"><h6>Still to come in People</h6><ul><li><b>P2</b><span>Time-off calendar and approvals in-app</span></li><li><b>P2</b><span>Injury reports, incident cases, and emergency contacts</span></li><li><b>P3</b><span>Engagement tab: leaderboard, points bank, deep-check bonuses</span></li><li><b>P3</b><span>Knowledge base authoring — the crew's searchable Q&A</span></li><li><b>P3</b><span>Employee manual uploads with tracked acknowledgement</span></li></ul></div>
       <div id="drivers-wrap">
       <div class="panel">
         <table class="tbl" id="drivers-tbl">
@@ -688,6 +699,7 @@
     <!-- ============ REPORTS ============ -->
     <section class="view" id="v-reports"><div class="bf" style="left:44%;bottom:18px;width:10px;height:13px;background:var(--ink);opacity:.05"></div>
       <div class="topbar"><h1>Reports</h1><span class="sp"></span><button class="fchip" data-toast="Exports what's on screen — CSV, current filters applied." type="button">Export CSV</button></div>
+      <div class="roadmap"><h6>Still to come in Reports</h6><ul><li><b>P2</b><span>Scheduled email delivery on your cadence</span></li><li><b>P2</b><span>Incident and injury history joins the quick pulls</span></li><li><b>P4</b><span>Custom report builder — pick fields, filters, and grouping</span></li><li><b>P4</b><span>Public API access for your own tooling</span></li></ul></div>
       <div class="tiles">
         <div class="tile"><div class="k">Cost per mile · fleet</div><div class="v">$0.612</div><div class="d"><span class="up">▼ 3.4%</span> vs June</div></div>
         <div class="tile"><div class="k">Downtime · July</div><div class="v">3.1%</div><div class="d">Of scheduled asset-days</div></div>
@@ -751,6 +763,30 @@
     </section>
 
     <!-- ============ VEHICLE DETAIL ============ -->
+    <section class="view" id="v-map">
+      <div class="topbar"><h1>Live map</h1><span class="sp"></span><span class="datechip">Phase 1</span></div>
+      <div class="roadmap"><p class="empty-h">Where every crew is, right now</p><p style="font-size:12.5px;color:var(--ink-2);margin:0">Not built yet — this page arrives in phase 1. Here's what it will carry:</p><ul><li><b>P1</b><span>Live vehicle positions from phone GPS during trips</span></li><li><b>P1</b><span>Geofence arrivals and departures per job site</span></li><li><b>P2</b><span>Storm mode: the dispatch board takes over this screen</span></li><li><b>P2</b><span>Trip replay — retrace any route after the fact</span></li></ul></div>
+    </section>
+    <section class="view" id="v-dispatch">
+      <div class="topbar"><h1>Dispatch</h1><span class="sp"></span><span class="datechip">Phase 2</span></div>
+      <div class="roadmap"><p class="empty-h">Tomorrow's routes, built in minutes</p><p style="font-size:12.5px;color:var(--ink-2);margin:0">Not built yet — this page arrives in phase 2. Here's what it will carry:</p><ul><li><b>P2</b><span>Saved site library pulled from Jobber</span></li><li><b>P2</b><span>Drag-ordered stops per crew, published to phones</span></li><li><b>P2</b><span>Storm mode for callouts and re-routing</span></li><li><b>P2</b><span>Manual Jobber pull for jobs added minutes ago</span></li></ul></div>
+    </section>
+    <section class="view" id="v-messages">
+      <div class="topbar"><h1>Messages</h1><span class="sp"></span><span class="datechip">Phase 2</span></div>
+      <div class="roadmap"><p class="empty-h">One channel to the whole crew</p><p style="font-size:12.5px;color:var(--ink-2);margin:0">Not built yet — this page arrives in phase 2. Here's what it will carry:</p><ul><li><b>P2</b><span>Broadcasts with read and acknowledgement tracking</span></li><li><b>P2</b><span>Urgent banners that follow crews across every screen</span></li><li><b>P2</b><span>Replies on broadcasts — the office hears back</span></li><li><b>P3</b><span>Shop-Spanish delivery per person's language</span></li></ul></div>
+    </section>
+    <section class="view" id="v-maint">
+      <div class="topbar"><h1>Maintenance</h1><span class="sp"></span><span class="datechip">Phase 2</span></div>
+      <div class="roadmap"><p class="empty-h">Defects in, work orders out</p><p style="font-size:12.5px;color:var(--ink-2);margin:0">Not built yet — this page arrives in phase 2. Here's what it will carry:</p><ul><li><b>P2</b><span>Work order board: triage, in progress, waiting parts, done</span></li><li><b>P2</b><span>PM schedules by mileage, hours, or calendar</span></li><li><b>P2</b><span>Defects from driver inspections land here automatically</span></li><li><b>P2</b><span>Vendor history and outside-mechanic magic links</span></li></ul></div>
+    </section>
+    <section class="view" id="v-inv">
+      <div class="topbar"><h1>Inventory</h1><span class="sp"></span><span class="datechip">Phase 2</span></div>
+      <div class="roadmap"><p class="empty-h">Parts, tools, and supplies</p><p style="font-size:12.5px;color:var(--ink-2);margin:0">Not built yet — this page arrives in phase 2. Here's what it will carry:</p><ul><li><b>P2</b><span>Stock levels with low-stock alerts from yellow tag taps</span></li><li><b>P2</b><span>Purchase requests: approve → ordered → received</span></li><li><b>P2</b><span>Tool checkout tracking — who has what</span></li><li><b>P3</b><span>Auto-drafted reorders from tap frequency</span></li></ul></div>
+    </section>
+    <section class="view" id="v-settings">
+      <div class="topbar"><h1>Settings</h1><span class="sp"></span><span class="datechip">Phase 1</span></div>
+      <div class="roadmap"><p class="empty-h">The plumbing behind the app</p><p style="font-size:12.5px;color:var(--ink-2);margin:0">Not built yet — this page arrives in phase 1. Here's what it will carry:</p><ul><li><b>P1</b><span>Entitlements and grants — who sees what</span></li><li><b>P1</b><span>Integration keys and sync schedules</span></li><li><b>P1</b><span>Company profile, depots, and expected start times</span></li><li><b>P2</b><span>Notification preferences per person and event</span></li></ul></div>
+    </section>
     <section class="view" id="v-vehicle"><div class="bf" style="right:48px;top:150px;width:9px;height:12px;background:var(--ink);opacity:.045"></div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap"><button class="backlink" id="veh-back" type="button" style="margin-bottom:0">← Assets</button><span style="flex:1"></span><button class="fchip" data-toast="Cost logged — lands in the unified ledger, attributed to this unit." type="button">Log cost</button><button class="fchip" data-toast="Work order drafted — vendor, estimate, and the defect that triggered it attach automatically." type="button" style="background:var(--accent);border-color:var(--accent);color:#fff">New work order</button></div>
       <div class="vhead"><h1 id="vh-title">—</h1><span id="vh-pill"></span></div>
@@ -782,6 +818,7 @@
     <!-- ============ TAGS ============ -->
     <section class="view" id="v-tags"><div class="bf" style="right:36px;bottom:44px;width:13px;height:18px;background:var(--accent);opacity:.10"></div>
       <div class="topbar"><h1>Tag manager</h1><span class="sp"></span><span class="datechip">Manager-entitled · commissioning is a 30-second job</span></div>
+      <div class="roadmap"><h6>Still to come in Tag manager</h6><ul><li><b>P2</b><span>Lifecycle status (blank → active → retired) with filters</span></li><li><b>P2</b><span>Last-seen scan dates and possibly-dead tag detection</span></li><li><b>P3</b><span>Bulk edit: retire, re-link, or recategorize many tags at once</span></li><li><b>P3</b><span>In-app tag writing from a USB reader — no phone needed</span></li><li><b>P3</b><span>Tag detail drawer with the full audit trail</span></li></ul></div>
       <div>
         <div class="panel" style="overflow:visible">
           <div class="panel-h"><h5>Tag registry</h5><span class="sub" id="reg-count">14 active</span><span class="sp"></span><button class="fchip" id="btn-new" type="button">+ Commission</button></div>
@@ -826,12 +863,7 @@
         <div class="panel" style="overflow:visible">
           <div class="panel-h"><h5>Color key — what a tap becomes</h5><span class="sp"></span><span class="sub" id="res-sub">tap a color — or open this page from a real tag</span></div>
           <div class="okline hidden" id="real-badge" style="margin:10px 16px 0">📶 Opened by a physical tag — this URL's hash came from an NTAG sticker.</div>
-          <div class="ck">
-            <button class="ck-row" data-tap="U-104" type="button"><span class="ck-sw ck-blue">CHECK-IN</span><span class="ck-tx"><b>Check-in</b><small>Who's aboard what — dash &amp; tongue tags start or join a trip.</small></span></button>
-            <button class="ck-row" data-tap="OIL" type="button"><span class="ck-sw ck-yellow">SUPPLY</span><span class="ck-tx"><b>Supply</b><small>We're low — one tap logs the refill. A receipt, not a form.</small></span></button>
-            <button class="ck-row" data-tap="EQ-208" type="button"><span class="ck-sw ck-red">PROBLEM</span><span class="ck-tx"><b>Problem</b><small>Something's wrong — the defect report opens with the machine pre-filled.</small></span></button>
-            <button class="ck-row" data-tap="AX-C218" type="button"><span class="ck-sw ck-green">SERVICE</span><span class="ck-tx"><b>Service</b><small>Work done — logs the touch on the unit's service history.</small></span></button>
-          </div>
+          <div class="ck" id="colorkey"></div>
           <div class="hidden" id="res-prev" style="padding:0 16px 2px"></div>
           <div style="padding:2px 16px 12px" id="res-body" class="hidden"></div>
           <div style="padding:0 16px 14px">
@@ -848,7 +880,7 @@
                 <button class="ck-pick" data-c="#5a6b7a" type="button" style="background:#5a6b7a" aria-label="Slate"></button>
                 <label class="ck-pick ck-any" title="Any color"><input type="color" id="ck-anyc" value="#7a3fbf" aria-label="Pick any color"></label>
               </div>
-              <div class="ckf-lbl" style="margin-top:8px">Behaves like</div>
+              <div class="ckf-lbl" id="ck-basis-lbl" style="margin-top:8px">Behaves like</div>
               <select id="ck-basis" style="border:1px solid var(--line);background:var(--surface);border-radius:7px;padding:6px 9px;font-size:12.5px;color:var(--ink);font-family:var(--body)">
                 <option>Check-in</option><option>Supply</option><option>Problem</option><option selected>Service</option>
               </select>
@@ -949,8 +981,8 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     toastTimer = setTimeout(function () { t.classList.remove("on"); }, 2600);
   }
   // ---- router ----
-  var views = ["dash", "assets", "fuel", "people", "reports", "tags"];
-  var labels = { dash: "Dashboard", assets: "Assets", fuel: "Fuel & costs", people: "People", reports: "Reports", tags: "Tag manager" };
+  var views = ["dash", "assets", "fuel", "people", "reports", "tags", "map", "dispatch", "messages", "maint", "inv", "settings"];
+  var labels = { dash: "Dashboard", assets: "Assets", fuel: "Fuel & costs", people: "People", reports: "Reports", tags: "Tag manager", map: "Live map", dispatch: "Dispatch", messages: "Messages", maint: "Maintenance", inv: "Inventory", settings: "Settings" };
   function show(v) {
     $("v-vehicle").classList.remove("on");
     views.forEach(function (x) {
@@ -1321,10 +1353,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     { code: "Yard", name: "Verona yard \u2014 kiosk & gates", spot: "post" }
   ];
   window.__cats = [
-    { k: "blue", n: "Check-in", c: "#2a78d6" },
-    { k: "yellow", n: "Supply", c: "#eda100" },
-    { k: "red", n: "Problem", c: "#d03b3b" },
-    { k: "green", n: "Service", c: "#0ca30c" }
+    { k: "blue", n: "Check-in", c: "#2a78d6", tap: "U-104", d: "Who's aboard what \u2014 dash & tongue tags start or join a trip." },
+    { k: "yellow", n: "Supply", c: "#eda100", tap: "OIL", d: "We're low \u2014 one tap logs the refill. A receipt, not a form." },
+    { k: "red", n: "Problem", c: "#d03b3b", tap: "EQ-208", d: "Something's wrong \u2014 the defect report opens with the machine pre-filled." },
+    { k: "green", n: "Service", c: "#0ca30c", tap: "AX-C218", d: "Work done \u2014 logs the touch on the unit's service history." }
   ];
   function wzRenderColors() {
     var w = $("wz-colors"); w.innerHTML = "";
@@ -1412,22 +1444,52 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     if (!hex || hex.charAt(0) !== "#") return hex;
     return "rgb(" + Math.round(parseInt(hex.slice(1, 3), 16) * 0.72) + "," + Math.round(parseInt(hex.slice(3, 5), 16) * 0.72) + "," + Math.round(parseInt(hex.slice(5, 7), 16) * 0.72) + ")";
   }
+  function ink2(hex) {
+    if (!hex || hex.charAt(0) !== "#") return "#fff";
+    var r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+    return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? "#332000" : "#fff";
+  }
+  function catHex2(key) {
+    var c = (window.__cats || []).filter(function (x) { return x.k === key; })[0];
+    return (c && c.c) || HEX2[key] || "#5a6b7a";
+  }
+  function keyPreview(o) {
+    var pv = $("res-prev");
+    pv.classList.remove("hidden");
+    var ink = ink2(o.hex), dk = shade2(o.hex);
+    pv.innerHTML = '<div class="spec-row"><div class="spec"><div class="spec-top"><i class="l"></i><span>4&quot;</span><i class="r"></i></div><div class="spec-mid"><div class="spec-lab" style="background:' + o.hex + ';color:' + ink + '"><span class="lpm"><span class="nm">' + o.asset + '</span><span class="lpr"><span class="qrc"><span class="qr"></span><span class="qid">' + o.tag + '</span></span><span class="tx"><span class="id">' + o.name + '</span><span class="ac">' + o.act + '</span></span><span class="tap" style="color:' + o.hex + ';background:#fff">' + NFC2 + '<b style="color:' + o.hex + '">TAP HERE</b></span></span></span><span class="band" style="background:' + dk + ';color:#fff">' + o.act.toUpperCase() + '</span></div><div class="spec-side"><i class="t"></i><span>2&quot;</span><i class="b"></i></div></div></div>' +
+      '<div class="spec"><div class="spec-top" style="width:180px"><i class="l"></i><span>2&quot;</span><i class="r"></i></div><div class="spec-mid"><div class="spec-lab-v" style="background:' + o.hex + ';color:' + ink + '"><span class="vnm">' + o.asset + '</span><span class="vid">' + o.name + ' \u00b7 ' + o.tag + '</span><span class="qr"></span><span class="tap" style="color:' + o.hex + ';background:#fff">' + NFC2 + '<b style="color:' + o.hex + '">TAP HERE</b></span><span class="vband" style="background:' + dk + ';color:#fff">' + o.act.toUpperCase() + '</span></div><div class="spec-side"><i class="t"></i><span>4&quot;</span><i class="b"></i></div></div></div></div>';
+    var qs = pv.querySelectorAll(".qr");
+    new QRCode(qs[0], { text: "https://demo.axlehq.io/driver.html#t=" + encodeURIComponent(o.tag), width: 84, height: 84, colorDark: "#0b0b0b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+    new QRCode(qs[1], { text: "https://demo.axlehq.io/driver.html#t=" + encodeURIComponent(o.tag), width: 135, height: 135, colorDark: "#0b0b0b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+  }
+  function renderKey() {
+    var w = document.getElementById("colorkey");
+    if (!w) return;
+    w.innerHTML = "";
+    (window.__cats || []).forEach(function (c) {
+      var row = document.createElement("button");
+      row.type = "button"; row.className = "ck-row";
+      row.innerHTML = '<span class="ck-sw" style="background:' + c.c + ';color:' + ink2(c.c) + '">' + c.n.toUpperCase() + '</span><span class="ck-tx"><b>' + c.n + '</b><small>' + c.d + '</small></span><span class="fchip ck-edit" style="flex:none;font-size:10.5px;padding:2px 10px">Edit</span>';
+      row.addEventListener("click", function (e) {
+        if (e.target.closest(".ck-edit")) { if (window.__openCatEdit) window.__openCatEdit(c); return; }
+        if (c.tap && RES[c.tap]) { resolveTap(c.tap, false); return; }
+        keyPreview({ asset: "Sample \u2014 new tag", name: "UNIT \u00b7 placement", tag: "AX-NEW", act: c.n, hex: c.c });
+        $("res-body").classList.remove("hidden");
+        $("res-body").innerHTML = '<div style="font-size:13px;line-height:1.6"><b>' + c.n + '</b> \u00b7 custom tag \u2192 behaves like ' + (c.basis || "service").toLowerCase() + "; commissioning, the wizard, and label printing all use it.</div>";
+        $("res-sub").textContent = "sample: " + c.n;
+        $("real-badge").classList.add("hidden");
+      });
+      w.appendChild(row);
+    });
+  }
+  window.__renderKey = renderKey;
   function resolveTap(id, physical) {
     if (!RES[id]) return;
     var row = document.querySelector('#reg-tbl tbody tr[data-t="' + id + '"]');
-    var pv = $("res-prev");
     if (row) {
-      var act = row.cells[3].textContent.trim();
-      pv.classList.remove("hidden");
-      var hx = row.getAttribute("data-cc") || HEX2[row.getAttribute("data-color")] || "#5a6b7a";
-      var ccbg = row.getAttribute("data-cc") ? ' style="background:' + row.getAttribute("data-cc") + '"' : "";
-      var lpc = " lpc-" + row.getAttribute("data-color");
-      pv.innerHTML = '<div class="spec-row"><div class="spec"><div class="spec-top"><i class="l"></i><span>4&quot;</span><i class="r"></i></div><div class="spec-mid"><div class="spec-lab' + lpc + '"' + ccbg + '><span class="lpm"><span class="nm">' + row.getAttribute("data-asset") + '</span><span class="lpr"><span class="qrc"><span class="qr"></span><span class="qid">' + row.getAttribute("data-tag") + '</span></span><span class="tx"><span class="id">' + row.getAttribute("data-name") + '</span><span class="ac">' + act + '</span></span><span class="tap" style="color:' + hx + '">' + NFC2 + '<b style="color:' + hx + '">TAP HERE</b></span></span></span><span class="band" style="background:' + shade2(hx) + '">' + act.toUpperCase() + '</span></div><div class="spec-side"><i class="t"></i><span>2&quot;</span><i class="b"></i></div></div></div>' +
-        '<div class="spec"><div class="spec-top" style="width:180px"><i class="l"></i><span>2&quot;</span><i class="r"></i></div><div class="spec-mid"><div class="spec-lab-v' + lpc + '"' + ccbg + '><span class="vnm">' + row.getAttribute("data-asset") + '</span><span class="vid">' + row.getAttribute("data-name") + ' \u00b7 ' + row.getAttribute("data-tag") + '</span><span class="qr"></span><span class="tap" style="color:' + hx + '">' + NFC2 + '<b style="color:' + hx + '">TAP HERE</b></span><span class="vband" style="background:' + shade2(hx) + '">' + act.toUpperCase() + '</span></div><div class="spec-side"><i class="t"></i><span>4&quot;</span><i class="b"></i></div></div></div></div>';
-      var qs = pv.querySelectorAll(".qr");
-      new QRCode(qs[0], { text: "https://demo.axlehq.io/driver.html#t=" + encodeURIComponent(id), width: 84, height: 84, colorDark: "#0b0b0b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
-      new QRCode(qs[1], { text: "https://demo.axlehq.io/driver.html#t=" + encodeURIComponent(id), width: 135, height: 135, colorDark: "#0b0b0b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
-    } else { pv.classList.add("hidden"); }
+      keyPreview({ asset: row.getAttribute("data-asset"), name: row.getAttribute("data-name"), tag: row.getAttribute("data-tag"), act: row.cells[3].textContent.trim(), hex: row.getAttribute("data-cc") || catHex2(row.getAttribute("data-color")) });
+    } else { $("res-prev").classList.add("hidden"); }
     $("res-body").classList.remove("hidden");
     $("res-body").innerHTML = '<div style="font-size:13px;line-height:1.6">' + RES[id] + "</div>";
     $("res-sub").textContent = "resolved: " + id;
@@ -1437,7 +1499,15 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
   document.querySelectorAll("[data-tap]").forEach(function (b) {
     b.addEventListener("click", function () { resolveTap(b.getAttribute("data-tap"), false); });
   });
-  $("ck-add").addEventListener("click", function () { $("ck-form").classList.toggle("hidden"); });
+  $("ck-add").addEventListener("click", function () {
+    editingCat = null;
+    $("ck-save").textContent = "Add category";
+    $("ck-basis").style.display = ""; $("ck-basis-lbl").style.display = "";
+    $("ck-name").value = ""; ckColor = null;
+    document.querySelectorAll(".ck-pick").forEach(function (x) { x.classList.remove("on"); });
+    var al = document.querySelector(".ck-any"); al.classList.remove("on"); al.style.background = "";
+    $("ck-form").classList.toggle("hidden");
+  });
   var ckColor = null;
   document.querySelectorAll(".ck-pick").forEach(function (b) {
     b.addEventListener("click", function () {
@@ -1455,26 +1525,49 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     var r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
     return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? "#332000" : "#fff";
   }
+  var editingCat = null;
+  window.__openCatEdit = function (c) {
+    editingCat = c;
+    $("ck-form").classList.remove("hidden");
+    $("ck-name").value = c.n;
+    ckColor = c.c;
+    var matched = false;
+    document.querySelectorAll(".ck-pick").forEach(function (x) {
+      if (x.classList.contains("ck-any")) return;
+      var on = x.getAttribute("data-c") === c.c;
+      x.classList.toggle("on", on);
+      if (on) matched = true;
+    });
+    var anyLab = document.querySelector(".ck-any");
+    anyLab.classList.toggle("on", !matched);
+    anyLab.style.background = matched ? "" : c.c;
+    if (!matched) { try { document.getElementById("ck-anyc").value = c.c; } catch (e) {} }
+    $("ck-basis").style.display = c.cc ? "" : "none";
+    $("ck-basis-lbl").style.display = c.cc ? "" : "none";
+    if (c.cc && c.basis) $("ck-basis").value = c.basis;
+    $("ck-save").textContent = "Save changes";
+    $("ck-form").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  };
   $("ck-save").addEventListener("click", function () {
     var name = $("ck-name").value.trim();
     if (!name || !ckColor) { toast("Give it a name and pick a color."); return; }
     var basis = $("ck-basis").value;
-    var row = document.createElement("button");
-    row.type = "button"; row.className = "ck-row";
-    row.innerHTML = '<span class="ck-sw" style="background:' + ckColor + ';color:' + inkFor(ckColor) + '">' + name.toUpperCase() + '</span><span class="ck-tx"><b>' + name + '</b><small>Custom category — behaves like ' + basis.toLowerCase() + '; commissioning &amp; labels offer it automatically.</small></span>';
-    row.addEventListener("click", function () {
-      document.getElementById("res-prev").classList.add("hidden");
-      $("res-body").classList.remove("hidden");
-      $("res-body").innerHTML = '<div style="font-size:13px;line-height:1.6"><b>' + name + '</b> · custom tag → runs the ' + basis.toLowerCase() + ' flow; the registry, color key, and label printing picked it up the moment it was added.</div>';
-      $("res-sub").textContent = "resolved: " + name;
-      $("real-badge").classList.add("hidden");
-    });
-    document.querySelector(".ck").appendChild(row);
-    if (window.__cats) window.__cats.push({ k: "custom", n: name, c: ckColor, cc: true });
+    if (editingCat) {
+      editingCat.n = name; editingCat.c = ckColor;
+      if (editingCat.cc) { editingCat.basis = basis; editingCat.d = "Custom category \u2014 behaves like " + basis.toLowerCase() + "; commissioning & labels offer it automatically."; }
+      toast(name + " updated \u2014 audited; reprint faces to match the new look.");
+    } else {
+      window.__cats.push({ k: "cc" + window.__cats.length, n: name, c: ckColor, cc: true, basis: basis, d: "Custom category \u2014 behaves like " + basis.toLowerCase() + "; commissioning & labels offer it automatically." });
+      toast(name + " added \u2014 commissioning and label printing now offer it.");
+    }
+    editingCat = null;
+    if (window.__renderKey) window.__renderKey();
     $("ck-form").classList.add("hidden");
     $("ck-name").value = ""; ckColor = null;
     document.querySelectorAll(".ck-pick").forEach(function (x) { x.classList.remove("on"); });
-    toast(name + " added — commissioning and label printing now offer it.");
+    var al2 = document.querySelector(".ck-any"); al2.classList.remove("on"); al2.style.background = "";
+    $("ck-save").textContent = "Add category";
+    $("ck-basis").style.display = ""; $("ck-basis-lbl").style.display = "";
   });
   // ---- tag detail: edit / re-link / retire ----
   var tgRow = null, tgAsset = null, tgAssetName = null, tgCat = null;
@@ -1561,6 +1654,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     tgClose();
     $("lp-open").click();
   });
+  renderKey();
   var h = (location.hash || "").replace("#t=", "");
   if (h && RES[h]) resolveTap(h, true);
 })();
@@ -1769,7 +1863,11 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     new QRCode(el, { text: "https://demo.axlehq.io/driver.html#t=" + encodeURIComponent(t), width: px, height: px, colorDark: "#0b0b0b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
   }
   var HEX = { blue: "#2a78d6", yellow: "#eda100", red: "#d03b3b", green: "#0ca30c" };
-  function hexOf(t) { return t.cc || HEX[t.color] || "#5a6b7a"; }
+  function hexOf(t) {
+    if (t.cc) return t.cc;
+    var c = (window.__cats || []).filter(function (x) { return x.k === t.color; })[0];
+    return (c && c.c) || HEX[t.color] || "#5a6b7a";
+  }
   function shade(hex) {
     if (hex.charAt(0) !== "#") return hex;
     var r = Math.round(parseInt(hex.slice(1, 3), 16) * 0.72), g = Math.round(parseInt(hex.slice(3, 5), 16) * 0.72), b = Math.round(parseInt(hex.slice(5, 7), 16) * 0.72);
@@ -1786,7 +1884,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         c.type = "button"; c.className = "lp-cell";
         var k = i - start;
         if (i < start) { c.classList.add("skip"); c.title = "Skipped — already used"; }
-        else if (k < n) { c.classList.add("fill", "lpc-" + list[k].color); if (list[k].cc) c.style.background = list[k].cc; c.textContent = list[k].id; }
+        else if (k < n) { var fh = hexOf(list[k]); c.classList.add("fill"); c.style.background = fh; c.style.color = inkFor(fh); c.textContent = list[k].id; }
         else { c.textContent = i + 1; }
         c.addEventListener("click", function () { start = i; renderModal(); });
         mini.appendChild(c);
@@ -1799,18 +1897,22 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       var act = t.act || ACT[t.color] || "tag";
       var item = document.createElement("div");
       item.style.marginBottom = "8px";
-      var d = document.createElement("div");
       var vert = (orMap[t.id] || "h") === "v";
+      var hx = hexOf(t), dk = shade(hx), scale = 0.55;
+      var d = document.createElement("div");
+      d.className = vert ? "spec-lab-v" : "spec-lab";
+      d.style.background = hx; d.style.color = inkFor(hx);
+      d.style.transform = "scale(" + scale + ")";
+      d.style.transformOrigin = "0 0";
       if (vert) {
-        d.className = "lp-prev-v lpc-" + t.color;
-        if (t.cc) d.style.background = t.cc;
-        d.innerHTML = '<span class="nm">' + t.asset + '</span><span class="qr"></span><span class="ptap" style="color:' + hexOf(t) + '">' + NFC + '</span><span class="pvb" style="background:' + shade(hexOf(t)) + '">' + act.toUpperCase() + '</span>';
+        d.innerHTML = '<span class="vnm">' + t.asset + '</span><span class="vid">' + t.name + ' \u00b7 ' + t.id + '</span><span class="qr"></span><span class="tap" style="color:' + hx + '">' + NFC + '<b style="color:' + hx + '">TAP HERE</b></span><span class="vband" style="background:' + dk + '">' + act.toUpperCase() + "</span>";
       } else {
-        d.className = "lp-prev lpc-" + t.color;
-        if (t.cc) d.style.background = t.cc;
-        d.innerHTML = '<span class="qr"></span><span class="tx"><span class="nm">' + t.asset + '</span><span class="id2">' + t.name + '</span><span class="ac2">' + act + '</span></span><span class="ptap" style="color:' + hexOf(t) + '">' + NFC + '</span><span class="pband" style="background:' + shade(hexOf(t)) + '">' + act.toUpperCase() + '</span>';
+        d.innerHTML = '<span class="lpm"><span class="nm">' + t.asset + '</span><span class="lpr"><span class="qrc"><span class="qr"></span><span class="qid">' + t.id + '</span></span><span class="tx"><span class="id">' + t.name + '</span><span class="ac">' + act + '</span></span><span class="tap" style="color:' + hx + '">' + NFC + '<b style="color:' + hx + '">TAP HERE</b></span></span></span><span class="band" style="background:' + dk + '">' + act.toUpperCase() + "</span>";
       }
-      item.appendChild(d);
+      var wrap = document.createElement("div");
+      wrap.style.cssText = "width:" + Math.round((vert ? 180 : 360) * scale) + "px;height:" + Math.round((vert ? 360 : 180) * scale) + "px;overflow:hidden;border-radius:4px";
+      wrap.appendChild(d);
+      item.appendChild(wrap);
       var tog = document.createElement("div");
       tog.style.cssText = "display:flex;justify-content:flex-end;gap:5px;margin-top:4px";
       ["h", "v"].forEach(function (o) {
@@ -1823,7 +1925,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       });
       item.appendChild(tog);
       pv.appendChild(item);
-      qr(d.querySelector(".qr"), t.t, vert ? 52 : 48);
+      qr(d.querySelector(".qr"), t.t, vert ? 135 : 84);
     });
     if (n > 4) { var m = document.createElement("div"); m.className = "dim"; m.style.fontSize = "11.5px"; m.textContent = "\u2026and " + (n - 4) + " more"; pv.appendChild(m); }
   }
@@ -1838,12 +1940,12 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     list.forEach(function (t, i) {
       var slot = start + i, pos = slot % 10, col = pos % 2, row = Math.floor(pos / 2);
       var L = document.createElement("div");
-      L.className = "lp-label lpc-" + t.color;
-      if (t.cc) L.style.background = t.cc;
+      L.className = "lp-label";
       L.style.left = (0.15625 + col * 4.1875) + "in";
       L.style.top = (0.5 + row * 2) + "in";
       var act = t.act || ACT[t.color] || "tag";
       var hx = hexOf(t), dk = shade(hx);
+      L.style.background = hx; L.style.color = inkFor(hx);
       if ((orMap[t.id] || "h") === "v") {
         L.classList.add("vert");
         L.innerHTML = '<span class="lpv"><span class="vnm">' + t.asset + '</span><span class="vid">' + t.name + ' \u00b7 ' + t.id + '</span><span class="qr"></span><span class="tap" style="color:' + hx + '">' + NFC + '<b style="color:' + hx + '">TAP HERE</b></span><span class="vband" style="background:' + dk + '">' + act.toUpperCase() + "</span></span>";
