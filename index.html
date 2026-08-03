@@ -565,7 +565,7 @@
 
     <!-- ============ FUEL ============ -->
     <section class="view" id="v-fuel"><div class="bf" style="left:30px;bottom:30px;width:10px;height:14px;background:var(--ink);opacity:.05"></div>
-      <div class="topbar"><h1>Fuel &amp; costs</h1><span class="tabchips"><span class="fchip on">Transactions</span><button class="fchip" id="chip-pins" type="button">Cards &amp; PINs</button><button class="fchip" id="chip-exc" type="button">Exceptions <small>3</small></button><button class="fchip" data-toast="The ledger view — every fill posts as a cost entry on its vehicle; the dashboard's cost-per-mile drinks from it." type="button">Ledger</button></span><span class="sp"></span><span class="datechip">July 2026</span></div>
+      <div class="topbar"><h1>Fuel &amp; costs</h1><span class="sp"></span><span class="datechip">July 2026</span></div>
       <div class="tiles">
         <div class="tile"><div class="k">Fuel spend · MTD</div><div class="v">$38.2k</div><div class="d"><span class="up">▼ 4.1%</span> vs June</div></div>
         <div class="tile"><div class="k">Avg price / gal</div><div class="v">$3.42</div><div class="d">In-network $3.31 · out $3.58</div></div>
@@ -1301,8 +1301,6 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       if (t && t.__kit) { t.__kit.state.q = q; t.__kit.state.page = 0; t.__kit.render(); }
     });
   });
-  $("chip-pins").addEventListener("click", function () { $("fuel-pins").scrollIntoView({ behavior: "smooth", block: "center" }); });
-  $("chip-exc").addEventListener("click", function () { $("fuel-exceptions").scrollIntoView({ behavior: "smooth", block: "center" }); });
   $("fix-add").addEventListener("click", function () {
     $("fix-out-row").innerHTML = '<td class="mono">Out · 4:00p</td><td class="dim">Added by Alesha · reason: "kiosk missed him — last GPS ping at the shop, 4:00p"</td><td><span class="pill p-good">Fixed</span></td><td class="num dim" style="font-size:11px">D. Whitfield notified · audited</td>';
     toast("Punch added — the week recalculates, and the corrected total is what exports to ADP.");
