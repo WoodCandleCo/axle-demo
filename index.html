@@ -241,7 +241,10 @@
 
   /* ---- tag label generator (Avery 5523) ---- */
   .lp-thck { width: 30px; }
-  .ck { display: flex; flex-direction: column; gap: 7px; padding: 10px 16px 8px; }
+  .ck { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px 16px 8px; }
+  .ck #ck-form { grid-column: 1 / -1; }
+  .ck #ck-add { grid-column: 1 / -1; justify-self: end; }
+  @media (max-width: 760px) { .ck { grid-template-columns: 1fr; } }
   .ck-row { display: flex; align-items: center; gap: 11px; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 8px 10px; cursor: pointer; text-align: left; font-family: var(--body); width: 100%; }
   .ck-row:hover { border-color: var(--accent); }
   .ck-sw { flex: none; width: 64px; border-radius: 7px; text-align: center; font-size: 8.5px; font-weight: 800; letter-spacing: 0.06em; color: #fff; padding: 9px 0; }
@@ -252,6 +255,8 @@
   .ckf-lbl { font-size: 9.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
   .ck-pick { width: 22px; height: 22px; border-radius: 99px; border: 2px solid transparent; cursor: pointer; display: inline-block; margin-right: 6px; padding: 0; }
   .ck-pick.on { border-color: var(--ink); }
+  .ck-any { background: conic-gradient(#e33 0deg, #ea0 60deg, #ce2 120deg, #2ca 180deg, #24d 240deg, #c2c 300deg, #e33 360deg); position: relative; overflow: hidden; vertical-align: top; }
+  .ck-any input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
   .tbl input[type=checkbox] { accent-color: var(--accent); }
   .selbar { display: flex; align-items: center; gap: 8px; padding: 10px 16px 12px; border-top: 1px solid var(--line); font-size: 12.5px; }
   .lp-cols { display: grid; grid-template-columns: 224px 1fr; gap: 18px; }
@@ -689,7 +694,7 @@
     <!-- ============ TAGS ============ -->
     <section class="view" id="v-tags"><div class="bf" style="right:36px;bottom:44px;width:13px;height:18px;background:var(--accent);opacity:.10"></div>
       <div class="topbar"><h1>Tag manager</h1><span class="sp"></span><span class="datechip">Manager-entitled · commissioning is a 30-second job</span></div>
-      <div class="grid2">
+      <div>
         <div class="panel" style="overflow:visible">
           <div class="panel-h"><h5>Tag registry</h5><span class="sub" id="reg-count">14 active</span><span class="sp"></span><button class="fchip" id="btn-new" type="button">+ Commission</button></div>
           <table class="tbl" id="reg-tbl">
@@ -746,13 +751,14 @@
             <div class="hidden" id="ck-form" style="border:1px dashed var(--line);border-radius:10px;padding:10px 12px">
               <div class="ckf-lbl">Name</div>
               <input id="ck-name" placeholder="e.g. Rental return" style="width:100%;box-sizing:border-box;border:1px solid var(--line);background:var(--surface);border-radius:7px;padding:6px 9px;font-size:12.5px;color:var(--ink);font-family:var(--body)">
-              <div class="ckf-lbl" style="margin-top:8px">Color — curated so labels stay readable</div>
+              <div class="ckf-lbl" style="margin-top:8px">Color — curated picks, or choose any</div>
               <div>
                 <button class="ck-pick" data-c="#8e5bd4" type="button" style="background:#8e5bd4" aria-label="Purple"></button>
                 <button class="ck-pick" data-c="#eb6834" type="button" style="background:#eb6834" aria-label="Orange"></button>
                 <button class="ck-pick" data-c="#0e6672" type="button" style="background:#0e6672" aria-label="Teal"></button>
                 <button class="ck-pick" data-c="#d6567b" type="button" style="background:#d6567b" aria-label="Pink"></button>
                 <button class="ck-pick" data-c="#5a6b7a" type="button" style="background:#5a6b7a" aria-label="Slate"></button>
+                <label class="ck-pick ck-any" title="Any color"><input type="color" id="ck-anyc" value="#7a3fbf" aria-label="Pick any color"></label>
               </div>
               <div class="ckf-lbl" style="margin-top:8px">Behaves like</div>
               <select id="ck-basis" style="border:1px solid var(--line);background:var(--surface);border-radius:7px;padding:6px 9px;font-size:12.5px;color:var(--ink);font-family:var(--body)">
@@ -1281,13 +1287,23 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       document.querySelectorAll(".ck-pick").forEach(function (x) { x.classList.toggle("on", x === b); });
     });
   });
+  $("ck-anyc").addEventListener("input", function () {
+    ckColor = this.value;
+    var lab = this.parentElement;
+    lab.style.background = ckColor;
+    document.querySelectorAll(".ck-pick").forEach(function (x) { x.classList.toggle("on", x === lab); });
+  });
+  function inkFor(hex) {
+    var r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+    return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? "#332000" : "#fff";
+  }
   $("ck-save").addEventListener("click", function () {
     var name = $("ck-name").value.trim();
     if (!name || !ckColor) { toast("Give it a name and pick a color."); return; }
     var basis = $("ck-basis").value;
     var row = document.createElement("button");
     row.type = "button"; row.className = "ck-row";
-    row.innerHTML = '<span class="ck-sw" style="background:' + ckColor + '">' + name.toUpperCase() + '</span><span class="ck-tx"><b>' + name + '</b><small>Custom category — behaves like ' + basis.toLowerCase() + '; commissioning &amp; labels offer it automatically.</small></span>';
+    row.innerHTML = '<span class="ck-sw" style="background:' + ckColor + ';color:' + inkFor(ckColor) + '">' + name.toUpperCase() + '</span><span class="ck-tx"><b>' + name + '</b><small>Custom category — behaves like ' + basis.toLowerCase() + '; commissioning &amp; labels offer it automatically.</small></span>';
     row.addEventListener("click", function () {
       document.getElementById("res-prev").classList.add("hidden");
       $("res-body").classList.remove("hidden");
