@@ -461,7 +461,6 @@
     <!-- ============ DASHBOARD ============ -->
     <section class="view on" id="v-dash"><div class="bf" style="right:28px;bottom:22px;width:12px;height:16px;background:var(--ink);opacity:.05"></div>
       <div class="topbar"><h1>Good morning, Alesha</h1><span class="sp"></span><span class="search"><svg width="13" height="13"><use href="#i-search"/></svg>Search units, drivers, VINs…</span><span class="datechip">Jul 30, 2026</span><span class="avatar">AB</span></div>
-      <div class="roadmap"><h6>Still to come on the dashboard</h6><ul><li><b>P2</b><span>Live crew map tile and storm-mode board</span></li><li><b>P2</b><span>Incidents queue chip once the accident kit ships</span></li><li><b>P3</b><span>Leaderboard + points standings once engagement unlocks</span></li><li><b>P4</b><span>Custom report widgets you arrange yourself</span></li></ul></div>
       <div class="urgent" id="urgentbar"><span class="tag">URGENT</span><span><b>Alesha:</b> all crews back to the shop by 2 pm — severe storms. Secure loads before you roll.</span><span class="ack"><button class="btn primary" id="ackbtn" type="button">Acknowledge</button><span class="dim" style="font-size:11px;margin-left:8px" id="ackcount">41/61 acked</span></span></div>
       <div class="queues">
         <span class="lbl">Waiting on someone</span>
@@ -531,12 +530,12 @@
           <div class="panel-f"><a data-view="reports" class="navlink">View report →</a></div>
         </div>
       </div>
+      <div class="roadmap"><h6>Still to come on the dashboard</h6><ul><li><b>P2</b><span>Live crew map tile and storm-mode board</span></li><li><b>P2</b><span>Incidents queue chip once the accident kit ships</span></li><li><b>P3</b><span>Leaderboard + points standings once engagement unlocks</span></li><li><b>P4</b><span>Custom report widgets you arrange yourself</span></li></ul></div>
     </section>
 
     <!-- ============ ASSETS ============ -->
     <section class="view" id="v-assets"><div class="bf" style="right:64px;top:70px;width:9px;height:12px;background:var(--ink);opacity:.045"></div>
       <div class="topbar"><h1>Assets</h1><span class="sp"></span><input class="search" id="asset-search" type="search" placeholder="Unit, VIN, serial, plate…" aria-label="Search assets"><button class="fchip" data-toast="Bulk CSV import — minimal columns: unit #, VIN, class, current meter. The NHTSA decode fills year/make/model per row; the truthful seed list is the insurance policy's vehicle schedule." type="button">Import CSV</button><button class="btn primary" id="aa-open" type="button">+ Add asset</button></div>
-      <div class="roadmap"><h6>Still to come in Assets</h6><ul><li><b>P2</b><span>Maintenance: work orders, PM schedules, vendor history</span></li><li><b>P2</b><span>Inventory: parts, tools, and supply stock per asset</span></li><li><b>P2</b><span>Deep-check photo surveys attached to each unit</span></li><li><b>P3</b><span>Replace-vs-repair analysis with book-value thresholds</span></li></ul></div>
       <div class="panel">
         <div class="filters" style="border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;padding:12px 14px;flex-wrap:wrap">
           <button class="fchip on" data-cf="vehicle" type="button">Vehicles <small>142</small></button>
@@ -573,12 +572,12 @@
         </table>
         <div class="note-sm">Click U-104 for the full detail page — the same layout as proposal screen 7 (other rows are placeholders in this demo; every unit gets one in the real app). The class tabs and status chips filter live; counts show the proposal's 142-asset fleet fiction.</div>
       </div>
+      <div class="roadmap"><h6>Still to come in Assets</h6><ul><li><b>P2</b><span>Maintenance: work orders, PM schedules, vendor history</span></li><li><b>P2</b><span>Inventory: parts, tools, and supply stock per asset</span></li><li><b>P2</b><span>Deep-check photo surveys attached to each unit</span></li><li><b>P3</b><span>Replace-vs-repair analysis with book-value thresholds</span></li></ul></div>
     </section>
 
     <!-- ============ FUEL ============ -->
     <section class="view" id="v-fuel"><div class="bf" style="left:30px;bottom:30px;width:10px;height:14px;background:var(--ink);opacity:.05"></div>
       <div class="topbar"><h1>Fuel &amp; costs</h1><span class="sp"></span><span class="datechip">July 2026</span></div>
-      <div class="roadmap"><h6>Still to come in Fuel & costs</h6><ul><li><b>P2</b><span>Unified cost ledger — every repair, part, and fee posts here</span></li><li><b>P2</b><span>Live WEX API sync replacing the manual import</span></li><li><b>P2</b><span>Configurable exception rules (capacity, hours, PIN mismatch)</span></li><li><b>P4</b><span>Accounting export and per-unit budget targets</span></li></ul></div>
       <div class="tiles">
         <div class="tile"><div class="k">Fuel spend · MTD</div><div class="v">$38.2k</div><div class="d"><span class="up">▼ 4.1%</span> vs June</div></div>
         <div class="tile"><div class="k">Avg price / gal</div><div class="v">$3.42</div><div class="d">In-network $3.31 · out $3.58</div></div>
@@ -616,12 +615,12 @@
             </div>
           </div>
         </div>
+      <div class="roadmap"><h6>Still to come in Fuel & costs</h6><ul><li><b>P2</b><span>Unified cost ledger — every repair, part, and fee posts here</span></li><li><b>P2</b><span>Live WEX API sync replacing the manual import</span></li><li><b>P2</b><span>Configurable exception rules (capacity, hours, PIN mismatch)</span></li><li><b>P4</b><span>Accounting export and per-unit budget targets</span></li></ul></div>
     </section>
 
     <!-- ============ PEOPLE ============ -->
     <section class="view" id="v-people"><div class="bf" style="right:34px;bottom:120px;width:8px;height:11px;background:var(--ink);opacity:.045"></div>
       <div class="topbar"><h1>People</h1><button class="fchip on" id="chip-drivers" type="button">Drivers <small>24</small></button><button class="fchip" id="chip-staff" type="button">All staff <small>61</small></button><span class="sp"></span><input class="search" id="people-search" type="search" placeholder="Name, license…" aria-label="Search people"><button class="fchip" id="chip-exp" type="button">Expiring ≤ 60 days <small>2</small></button><button class="btn primary" data-toast="Enrollment works by phone or email — the free path is a QR off Alesha's screen at onboarding; passkey from day one." type="button">+ Add person</button></div>
-      <div class="roadmap"><h6>Still to come in People</h6><ul><li><b>P2</b><span>Time-off calendar and approvals in-app</span></li><li><b>P2</b><span>Injury reports, incident cases, and emergency contacts</span></li><li><b>P3</b><span>Engagement tab: leaderboard, points bank, deep-check bonuses</span></li><li><b>P3</b><span>Knowledge base authoring — the crew's searchable Q&A</span></li><li><b>P3</b><span>Employee manual uploads with tracked acknowledgement</span></li></ul></div>
       <div id="drivers-wrap">
       <div class="panel">
         <table class="tbl" id="drivers-tbl">
@@ -694,12 +693,12 @@
         </table>
         <p style="font-size:11.5px;color:var(--muted);margin:10px 14px 12px">4:00p is suggested from his last GPS ping at the shop. The reason is required, D. Whitfield is notified of the change, the week recalculates, and the corrected total is what exports to ADP.</p>
       </div>
+      <div class="roadmap"><h6>Still to come in People</h6><ul><li><b>P2</b><span>Time-off calendar and approvals in-app</span></li><li><b>P2</b><span>Injury reports, incident cases, and emergency contacts</span></li><li><b>P3</b><span>Engagement tab: leaderboard, points bank, deep-check bonuses</span></li><li><b>P3</b><span>Knowledge base authoring — the crew's searchable Q&A</span></li><li><b>P3</b><span>Employee manual uploads with tracked acknowledgement</span></li></ul></div>
     </section>
 
     <!-- ============ REPORTS ============ -->
     <section class="view" id="v-reports"><div class="bf" style="left:44%;bottom:18px;width:10px;height:13px;background:var(--ink);opacity:.05"></div>
       <div class="topbar"><h1>Reports</h1><span class="sp"></span><button class="fchip" data-toast="Exports what's on screen — CSV, current filters applied." type="button">Export CSV</button></div>
-      <div class="roadmap"><h6>Still to come in Reports</h6><ul><li><b>P2</b><span>Scheduled email delivery on your cadence</span></li><li><b>P2</b><span>Incident and injury history joins the quick pulls</span></li><li><b>P4</b><span>Custom report builder — pick fields, filters, and grouping</span></li><li><b>P4</b><span>Public API access for your own tooling</span></li></ul></div>
       <div class="tiles">
         <div class="tile"><div class="k">Cost per mile · fleet</div><div class="v">$0.612</div><div class="d"><span class="up">▼ 3.4%</span> vs June</div></div>
         <div class="tile"><div class="k">Downtime · July</div><div class="v">3.1%</div><div class="d">Of scheduled asset-days</div></div>
@@ -760,6 +759,7 @@
           <div class="docrow"><b>Monthly fleet review</b><span class="dim">Owners · 1st of month</span><span class="sp"></span><span class="pill p-good">On</span></div>
         </div>
       </div>
+      <div class="roadmap"><h6>Still to come in Reports</h6><ul><li><b>P2</b><span>Scheduled email delivery on your cadence</span></li><li><b>P2</b><span>Incident and injury history joins the quick pulls</span></li><li><b>P4</b><span>Custom report builder — pick fields, filters, and grouping</span></li><li><b>P4</b><span>Public API access for your own tooling</span></li></ul></div>
     </section>
 
     <!-- ============ VEHICLE DETAIL ============ -->
@@ -818,7 +818,6 @@
     <!-- ============ TAGS ============ -->
     <section class="view" id="v-tags"><div class="bf" style="right:36px;bottom:44px;width:13px;height:18px;background:var(--accent);opacity:.10"></div>
       <div class="topbar"><h1>Tag manager</h1><span class="sp"></span><span class="datechip">Manager-entitled · commissioning is a 30-second job</span></div>
-      <div class="roadmap"><h6>Still to come in Tag manager</h6><ul><li><b>P2</b><span>Lifecycle status (blank → active → retired) with filters</span></li><li><b>P2</b><span>Last-seen scan dates and possibly-dead tag detection</span></li><li><b>P3</b><span>Bulk edit: retire, re-link, or recategorize many tags at once</span></li><li><b>P3</b><span>In-app tag writing from a USB reader — no phone needed</span></li><li><b>P3</b><span>Tag detail drawer with the full audit trail</span></li></ul></div>
       <div>
         <div class="panel" style="overflow:visible">
           <div class="panel-h"><h5>Tag registry</h5><span class="sub" id="reg-count">14 active</span><span class="sp"></span><button class="fchip" id="btn-new" type="button">+ Commission</button></div>
@@ -893,6 +892,7 @@
       <div class="howto">
         <b>Real-tap test:</b> write this URL onto a blank NTAG with an NFC Tools-class app — <code>https://demo.axlehq.io/driver.html#t=U-104</code> — then tap it with any phone: the crew flow opens, no sign-in. Variants: <code>#t=TR-12</code> · <code>#t=OIL</code> · <code>#t=EQ-208</code>; the admin view resolves them too: <code>demo.axlehq.io/#t=U-104</code>. The tag is just a URL; the phone is the reader; the software decides what it means.
       </div>
+      <div class="roadmap"><h6>Still to come in Tag manager</h6><ul><li><b>P2</b><span>Lifecycle status (blank → active → retired) with filters</span></li><li><b>P2</b><span>Last-seen scan dates and possibly-dead tag detection</span></li><li><b>P3</b><span>Bulk edit: retire, re-link, or recategorize many tags at once</span></li><li><b>P3</b><span>In-app tag writing from a USB reader — no phone needed</span></li><li><b>P3</b><span>Tag detail drawer with the full audit trail</span></li></ul></div>
     </section>
   </div>
 </div>
