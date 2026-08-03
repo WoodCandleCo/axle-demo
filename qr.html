@@ -28,14 +28,14 @@
   <button id="m-admin" type="button">Admin view</button>
   <span style="width:14px"></span>
   <span style="font-size:11px;font-weight:700;letter-spacing:0.06em;color:var(--muted)">SERVED FROM</span>
-  <button id="b-lan" class="on" type="button">Mac on this Wi-Fi</button>
-  <button id="b-dom" type="button">demo.axlehq.io (after DNS)</button>
+  <button id="b-dom" class="on" type="button">demo.axlehq.io · live</button>
+  <button id="b-lan" type="button">Mac on this Wi-Fi</button>
   <button id="b-art" type="button">Artifact (signed-in)</button>
-  <input id="base" value="http://192.168.4.199:8741/axle-driver-demo.html">
+  <input id="base" value="https://demo.axlehq.io/driver.html">
   <button id="go" type="button">Regenerate</button>
 </div>
 <div class="grid" id="grid"></div>
-<div class="note"><b>How to test right now:</b> phone on the same Wi-Fi as this Mac → scan a code → the demo opens from the Mac and resolves the tag (look for the 📶 badge and the right card: blue = check-in, yellow = supply receipt, red = problem report). Once the Porkbun CNAME is in, switch to the demo.axlehq.io preset — that's the URL the physical NFC tags carry, and these QRs become identical to the printed Avery faces.</div>
+<div class="note"><b>These are the production URLs.</b> demo.axlehq.io is live with HTTPS — scan a code with any phone, on any network, and the demo resolves the tag (blue = check-in, yellow = supply receipt, red = problem report). These QRs are byte-identical to what the physical NFC fobs carry and to the printed Avery faces. The Mac-on-Wi-Fi preset remains for offline bench testing.</div>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
 (function () {
@@ -52,10 +52,10 @@
     "b-dom": { driver: "https://demo.axlehq.io/driver.html", admin: "https://demo.axlehq.io/" },
     "b-art": { driver: "https://claude.ai/code/artifact/1f86935b-ad20-4a04-8963-d257f93059a0", admin: "https://claude.ai/code/artifact/7aa3f4d3-74b8-47f8-bf0f-9384c53e6406" }
   };
-  var activePreset = "b-lan";
+  var activePreset = "b-dom";
   function applyPreset() {
     document.getElementById("base").value = PRESETS[activePreset][mode];
-    ["b-lan", "b-dom", "b-art"].forEach(function (x) { document.getElementById(x).classList.toggle("on", x === activePreset); });
+    ["b-dom", "b-lan", "b-art"].forEach(function (x) { document.getElementById(x).classList.toggle("on", x === activePreset); });
     document.getElementById("m-driver").classList.toggle("on", mode === "driver");
     document.getElementById("m-admin").classList.toggle("on", mode === "admin");
     render();
