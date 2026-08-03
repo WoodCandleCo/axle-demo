@@ -87,7 +87,8 @@
   .urgent .tag { flex: none; font-family: var(--display); font-size: 10px; font-weight: 800; letter-spacing: 0.1em; color: #fff; background: var(--crit); border-radius: 5px; padding: 3px 8px; }
   .urgent .ack { margin-left: auto; }
   .queues { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-  .qchip { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 8px 6px 14px; }
+  .qchip { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 8px 6px 14px; cursor: pointer; font-family: var(--body); color: var(--ink); }
+  .qchip:hover { border-color: var(--accent); }
   .qchip i { font-style: normal; font-family: var(--mono); font-size: 12px; font-weight: 700; background: var(--accent-wash); color: var(--accent-ink); border-radius: 999px; padding: 2px 9px; }
   .qchip.hot i { background: rgba(208,59,59,0.13); color: var(--crit); }
   .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 12px; }
@@ -468,14 +469,14 @@
       <div class="urgent" id="urgentbar"><span class="tag">URGENT</span><span><b>Alesha:</b> all crews back to the shop by 2 pm — severe storms. Secure loads before you roll.</span><span class="ack"><button class="btn primary" id="ackbtn" type="button">Acknowledge</button><span class="dim" style="font-size:11px;margin-left:8px" id="ackcount">41/61 acked</span></span></div>
       <div class="queues">
         <span class="lbl">Waiting on someone</span>
-        <span class="qchip">Deep-check reviews <i>2</i></span>
-        <span class="qchip">Purchase requests <i>4</i></span>
-        <span class="qchip">Punch corrections <i>1</i></span>
-        <span class="qchip hot">Incidents <i>1</i></span>
-        <span class="qchip hot">Inspection anomalies <i>3</i></span>
-        <span class="qchip hot">Low stock <i>7</i></span>
-        <span class="qchip">Tools overdue <i>1</i></span>
-        <span class="qchip">Urgent acks outstanding <i id="q-acks">20</i></span>
+        <button class="qchip" data-goto="people" type="button">Deep-check reviews <i>2</i></button>
+        <button class="qchip" data-goto="inv" type="button">Purchase requests <i>4</i></button>
+        <button class="qchip" data-goto="people" type="button">Punch corrections <i>1</i></button>
+        <button class="qchip hot" data-toast="The Incidents queue is its own screen in phase 2 — vehicle accidents, injuries, and HR cases worked in one place." type="button">Incidents <i>1</i></button>
+        <button class="qchip hot" data-goto="assets" type="button">Inspection anomalies <i>3</i></button>
+        <button class="qchip hot" data-goto="inv" type="button">Low stock <i>7</i></button>
+        <button class="qchip" data-goto="inv" type="button">Tools overdue <i>1</i></button>
+        <button class="qchip" data-goto="messages" type="button">Urgent acks outstanding <i>20</i></button>
       </div>
       <div class="dash-divider"></div>
       <div class="tiles">
@@ -534,7 +535,7 @@
           <div class="panel-f"><a data-view="reports" class="navlink">View report →</a></div>
         </div>
       </div>
-      <div class="roadmap"><div class="rm-sec"><h6>At launch</h6><p class="rm-sub">Everything you see on this screen works on day one.</p><ul><li class="ok"><b>Live</b><span>Live queue chips — what's waiting on someone, right now</span></li><li class="ok"><b>Live</b><span>Six stat tiles: on the clock, vehicles active, utilization, cost/mile, open defects, PM compliance</span></li><li class="gap"><b>Note</b><span>Utilization and PM compliance stay thin until a few weeks of trips and services accumulate</span></li><li class="ok"><b>Live</b><span>Urgent broadcast banner with acknowledgement tracking</span></li><li class="ok"><b>Live</b><span>Needs-attention feed — defects, expiring licenses, fuel exceptions, weather</span></li><li class="gap"><b>Note</b><span>Day one the only inspection rule is the deterministic one: marked OK while a defect is open. Pattern-based anomalies wait for history</span></li><li class="ok"><b>Live</b><span>Cost-per-mile and spend charts</span></li><li class="gap"><b>Note</b><span>Maintenance costs join the chart in phase 2 — day one it's fuel only</span></li></ul></div><div class="rm-sec"><h6>Still to come on the dashboard</h6><ul><li><b>P2</b><span>Live crew map tile and storm-mode board</span></li><li><b>P2</b><span>Incidents queue chip once the accident kit ships</span></li><li><b>P2</b><span>Manager push notifications — punches and roll call, riding the broadcasts build</span></li><li><b>P3</b><span>Statistical inspection-anomaly detection (needs months of baseline)</span></li><li><b>P3</b><span>Leaderboard + points standings once engagement unlocks</span></li><li><b>P4</b><span>Custom report widgets you arrange yourself</span></li></ul></div></div>
+      <div class="roadmap"><div class="rm-sec"><h6>At launch</h6><p class="rm-sub">Everything you see on this screen works on day one.</p><ul><li class="ok"><b>Live</b><span>Queue chips are buttons — click one and you land in the queue where that work gets cleared; a queue at zero drops off the strip entirely</span></li><li class="gap"><b>Note</b><span>Day one the strip carries punch corrections, open defects, and expiring documents. Deep-check reviews, purchase requests, low stock, tools overdue, incidents, and urgent acks appear as their phase-2 modules land</span></li><li class="ok"><b>Live</b><span>Six stat tiles: on the clock, vehicles active, utilization, cost/mile, open defects, PM compliance</span></li><li class="gap"><b>Note</b><span>Utilization and PM compliance stay thin until a few weeks of trips and services accumulate</span></li><li class="ok"><b>Live</b><span>Urgent broadcast banner with acknowledgement tracking</span></li><li class="ok"><b>Live</b><span>Needs-attention feed — defects, expiring licenses, fuel exceptions, weather</span></li><li class="gap"><b>Note</b><span>Day one the only inspection rule is the deterministic one: marked OK while a defect is open. Pattern-based anomalies wait for history</span></li><li class="ok"><b>Live</b><span>Cost-per-mile and spend charts</span></li><li class="gap"><b>Note</b><span>Maintenance costs join the chart in phase 2 — day one it's fuel only</span></li></ul></div><div class="rm-sec"><h6>Still to come on the dashboard</h6><ul><li><b>P2</b><span>Live crew map tile and storm-mode board</span></li><li><b>P2</b><span>Incidents queue chip once the accident kit ships</span></li><li><b>P2</b><span>Manager push notifications — punches and roll call, riding the broadcasts build</span></li><li><b>P3</b><span>Statistical inspection-anomaly detection (needs months of baseline)</span></li><li><b>P3</b><span>Leaderboard + points standings once engagement unlocks</span></li><li><b>P4</b><span>Custom report widgets you arrange yourself</span></li></ul></div></div>
     </section>
 
     <!-- ============ ASSETS ============ -->
@@ -1002,6 +1003,9 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
   }
   document.querySelectorAll("[data-view]").forEach(function (b) {
     b.addEventListener("click", function () { show(b.getAttribute("data-view")); });
+  });
+  document.querySelectorAll("[data-goto]").forEach(function (b) {
+    b.addEventListener("click", function () { show(b.getAttribute("data-goto")); });
   });
   document.querySelectorAll("[data-na]").forEach(function (b) {
     b.addEventListener("click", function () {
