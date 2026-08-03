@@ -305,7 +305,7 @@
   .lp-prev .qr img, .lp-prev .qr canvas { width: 48px !important; height: 48px !important; display: block; }
   .lp-prev .nm { font-weight: 700; font-size: 13px; display: block; }
   .lp-prev .id { font-family: ui-monospace, Menlo, monospace; font-size: 11px; opacity: 0.85; }
-  .lp-prev .ptap { width: 38px; height: 38px; flex: none; margin-right: 22px; border: 2px dashed currentColor; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .lp-prev .ptap { width: 38px; height: 38px; flex: none; margin-right: 22px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
   .lp-prev .ptap svg { width: 15px; height: 15px; }
   .lp-prev .tx { flex: 1; min-width: 0; }
   .lp-prev .id2 { font-family: ui-monospace, Menlo, monospace; font-size: 10.5px; opacity: 0.9; display: block; margin-top: 1px; }
@@ -1752,7 +1752,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       var d = document.createElement("div");
       d.className = "lp-prev lpc-" + t.color;
       if (t.cc) d.style.background = t.cc;
-      d.innerHTML = '<span class="qr"></span><span class="tx"><span class="nm">' + t.asset + '</span><span class="id2">' + t.name + '</span><span class="ac2">' + act + '</span></span><span class="ptap">' + NFC + '</span><span class="pband" style="background:' + shade(hexOf(t)) + '">' + act.toUpperCase() + '</span>';
+      d.innerHTML = '<span class="qr"></span><span class="tx"><span class="nm">' + t.asset + '</span><span class="id2">' + t.name + '</span><span class="ac2">' + act + '</span></span><span class="ptap" style="color:' + hexOf(t) + '">' + NFC + '</span><span class="pband" style="background:' + shade(hexOf(t)) + '">' + act.toUpperCase() + '</span>';
       item.appendChild(d);
       var tog = document.createElement("div");
       tog.style.cssText = "display:flex;justify-content:flex-end;gap:5px;margin-top:4px";
