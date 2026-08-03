@@ -1,0 +1,85 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Axle — QR Tap Test Sheet</title>
+<style>
+  :root { color-scheme: light; --page:#f7f8f5; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781; --line:#e1e0d9; --accent:#0e6672; --accent-ink:#0b4d57; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--page); color: var(--ink); margin: 0; padding: 28px 20px 60px; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 18px; }
+  .bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 22px; }
+  .bar input { flex: 1 1 320px; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 8px 12px; font-size: 13px; font-family: ui-monospace, Menlo, monospace; }
+  .bar button { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 14px; font-size: 12.5px; font-weight: 600; color: var(--ink2); cursor: pointer; }
+  .bar button.on { background: rgba(14,102,114,0.09); border-color: var(--accent); color: var(--accent-ink); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; max-width: 1080px; }
+  .face { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; text-align: center; }
+  .face .dot { display: inline-block; width: 11px; height: 11px; border-radius: 99px; margin-right: 6px; vertical-align: -1px; }
+  .face h3 { font-size: 15px; margin: 0 0 2px; }
+  .face .kind { color: var(--muted); font-size: 12px; margin-bottom: 12px; }
+  .face .qr { display: inline-block; padding: 10px; background: #fff; border-radius: 10px; border: 1px solid var(--line); }
+  .face .url { font-family: ui-monospace, Menlo, monospace; font-size: 10.5px; color: var(--muted); margin-top: 10px; word-break: break-all; }
+  .note { max-width: 720px; margin-top: 26px; color: var(--ink2); font-size: 13px; line-height: 1.55; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  @media print { .bar, .note { display: none; } }
+</style>
+<h1>Axle — QR tap-test sheet</h1>
+<div class="sub">Scan any code with a phone camera — same URL, same landing, same resolution as an NFC tap. Print this page to make physical test labels.</div>
+<div class="bar">
+  <span style="font-size:11px;font-weight:700;letter-spacing:0.06em;color:var(--muted)">LANDING</span>
+  <button id="m-driver" class="on" type="button">Driver flow</button>
+  <button id="m-admin" type="button">Admin view</button>
+  <span style="width:14px"></span>
+  <span style="font-size:11px;font-weight:700;letter-spacing:0.06em;color:var(--muted)">SERVED FROM</span>
+  <button id="b-lan" class="on" type="button">Mac on this Wi-Fi</button>
+  <button id="b-dom" type="button">demo.axlehq.io (after DNS)</button>
+  <button id="b-art" type="button">Artifact (signed-in)</button>
+  <input id="base" value="http://192.168.4.199:8741/axle-driver-demo.html">
+  <button id="go" type="button">Regenerate</button>
+</div>
+<div class="grid" id="grid"></div>
+<div class="note"><b>How to test right now:</b> phone on the same Wi-Fi as this Mac → scan a code → the demo opens from the Mac and resolves the tag (look for the 📶 badge and the right card: blue = check-in, yellow = supply receipt, red = problem report). Once the Porkbun CNAME is in, switch to the demo.axlehq.io preset — that's the URL the physical NFC tags carry, and these QRs become identical to the printed Avery faces.</div>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var TAGS = [
+    { id: "U-104", name: "Truck 7 — dash", kind: "check-in", color: "#2a78d6" },
+    { id: "TR-12", name: "Trailer — tongue", kind: "check-in", color: "#2a78d6" },
+    { id: "OIL", name: "2-cycle oil rack", kind: "supply", color: "#eda100" },
+    { id: "EQ-208", name: "Skid steer — frame", kind: "problem", color: "#d03b3b" }
+  ];
+  var mode = "driver";
+  var PRESETS = {
+    "b-lan": { driver: "http://192.168.4.199:8741/axle-driver-demo.html", admin: "http://192.168.4.199:8741/axle-admin-demo.html" },
+    "b-dom": { driver: "https://demo.axlehq.io/driver.html", admin: "https://demo.axlehq.io/" },
+    "b-art": { driver: "https://claude.ai/code/artifact/1f86935b-ad20-4a04-8963-d257f93059a0", admin: "https://claude.ai/code/artifact/7aa3f4d3-74b8-47f8-bf0f-9384c53e6406" }
+  };
+  var activePreset = "b-lan";
+  function applyPreset() {
+    document.getElementById("base").value = PRESETS[activePreset][mode];
+    ["b-lan", "b-dom", "b-art"].forEach(function (x) { document.getElementById(x).classList.toggle("on", x === activePreset); });
+    document.getElementById("m-driver").classList.toggle("on", mode === "driver");
+    document.getElementById("m-admin").classList.toggle("on", mode === "admin");
+    render();
+  }
+  document.getElementById("m-driver").addEventListener("click", function () { mode = "driver"; applyPreset(); });
+  document.getElementById("m-admin").addEventListener("click", function () { mode = "admin"; applyPreset(); });
+  function render() {
+    var base = document.getElementById("base").value.trim();
+    var grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    TAGS.forEach(function (t) {
+      var url = base + "#t=" + t.id;
+      var card = document.createElement("div");
+      card.className = "face";
+      card.innerHTML = '<h3><span class="dot" style="background:' + t.color + '"></span>' + t.id + "</h3>" +
+        '<div class="kind">' + t.name + " · " + t.kind + '</div><div class="qr"></div><div class="url">' + url + "</div>";
+      grid.appendChild(card);
+      new QRCode(card.querySelector(".qr"), { text: url, width: 160, height: 160, correctLevel: QRCode.CorrectLevel.M });
+    });
+  }
+  Object.keys(PRESETS).forEach(function (id) {
+    document.getElementById(id).addEventListener("click", function () { activePreset = id; applyPreset(); });
+  });
+  document.getElementById("go").addEventListener("click", render);
+  applyPreset();
+})();
+</script>

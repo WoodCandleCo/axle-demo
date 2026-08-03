@@ -1,0 +1,492 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Axle — Driver Demo</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f7f8f5; --surface: #fcfcfb; --surface-2: #f1f1ec;
+    --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+    --line: #e1e0d9; --hair: rgba(11,11,11,0.10);
+    --accent: #0e6672; --accent-ink: #0b4d57; --accent-wash: rgba(14,102,114,0.09);
+    --good: #0ca30c; --good-text: #006300; --warn: #fab219; --crit: #d03b3b;
+    --s1: #2a78d6; --s4: #eda100;
+    --display: "Avenir Next", Avenir, Futura, "Century Gothic", "Segoe UI", system-ui, sans-serif;
+    --body: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
+      --ink: #fff; --ink-2: #c3c2b7; --line: #2c2c2a; --hair: rgba(255,255,255,0.10);
+      --accent: #56b6c2; --accent-ink: #8ed2db; --accent-wash: rgba(86,182,194,0.13);
+      --good-text: #0ca30c; --s1: #3987e5; --s4: #c98500;
+    }
+  }
+  html { background: var(--page); }
+  body { font-family: var(--body); color: var(--ink); background: var(--page); margin: 0; font-size: 15px; line-height: 1.5; }
+  .app { max-width: 480px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
+  .top { display: flex; align-items: center; gap: 8px; padding: 12px 16px 10px; background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 5; }
+  .top .brand { display: flex; align-items: center; gap: 7px; font-family: var(--display); font-weight: 700; font-size: 15px; }
+  .top .brand svg { color: var(--accent); }
+  .top .sp { flex: 1; }
+  .chip { font-size: 11px; font-weight: 700; color: var(--good-text); background: rgba(12,163,12,0.12); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+  .demo-tag { font-size: 9px; font-weight: 800; letter-spacing: 0.08em; color: var(--accent-ink); background: var(--accent-wash); border-radius: 5px; padding: 2px 7px; }
+  .main { flex: 1; padding: 16px 16px 40px; }
+  .view { display: none; }
+  .view.on { display: block; }
+  .k { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-ink); }
+  h2 { font-family: var(--display); font-size: 21px; font-weight: 700; margin: 2px 0 2px; }
+  .sub { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+  .sec { font-size: 10.5px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink); margin: 18px 0 7px; }
+  .group { border: 1px solid var(--line); border-radius: 13px; overflow: hidden; background: var(--surface); }
+  .row { display: flex; align-items: center; gap: 11px; padding: 12px 14px; border-top: 1px solid var(--line); font-size: 14px; }
+  .row:first-child { border-top: 0; }
+  .row .who { min-width: 0; flex: 1; }
+  .row b { display: block; font-size: 14.5px; }
+  .row small { display: block; color: var(--muted); font-size: 12px; }
+  .mini { width: 30px; height: 30px; border-radius: 999px; background: var(--accent-wash); color: var(--accent-ink); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex: none; }
+  .check { width: 24px; height: 24px; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex: none; background: rgba(12,163,12,0.14); color: var(--good-text); }
+  .check.warn { background: rgba(250,178,25,0.22); color: var(--ink); }
+  .add { color: var(--accent-ink); font-weight: 600; font-size: 14px; background: none; border: 0; padding: 0; font-family: var(--body); cursor: pointer; }
+  .cta { display: block; width: 100%; margin: 16px 0 0; padding: 14px; border-radius: 13px; background: var(--accent); color: #fff; text-align: center; font-weight: 700; font-size: 15.5px; border: 0; font-family: var(--body); cursor: pointer; }
+  .cta.ghost { background: var(--surface); color: var(--accent-ink); border: 1px solid var(--line); }
+  .cta.off { background: var(--surface-2); color: var(--muted); pointer-events: none; }
+  .cta.danger { background: var(--crit); }
+  .note { font-size: 12px; color: var(--muted); text-align: center; margin-top: 12px; line-height: 1.5; }
+  .okflag { display: flex; gap: 7px; margin-left: auto; flex: none; }
+  .okflag button { border: 1px solid var(--line); border-radius: 9px; padding: 7px 14px; font-size: 13px; font-weight: 600; color: var(--ink-2); background: var(--surface); font-family: var(--body); cursor: pointer; }
+  .okflag button.ok.on { background: rgba(12,163,12,0.14); border-color: var(--good); color: var(--good-text); }
+  .okflag button.flag.on { background: rgba(250,178,25,0.18); border-color: var(--warn); color: var(--ink); }
+  .flagnote { display: none; padding: 0 14px 12px; }
+  .flagnote.on { display: block; }
+  .flagnote input { width: 100%; border: 1px solid var(--warn); background: var(--surface); border-radius: 9px; padding: 9px 11px; font-size: 13px; color: var(--ink); font-family: var(--body); box-sizing: border-box; }
+  .prog { height: 6px; border-radius: 999px; background: var(--surface-2); margin: 12px 0; overflow: hidden; }
+  .prog i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width 0.2s ease; }
+  .bigcard { border: 1px solid var(--line); border-radius: 15px; background: var(--surface); padding: 18px; text-align: center; margin-top: 4px; }
+  .bigcard .big { font-family: var(--display); font-size: 34px; font-weight: 700; margin: 6px 0 2px; font-variant-numeric: tabular-nums; }
+  .gps { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); }
+  .gps::before { content: ""; width: 8px; height: 8px; border-radius: 99px; background: var(--good); }
+  .sent { border-radius: 15px; background: rgba(12,163,12,0.10); border: 1px solid rgba(12,163,12,0.3); padding: 18px; text-align: center; }
+  .sent b { font-size: 16px; }
+  .sent .to { color: var(--ink-2); font-size: 13px; margin-top: 3px; }
+  .photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
+  .ph { aspect-ratio: 1; border-radius: 11px; border: 1.5px dashed var(--muted); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); text-align: center; cursor: pointer; background: none; font-family: var(--body); }
+  .ph.done { border-style: solid; border-color: transparent; background: var(--accent-wash); color: var(--accent-ink); font-weight: 600; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .fchip { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 7px 15px; font-size: 13px; font-weight: 600; color: var(--ink-2); font-family: var(--body); cursor: pointer; }
+  .fchip.on { background: var(--accent-wash); border-color: var(--accent); color: var(--accent-ink); }
+  .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--page); font-size: 13px; font-weight: 600; border-radius: 999px; padding: 10px 18px; opacity: 0; pointer-events: none; transition: opacity 0.25s; z-index: 50; max-width: 90vw; text-align: center; }
+  .toast.on { opacity: 1; }
+  .simbar { margin-top: 26px; border-top: 1px dashed var(--line); padding-top: 14px; }
+  .simbar .lbl { font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 99px; margin-right: 7px; }
+  .d-blue { background: var(--s1); } .d-yellow { background: var(--s4); } .d-red { background: var(--crit); }
+  .undo { font-family: var(--mono); }
+</style>
+
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-hex" viewBox="0 0 24 24"><path d="M12 2.5 20.5 7v10L12 21.5 3.5 17V7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.6" fill="currentColor"/></symbol>
+</svg>
+
+<div class="app">
+  <div class="top">
+    <span class="brand"><svg width="18" height="18"><use href="#i-hex"/></svg>Axle · Driver</span>
+    <span class="demo-tag">DEMO</span>
+    <span class="sp"></span>
+    <span class="chip">On the clock · 5:58a</span>
+  </div>
+  <div class="main">
+
+    <!-- HOME -->
+    <section class="view" id="v-home">
+      <span class="k">Home</span>
+      <h2>Good morning, Diego</h2>
+      <div class="sub">Thursday · at the shop · this is the tap-test driver app</div>
+      <div class="group">
+        <div class="row"><span class="who"><b>You're on the clock</b><small>Since 5:58a · at the shop</small></span><span class="check">✓</span></div>
+        <div class="row"><span class="who"><b>No trip yet</b><small>Tap a dash tag to start one</small></span></div>
+      </div>
+      <div class="simbar">
+        <div class="lbl">No tag handy? Simulate a tap</div>
+        <div class="chips">
+          <button class="fchip" data-sim="U-104" type="button"><span class="dot d-blue"></span>U-104 dash</button>
+          <button class="fchip" data-sim="TR-12" type="button"><span class="dot d-blue"></span>TR-12 tongue</button>
+          <button class="fchip" data-sim="OIL" type="button"><span class="dot d-yellow"></span>Oil rack</button>
+          <button class="fchip" data-sim="EQ-208" type="button"><span class="dot d-red"></span>EQ-208 problem</button>
+        </div>
+      </div>
+      <div class="note">A real tag or QR carrying <span style="font-family:var(--mono)">#t=U-104</span> opens the same flows.</div>
+    </section>
+
+    <!-- BLUE: driver or rider -->
+    <section class="view" id="v-role">
+      <span class="k">Tag tapped · 6:02 am</span>
+      <h2>Truck 7 — U-104</h2>
+      <div class="sub">2021 Freightliner MT45 · not yet inspected today</div>
+      <div class="group">
+        <div class="row"><span class="who"><b>One question first</b><small>Nobody inspects a moving truck — if you're riding, you're done.</small></span></div>
+      </div>
+      <button class="cta" id="b-driver" type="button">I'm driving</button>
+      <button class="cta ghost" id="b-rider" type="button">Riding along</button>
+    </section>
+
+    <!-- rider done -->
+    <section class="view" id="v-rider">
+      <span class="k">Checked in</span>
+      <h2>You're aboard, Diego</h2>
+      <div class="sub">Truck 7 — U-104 · rider · 6:02 am</div>
+      <div class="sent"><b>That's it — nothing else to do.</b><div class="to">The manifest has you; your hours keep counting.</div></div>
+      <button class="cta ghost" data-home type="button">Back to Home</button>
+    </section>
+
+    <!-- BLUE: manifest -->
+    <section class="view" id="v-manifest">
+      <span class="k">Start trip</span>
+      <h2>Truck 7 — U-104</h2>
+      <div class="sub">Opened with a tap on the dash tag · 6:02 am</div>
+      <div class="sec">Driver</div>
+      <div class="group">
+        <div class="row"><span class="mini">DR</span><span class="who"><b>Diego Ríos</b><small>You · already on the clock (5:58a)</small></span><span class="check">✓</span></div>
+      </div>
+      <div class="sec">Riders</div>
+      <div class="group" id="riders">
+        <div class="row"><button class="add" id="add-rider" type="button">+ Add rider — PIN or pick from roster</button></div>
+      </div>
+      <div class="sec">Towing</div>
+      <div class="group" id="towing">
+        <div class="row"><button class="add" id="add-trailer" type="button">+ Tap or scan equipment tag</button></div>
+      </div>
+      <div class="sec">Odometer</div>
+      <div class="group">
+        <div class="row"><span class="who"><b style="font-family:var(--mono);font-size:16px">112,486 mi</b><small>Last recorded 112,480 · Jul 29 pump prompt</small></span><button class="fchip" data-toast="In the real app the camera reads the dash for you." type="button">Photo</button></div>
+      </div>
+      <button class="cta" id="to-inspection" type="button">Continue to inspection →</button>
+    </section>
+
+    <!-- BLUE: inspection -->
+    <section class="view" id="v-inspect">
+      <span class="k">Pre-trip inspection</span>
+      <h2 id="insp-title">Truck 7</h2>
+      <div class="sub">Answer each item — there is no check-all</div>
+      <div class="prog"><i id="insp-prog"></i></div>
+      <div class="sec">Vehicle</div>
+      <div class="group" id="insp-vehicle"></div>
+      <div id="insp-tow-wrap" style="display:none">
+        <div class="sec">Because you're towing</div>
+        <div class="group" id="insp-tow"></div>
+      </div>
+      <button class="cta off" id="insp-submit" type="button">Submit — 5 checks remaining</button>
+      <div class="note">"Flag" logs a defect for the shop — flagging is never punished; it's how the shop finds out.</div>
+    </section>
+
+    <!-- BLUE: trip live -->
+    <section class="view" id="v-trip">
+      <span class="k">Trip running</span>
+      <h2 id="trip-title">U-104</h2>
+      <div class="sub" id="trip-sub">Started 6:09 am</div>
+      <div class="bigcard">
+        <span class="gps">GPS on · only while the trip runs</span>
+        <div class="big" id="trip-timer">0:00:07</div>
+        <div class="sub" style="margin:0" id="trip-defects">Inspection clean · 0 defects</div>
+      </div>
+      <button class="cta danger" id="end-trip" type="button">End trip</button>
+      <div class="note">In the field this button lives on Home and the lock screen — or just tap the dash tag again.</div>
+    </section>
+
+    <!-- BLUE: end trip -->
+    <section class="view" id="v-end">
+      <span class="k">Ending trip</span>
+      <h2>Two quick confirms</h2>
+      <div class="sub">Then everything rolls up on its own</div>
+      <div class="sec">Closing odometer</div>
+      <div class="group">
+        <div class="row"><span class="who"><b style="font-family:var(--mono);font-size:16px">112,529 mi</b><small>Pre-filled from GPS miles — fix it if the dash disagrees</small></span><span class="check">✓</span></div>
+      </div>
+      <div class="sec" id="end-trailer-sec">The trailer</div>
+      <div class="group" id="end-trailer">
+        <div class="row" style="flex-wrap:wrap;gap:8px">
+          <button class="fchip" data-hitch="kept" type="button">Still hitched to U-104</button>
+          <button class="fchip" data-hitch="dropped" type="button">Dropped it here</button>
+        </div>
+      </div>
+      <button class="cta" id="rollup" type="button">Finish — roll it up</button>
+    </section>
+
+    <!-- BLUE: rolled up -->
+    <section class="view" id="v-done">
+      <span class="k">Trip complete</span>
+      <h2>Rolled up ✓</h2>
+      <div class="sub" id="done-sub">U-104 · 43 mi · riders released · GPS off</div>
+      <div class="sent"><b>Nothing to file.</b><div class="to" id="done-note">Mileage posted, occupancy recorded, inspection archived. See you at the next tap.</div></div>
+      <button class="cta ghost" data-home type="button">Back to Home</button>
+    </section>
+
+    <!-- TRAILER tap -->
+    <section class="view" id="v-trailer">
+      <span class="k">Tag tapped</span>
+      <h2>TR-12 · 16 ft utility</h2>
+      <div class="sub">Blue tag on the tongue</div>
+      <div class="group">
+        <div class="row"><span class="who"><b>Attach to your active trip?</b><small>U-104 · started 6:09 am · the inspection grows hitch &amp; tie-down items</small></span></div>
+      </div>
+      <button class="cta" id="attach-tr" type="button">Attach TR-12</button>
+      <button class="cta ghost" data-home type="button">Not now</button>
+    </section>
+
+    <!-- YELLOW: receipt -->
+    <section class="view" id="v-supply">
+      <span class="k">Yellow tag tapped · 9:18 am</span>
+      <h2>Trimmer line · U-104</h2>
+      <div class="sub">The tap already did the work</div>
+      <div class="sent" id="supply-card">
+        <b>Refill request sent to the office ✓</b>
+        <div class="to">Trimmer line .095 · logged for U-104 · joins this week's restock list</div>
+      </div>
+      <button class="cta ghost" id="supply-undo" type="button">Undo — <span class="undo" id="undo-n">30</span> s</button>
+      <div class="sec">Optional — only if it helps</div>
+      <div class="group">
+        <div class="row"><button class="add" data-toast="Note attached to the request." type="button">+ Add a note or photo</button></div>
+      </div>
+      <div class="note">A receipt, not a form. Three taps this week read "3" at the office — not three alarms.</div>
+      <button class="cta ghost" data-home type="button">Done</button>
+    </section>
+
+    <!-- RED: problem -->
+    <section class="view" id="v-problem">
+      <span class="k">Red tag tapped · 10:41 am</span>
+      <h2>EQ-208 · Skid steer</h2>
+      <div class="sub">Report a problem · pre-filled from the tag</div>
+      <div class="sec">Photos</div>
+      <div class="photos">
+        <button class="ph" type="button">+ Photo</button>
+        <button class="ph" type="button">+ Photo</button>
+        <button class="ph" type="button">+ Photo</button>
+      </div>
+      <div class="sec">What's wrong?</div>
+      <div class="chips" id="prob-what">
+        <button class="fchip" type="button">Won't start</button>
+        <button class="fchip" type="button">Leak</button>
+        <button class="fchip" type="button">Belt / blade</button>
+        <button class="fchip" type="button">Other</button>
+      </div>
+      <div class="sec">Can it keep working?</div>
+      <div class="chips" id="prob-sev">
+        <button class="fchip" type="button">Still usable</button>
+        <button class="fchip" type="button">Needs the shop now</button>
+      </div>
+      <button class="cta off" id="prob-send" type="button">Send to maintenance</button>
+      <div class="note">Goes straight to triage with your name, the GPS fix, and this machine's history attached.</div>
+    </section>
+
+    <!-- RED: sent -->
+    <section class="view" id="v-probdone">
+      <span class="k">Sent</span>
+      <h2>The shop knows</h2>
+      <div class="sub">EQ-208 · 10:41 am</div>
+      <div class="sent"><b>In maintenance triage ✓</b><div class="to" id="probdone-note">Defect logged with your photos and this machine's history. If you said it needs the shop, dispatch sees it too.</div></div>
+      <button class="cta ghost" data-home type="button">Back to Home</button>
+    </section>
+
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var toastTimer = null;
+  function toast(m) { var t = $("toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove("on"); }, 2800); }
+  var VIEWS = ["home", "role", "rider", "manifest", "inspect", "trip", "end", "done", "trailer", "supply", "problem", "probdone"];
+  function show(v) {
+    VIEWS.forEach(function (x) { $("v-" + x).classList.toggle("on", x === v); });
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("[data-home]").forEach(function (b) { b.addEventListener("click", function () { show("home"); }); });
+  document.querySelectorAll("[data-toast]").forEach(function (b) { b.addEventListener("click", function () { toast(b.getAttribute("data-toast")); }); });
+
+  // ---- state ----
+  var towing = false, tripOn = false, defects = 0, tripStart = null, timerIv = null, undoIv = null;
+
+  // ---- routing: hash + sim chips ----
+  function route(tag) {
+    if (tag === "U-104") { show("role"); }
+    else if (tag === "TR-12") { tripOn ? show("trailer") : (toast("No active trip — TR-12 would just check in. Starting the truck flow."), show("role")); }
+    else if (tag === "OIL") { startSupply(); }
+    else if (tag === "EQ-208") { resetProblem(); show("problem"); }
+    else show("home");
+  }
+  document.querySelectorAll("[data-sim]").forEach(function (b) { b.addEventListener("click", function () { route(b.getAttribute("data-sim")); }); });
+  var h = (location.hash || "").replace("#t=", "");
+  if (h) { route(h); } else { show("home"); }
+  window.addEventListener("hashchange", function () { route((location.hash || "").replace("#t=", "")); });
+
+  // ---- blue: role ----
+  $("b-rider").addEventListener("click", function () { show("rider"); });
+  $("b-driver").addEventListener("click", function () { show("manifest"); });
+
+  // ---- manifest ----
+  $("add-rider").addEventListener("click", function () {
+    var row = document.createElement("div");
+    row.className = "row";
+    row.innerHTML = '<span class="mini">JR</span><span class="who"><b>J. Reyes</b><small>Tapped the same tag from their phone · 6:03 am</small></span><span class="check">✓</span>';
+    $("riders").insertBefore(row, $("riders").lastElementChild.parentElement === $("riders") ? $("riders").lastElementChild : null);
+    toast("Rider aboard — their hours ride the trip too.");
+    this.closest(".row").remove();
+  });
+  $("add-trailer").addEventListener("click", function () {
+    towing = true;
+    var g = $("towing");
+    var row = document.createElement("div");
+    row.className = "row";
+    row.innerHTML = '<span class="who"><b>TR-12 · 16 ft utility trailer</b><small>Tag tapped · hitched to U-104</small></span><span class="check">✓</span>';
+    g.insertBefore(row, this.closest(".row"));
+    toast("TR-12 attached — the inspection just grew hitch & tie-down items.");
+  });
+  $("to-inspection").addEventListener("click", function () { buildInspection(); show("inspect"); });
+
+  // ---- inspection ----
+  var VEH_ITEMS = [["Lights & signals", "Walk around · flashers on"], ["Tires & wheels", "Tread, pressure, lug rust rings"], ["Brakes", "Pedal feel + park brake hold"], ["Leaks & fluids", "Under-vehicle look"], ["Glass & mirrors", ""]];
+  var TOW_ITEMS = [["Hitch, chains & breakaway", ""], ["Trailer lights & tires", ""], ["Load & tie-downs", ""]];
+  function itemRow(it) {
+    var wrap = document.createElement("div");
+    wrap.innerHTML = '<div class="row"><span class="who"><b>' + it[0] + "</b>" + (it[1] ? "<small>" + it[1] + "</small>" : "") + '</span><span class="okflag"><button class="ok" type="button">OK</button><button class="flag" type="button">Flag</button></span></div><div class="flagnote"><input placeholder="What did you see? Photo opens in the real app."></div>';
+    var ok = wrap.querySelector(".ok"), fl = wrap.querySelector(".flag"), note = wrap.querySelector(".flagnote");
+    function set(state) {
+      var was = ok.classList.contains("on") || fl.classList.contains("on");
+      ok.classList.toggle("on", state === "ok");
+      fl.classList.toggle("on", state === "flag");
+      note.classList.toggle("on", state === "flag");
+      if (state === "flag" && !fl.dataset.counted) { defects++; fl.dataset.counted = 1; }
+      if (state === "ok" && fl.dataset.counted) { defects--; delete fl.dataset.counted; }
+      if (!was) answered++;
+      updateProg();
+    }
+    ok.addEventListener("click", function () { set("ok"); });
+    fl.addEventListener("click", function () { set("flag"); });
+    return wrap;
+  }
+  var answered = 0, total = 0;
+  function buildInspection() {
+    answered = 0; defects = 0;
+    $("insp-vehicle").innerHTML = ""; $("insp-tow").innerHTML = "";
+    VEH_ITEMS.forEach(function (it) { $("insp-vehicle").appendChild(itemRow(it)); });
+    total = VEH_ITEMS.length;
+    if (towing) {
+      TOW_ITEMS.forEach(function (it) { $("insp-tow").appendChild(itemRow(it)); });
+      total += TOW_ITEMS.length;
+      $("insp-tow-wrap").style.display = "";
+      $("insp-title").textContent = "Truck 7 + TR-12";
+    } else {
+      $("insp-tow-wrap").style.display = "none";
+      $("insp-title").textContent = "Truck 7";
+    }
+    updateProg();
+  }
+  function updateProg() {
+    $("insp-prog").style.width = (answered / total * 100) + "%";
+    var left = total - answered;
+    var btn = $("insp-submit");
+    if (left > 0) { btn.className = "cta off"; btn.textContent = "Submit — " + left + " check" + (left === 1 ? "" : "s") + " remaining"; }
+    else { btn.className = "cta"; btn.textContent = defects > 0 ? "Submit & start trip — " + defects + " defect" + (defects === 1 ? "" : "s") + " to the shop" : "Submit & start trip"; }
+  }
+  $("insp-submit").addEventListener("click", function () {
+    if (answered < total) return;
+    tripOn = true; tripStart = Date.now();
+    $("trip-title").textContent = towing ? "U-104 + TR-12" : "U-104";
+    $("trip-defects").textContent = defects > 0 ? "Inspection done · " + defects + " defect" + (defects === 1 ? "" : "s") + " routed to triage" : "Inspection clean · 0 defects";
+    clearInterval(timerIv);
+    timerIv = setInterval(function () {
+      var s = Math.floor((Date.now() - tripStart) / 1000);
+      $("trip-timer").textContent = Math.floor(s / 3600) + ":" + ("0" + Math.floor(s / 60) % 60).slice(-2) + ":" + ("0" + s % 60).slice(-2);
+    }, 1000);
+    show("trip");
+    toast(defects > 0 ? "Trip started — the shop already sees your flags." : "Trip started — GPS on until it ends.");
+  });
+
+  // ---- end trip ----
+  var hitch = null;
+  $("end-trip").addEventListener("click", function () {
+    $("end-trailer-sec").style.display = towing ? "" : "none";
+    $("end-trailer").style.display = towing ? "" : "none";
+    hitch = null;
+    document.querySelectorAll("[data-hitch]").forEach(function (b) { b.classList.remove("on"); });
+    show("end");
+  });
+  document.querySelectorAll("[data-hitch]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      hitch = b.getAttribute("data-hitch");
+      document.querySelectorAll("[data-hitch]").forEach(function (x) { x.classList.toggle("on", x === b); });
+    });
+  });
+  $("rollup").addEventListener("click", function () {
+    if (towing && !hitch) { toast("One thing — is TR-12 still hitched, or dropped here?"); return; }
+    clearInterval(timerIv);
+    tripOn = false;
+    $("done-sub").textContent = (towing ? "U-104 + TR-12" : "U-104") + " · 43 mi · riders released · GPS off";
+    $("done-note").textContent = towing
+      ? (hitch === "dropped" ? "TR-12 recorded as dropped here — attachments updated. " : "TR-12 stays hitched — attachments unchanged. ") + "Mileage posted, occupancy recorded, inspection archived."
+      : "Mileage posted, occupancy recorded, inspection archived. See you at the next tap.";
+    towing = false;
+    show("done");
+  });
+
+  // ---- trailer tap mid-trip ----
+  $("attach-tr").addEventListener("click", function () {
+    towing = true;
+    $("trip-title").textContent = "U-104 + TR-12";
+    toast("TR-12 attached to the running trip — end-of-trip will ask about it.");
+    show("trip");
+  });
+
+  // ---- yellow ----
+  function startSupply() {
+    var card = $("supply-card"), undo = $("supply-undo");
+    card.innerHTML = '<b>Refill request sent to the office ✓</b><div class="to">Trimmer line .095 · logged for U-104 · joins this week\'s restock list</div>';
+    undo.style.display = "";
+    var n = 30;
+    $("undo-n").textContent = n;
+    clearInterval(undoIv);
+    undoIv = setInterval(function () {
+      n--;
+      if (n <= 0) { clearInterval(undoIv); undo.style.display = "none"; toast("Undo window closed — the request stands."); return; }
+      $("undo-n").textContent = n;
+    }, 1000);
+    show("supply");
+  }
+  $("supply-undo").addEventListener("click", function () {
+    clearInterval(undoIv);
+    $("supply-card").innerHTML = '<b>Request cancelled</b><div class="to">Nothing sent — tap the tag again if it really is low.</div>';
+    this.style.display = "none";
+  });
+
+  // ---- red ----
+  function resetProblem() {
+    document.querySelectorAll("#v-problem .ph").forEach(function (p) { p.classList.remove("done"); p.textContent = "+ Photo"; });
+    document.querySelectorAll("#prob-what .fchip, #prob-sev .fchip").forEach(function (c) { c.classList.remove("on"); });
+    probCheck();
+  }
+  document.querySelectorAll("#v-problem .ph").forEach(function (p) {
+    p.addEventListener("click", function () { p.classList.add("done"); p.textContent = "Photo ✓"; });
+  });
+  function probCheck() {
+    var what = document.querySelector("#prob-what .fchip.on"), sev = document.querySelector("#prob-sev .fchip.on");
+    $("prob-send").className = what && sev ? "cta" : "cta off";
+  }
+  document.querySelectorAll("#prob-what .fchip").forEach(function (c) {
+    c.addEventListener("click", function () { document.querySelectorAll("#prob-what .fchip").forEach(function (x) { x.classList.toggle("on", x === c); }); probCheck(); });
+  });
+  document.querySelectorAll("#prob-sev .fchip").forEach(function (c) {
+    c.addEventListener("click", function () { document.querySelectorAll("#prob-sev .fchip").forEach(function (x) { x.classList.toggle("on", x === c); }); probCheck(); });
+  });
+  $("prob-send").addEventListener("click", function () {
+    var sev = document.querySelector("#prob-sev .fchip.on");
+    $("probdone-note").textContent = sev && sev.textContent === "Needs the shop now"
+      ? "Defect logged critical — the machine is held, dispatch and the shop are both notified now."
+      : "Defect logged with your photos and this machine's history — batched for the shop's next look.";
+    show("probdone");
+  });
+})();
+</script>
