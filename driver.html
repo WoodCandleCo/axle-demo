@@ -107,6 +107,7 @@
       <div class="group">
         <div class="row"><span class="who"><b>You're on the clock</b><small>Since 5:58a · at the shop</small></span><span class="check">✓</span></div>
         <div class="row"><span class="who"><b>No trip yet</b><small>Tap a dash tag to start one</small></span></div>
+        <div class="row"><button class="add" id="manual-start" type="button">Start a trip without a tag →</button></div>
       </div>
       <div class="simbar">
         <div class="lbl">No tag handy? Simulate a tap</div>
@@ -118,6 +119,19 @@
         </div>
       </div>
       <div class="note">A real tag or QR carrying <span style="font-family:var(--mono)">#t=U-104</span> opens the same flows.</div>
+    </section>
+
+    <!-- MANUAL: pick vehicle -->
+    <section class="view" id="v-pickveh">
+      <span class="k">Start a trip</span>
+      <h2>Which truck?</h2>
+      <div class="sub">Tag dead or phone won't read? This works the same — the start is just marked "manual" for the office.</div>
+      <div class="group">
+        <div class="row" style="cursor:pointer" id="pick-u104"><span class="mini">U1</span><span class="who"><b>Truck 7 — U-104</b><small>Your usual · 2021 Freightliner MT45</small></span><span class="check">✓</span></div>
+        <div class="row" style="cursor:pointer" data-toast="In this demo U-104 carries the full flow — every truck works in the real app."><span class="mini">U1</span><span class="who"><b>U-131</b><small>2022 Ram ProMaster 2500</small></span></div>
+        <div class="row" style="cursor:pointer" data-toast="In this demo U-104 carries the full flow — every truck works in the real app."><span class="mini">U1</span><span class="who"><b>U-155</b><small>2024 Ford Transit 250</small></span></div>
+      </div>
+      <button class="cta ghost" data-home type="button">Cancel</button>
     </section>
 
     <!-- BLUE: driver or rider -->
@@ -157,6 +171,16 @@
       <div class="sec">Towing</div>
       <div class="group" id="towing">
         <div class="row"><button class="add" id="add-trailer" type="button">+ Tap or scan equipment tag</button></div>
+      </div>
+      <div class="sec">Headed to</div>
+      <div class="group">
+        <div class="row"><span class="who"><b id="dest-label">Today's route · 11 sites</b><small id="dest-sub">Starts at Elm Ridge HOA · published by dispatch — nothing to pick</small></span><span class="check" id="dest-check">✓</span></div>
+        <div class="row" style="flex-wrap:wrap;gap:8px">
+          <button class="fchip on" data-dest="route" type="button">Today's route</button>
+          <button class="fchip" data-dest="shop" type="button">Shop run</button>
+          <button class="fchip" data-dest="dump" type="button">Dump run</button>
+          <button class="fchip" data-dest="pick" type="button">Pick sites…</button>
+        </div>
       </div>
       <div class="sec">Odometer</div>
       <div class="group">
@@ -299,7 +323,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var toastTimer = null;
   function toast(m) { var t = $("toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove("on"); }, 2800); }
-  var VIEWS = ["home", "role", "rider", "manifest", "inspect", "trip", "end", "done", "trailer", "supply", "problem", "probdone"];
+  var VIEWS = ["home", "pickveh", "role", "rider", "manifest", "inspect", "trip", "end", "done", "trailer", "supply", "problem", "probdone"];
   function show(v) {
     VIEWS.forEach(function (x) { $("v-" + x).classList.toggle("on", x === v); });
     window.scrollTo(0, 0);
@@ -326,6 +350,30 @@
   // ---- blue: role ----
   $("b-rider").addEventListener("click", function () { show("rider"); });
   $("b-driver").addEventListener("click", function () { show("manifest"); });
+
+  // ---- manual start ----
+  $("manual-start").addEventListener("click", function () { show("pickveh"); });
+  $("pick-u104").addEventListener("click", function () {
+    show("manifest");
+    toast("Manual start, marked for the office — the inspection fires either way.");
+  });
+
+  // ---- headed to ----
+  var DESTS = {
+    route: ["Today's route · 11 sites", "Starts at Elm Ridge HOA · published by dispatch — nothing to pick"],
+    shop: ["Shop run", "Ad-hoc trip · no route attached · GPS still records the drive"],
+    dump: ["Dump run", "Ad-hoc trip · brush site on Hwy 14 · GPS still records the drive"],
+    pick: ["Elm Ridge HOA + 2 more", "Picked from the saved-site library — geofences arm on each"]
+  };
+  document.querySelectorAll("[data-dest]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var d = b.getAttribute("data-dest");
+      document.querySelectorAll("[data-dest]").forEach(function (x) { x.classList.toggle("on", x === b); });
+      $("dest-label").textContent = DESTS[d][0];
+      $("dest-sub").textContent = DESTS[d][1];
+      if (d === "pick") toast("In the real app this opens the saved-site list from Dispatch Lite — pick one or several.");
+    });
+  });
 
   // ---- manifest ----
   $("add-rider").addEventListener("click", function () {
