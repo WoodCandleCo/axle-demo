@@ -242,8 +242,6 @@
   /* ---- tag label generator (Avery 5523) ---- */
   .lp-thck { width: 30px; }
   .ck { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px 16px 8px; }
-  .ck #ck-form { grid-column: 1 / -1; }
-  .ck #ck-add { grid-column: 1 / -1; justify-self: end; }
   @media (max-width: 760px) { .ck { grid-template-columns: 1fr; } }
   .ck-row { display: flex; align-items: center; gap: 11px; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 8px 10px; cursor: pointer; text-align: left; font-family: var(--body); width: 100%; }
   .ck-row:hover { border-color: var(--accent); }
@@ -252,6 +250,31 @@
   .ck-tx { min-width: 0; }
   .ck-tx b { display: block; font-size: 13px; color: var(--ink); }
   .ck-tx small { display: block; font-size: 11.5px; color: var(--muted); line-height: 1.45; }
+  .spec { display: inline-block; max-width: 100%; }
+  #res-prev { overflow-x: auto; }
+  .spec-top { display: flex; align-items: center; gap: 7px; width: 360px; margin-bottom: 5px; font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .spec-top i { flex: 1; height: 1px; background: var(--line); position: relative; }
+  .spec-top i.l::before { content: ""; position: absolute; top: -3px; left: 0; width: 1px; height: 7px; background: var(--muted); }
+  .spec-top i.r::after { content: ""; position: absolute; top: -3px; right: 0; width: 1px; height: 7px; background: var(--muted); }
+  .spec-mid { display: flex; gap: 7px; align-items: stretch; }
+  .spec-side { display: flex; flex-direction: column; align-items: center; gap: 7px; font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .spec-side i { flex: 1; width: 1px; background: var(--line); position: relative; }
+  .spec-side i.t::before { content: ""; position: absolute; top: 0; left: -3px; width: 7px; height: 1px; background: var(--muted); }
+  .spec-side i.b::after { content: ""; position: absolute; bottom: 0; left: -3px; width: 7px; height: 1px; background: var(--muted); }
+  .spec-lab { width: 360px; height: 180px; display: flex; align-items: center; gap: 4px; padding: 13px 0 13px 9px; box-sizing: border-box; color: #fff; border-radius: 6px; overflow: hidden; }
+  .spec-lab.lpc-yellow { color: #332000; }
+  .spec-lab .qr { width: 90px; height: 90px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .spec-lab .qr img, .spec-lab .qr canvas { width: 84px !important; height: 84px !important; display: block; }
+  .spec-lab .tx { flex: 1; min-width: 0; line-height: 1.2; }
+  .spec-lab .tx span { display: block; }
+  .spec-lab .nm { font-size: 16.5px; font-weight: 800; }
+  .spec-lab .id { font-family: var(--mono); font-size: 10.5px; opacity: 0.92; margin-top: 2px; }
+  .spec-lab .ac { font-size: 9.5px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.92; margin-top: 2px; }
+  .spec-lab .u { font-size: 7px; opacity: 0.72; word-break: break-all; margin-top: 3px; }
+  .spec-lab .tap { width: 99px; height: 99px; flex: none; margin-right: 34px; border: 3px dashed currentColor; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; box-sizing: border-box; }
+  .spec-lab .tap svg { width: 30px; height: 30px; }
+  .spec-lab .tap b { font-size: 7.5px; font-weight: 800; letter-spacing: 1.2px; }
+  .spec-lab .band { align-self: stretch; flex: none; width: 52px; margin-left: 2px; background: rgba(0,0,0,0.22); display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; transform: rotate(180deg); font-size: 12px; font-weight: 800; letter-spacing: 2px; color: #fff; }
   .ckf-lbl { font-size: 9.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
   .ck-pick { width: 22px; height: 22px; border-radius: 99px; border: 2px solid transparent; cursor: pointer; display: inline-block; margin-right: 6px; padding: 0; }
   .ck-pick.on { border-color: var(--ink); }
@@ -259,6 +282,7 @@
   .ck-any input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
   .tbl input[type=checkbox] { accent-color: var(--accent); }
   .selbar { display: flex; align-items: center; gap: 8px; padding: 10px 16px 12px; border-top: 1px solid var(--line); font-size: 12.5px; }
+  .selbar .sp { flex: 1; }
   .lp-cols { display: grid; grid-template-columns: 224px 1fr; gap: 18px; }
   @media (max-width: 640px) { .lp-cols { grid-template-columns: 1fr; } }
   .lp-sec { margin: 8px 0 6px; font-size: 12.5px; }
@@ -731,7 +755,7 @@
               <button class="choice" data-color="yellow" type="button"><span class="dot d-yellow"></span>Supply</button>
               <button class="choice" data-color="red" type="button"><span class="dot d-red"></span>Problem</button>
               <button class="choice" data-color="green" type="button"><span class="dot d-green"></span>Service</button>
-              <div><button class="fchip" id="wz-save" type="button" disabled>Link it</button></div>
+              <div style="display:flex;justify-content:flex-end"><button class="fchip" id="wz-save" type="button" disabled>Link it</button></div>
             </div>
             <div class="hidden" id="wz-3">
               <div class="okline"><b id="wz-done-id">AX-____</b> linked ✓ — audited; the QR face regenerates from the ID for the print sheet.</div>
@@ -747,7 +771,11 @@
             <button class="ck-row" data-tap="OIL" type="button"><span class="ck-sw ck-yellow">SUPPLY</span><span class="ck-tx"><b>Supply</b><small>We're low — one tap logs the refill. A receipt, not a form.</small></span></button>
             <button class="ck-row" data-tap="EQ-208" type="button"><span class="ck-sw ck-red">PROBLEM</span><span class="ck-tx"><b>Problem</b><small>Something's wrong — the defect report opens with the machine pre-filled.</small></span></button>
             <button class="ck-row" data-tap="AX-C218" type="button"><span class="ck-sw ck-green">SERVICE</span><span class="ck-tx"><b>Service</b><small>Work done — logs the touch on the unit's service history.</small></span></button>
-            <button class="fchip" id="ck-add" type="button" style="align-self:flex-end">+ New category</button>
+          </div>
+          <div class="hidden" id="res-prev" style="padding:0 16px 2px"></div>
+          <div style="padding:2px 16px 12px" id="res-body" class="hidden"></div>
+          <div style="padding:0 16px 14px">
+            
             <div class="hidden" id="ck-form" style="border:1px dashed var(--line);border-radius:10px;padding:10px 12px">
               <div class="ckf-lbl">Name</div>
               <input id="ck-name" placeholder="e.g. Rental return" style="width:100%;box-sizing:border-box;border:1px solid var(--line);background:var(--surface);border-radius:7px;padding:6px 9px;font-size:12.5px;color:var(--ink);font-family:var(--body)">
@@ -764,11 +792,10 @@
               <select id="ck-basis" style="border:1px solid var(--line);background:var(--surface);border-radius:7px;padding:6px 9px;font-size:12.5px;color:var(--ink);font-family:var(--body)">
                 <option>Check-in</option><option>Supply</option><option>Problem</option><option selected>Service</option>
               </select>
-              <div style="margin-top:10px"><button class="fchip" id="ck-save" type="button" style="background:var(--accent);border-color:var(--accent);color:#fff">Add category</button></div>
+              <div style="margin-top:10px;display:flex;justify-content:flex-end"><button class="fchip" id="ck-save" type="button" style="background:var(--accent);border-color:var(--accent);color:#fff">Add category</button></div>
             </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="fchip" id="ck-add" type="button">+ New category</button></div>
           </div>
-          <div class="hidden" id="res-prev" style="padding:0 16px 2px"></div>
-          <div style="padding:2px 16px 12px" id="res-body" class="hidden"></div>
         </div>
       </div>
       <div class="howto">
@@ -1267,8 +1294,8 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     if (row) {
       var act = row.cells[3].textContent.trim();
       pv.classList.remove("hidden");
-      pv.innerHTML = '<div class="lp-prev lpc-' + row.getAttribute("data-color") + '"><span class="qr"></span><span class="tx"><span class="nm">' + row.getAttribute("data-asset") + '</span><span class="id2">' + row.getAttribute("data-name") + " \u00b7 " + row.getAttribute("data-tag") + '</span></span><span class="ptap">' + NFC2 + '</span><span class="pband">' + act.toUpperCase() + "</span></div>";
-      new QRCode(pv.querySelector(".qr"), { text: "https://demo.axlehq.io/driver.html#t=" + encodeURIComponent(id), width: 48, height: 48, colorDark: "#0b0b0b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+      pv.innerHTML = '<div class="spec"><div class="spec-top"><i class="l"></i><span>4&quot;</span><i class="r"></i></div><div class="spec-mid"><div class="spec-lab lpc-' + row.getAttribute("data-color") + '"><span class="qr"></span><span class="tx"><span class="nm">' + row.getAttribute("data-asset") + '</span><span class="id">' + row.getAttribute("data-name") + '</span><span class="ac">' + act + '</span><span class="u">' + row.getAttribute("data-tag") + ' \u00b7 demo.axlehq.io/driver.html#t=' + id + '</span></span><span class="tap">' + NFC2 + '<b>TAP HERE</b></span><span class="band">' + act.toUpperCase() + '</span></div><div class="spec-side"><i class="t"></i><span>2&quot;</span><i class="b"></i></div></div></div>';
+      new QRCode(pv.querySelector(".qr"), { text: "https://demo.axlehq.io/driver.html#t=" + encodeURIComponent(id), width: 84, height: 84, colorDark: "#0b0b0b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
     } else { pv.classList.add("hidden"); }
     $("res-body").classList.remove("hidden");
     $("res-body").innerHTML = '<div style="font-size:13px;line-height:1.6">' + RES[id] + "</div>";
@@ -1311,7 +1338,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       $("res-sub").textContent = "resolved: " + name;
       $("real-badge").classList.add("hidden");
     });
-    $("ck-form").parentNode.insertBefore(row, $("ck-add"));
+    document.querySelector(".ck").appendChild(row);
     $("ck-form").classList.add("hidden");
     $("ck-name").value = ""; ckColor = null;
     document.querySelectorAll(".ck-pick").forEach(function (x) { x.classList.remove("on"); });
