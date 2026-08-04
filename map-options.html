@@ -1,0 +1,194 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Axle — live map: four layouts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    color-scheme: light;
+    --page:#f7f8f5; --surface:#fcfcfb; --surface-2:#f1f1ec;
+    --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+    --line:#e1e0d9; --hair:rgba(11,11,11,0.10);
+    --accent:#0e6672; --accent-ink:#0b4d57; --accent-wash:rgba(14,102,114,0.09); --accent-tint:rgba(14,102,114,0.20);
+    --good:#0ca30c; --good-text:#006300; --warn:#fab219; --crit:#d03b3b; --axis:#c3c2b7;
+    --display:"Avenir Next",Avenir,Futura,"Segoe UI",system-ui,sans-serif;
+    --body:system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,monospace;
+    --shadow:0 1px 2px rgba(11,11,11,0.04), 0 10px 28px rgba(11,11,11,0.06);
+  }
+  body { font-family: var(--body); background: var(--page); color: var(--ink); margin: 0; padding: 26px 20px 70px; font-size: 14px; line-height: 1.5; }
+  h1 { font-family: var(--display); font-size: 22px; margin: 0 0 4px; }
+  .sub { color: var(--ink-2); font-size: 13px; max-width: 88ch; margin-bottom: 8px; }
+  .rule { background: var(--surface); border: 1px solid var(--hair); border-radius: 10px; padding: 12px 15px; max-width: 88ch; font-size: 12.5px; color: var(--ink-2); margin-bottom: 26px; }
+  .rule b { color: var(--ink); }
+  .opt { margin-bottom: 34px; }
+  .opt h2 { font-family: var(--display); font-size: 16px; margin: 0 0 3px; }
+  .opt .note { font-size: 12.5px; color: var(--ink-2); margin: 0 0 12px; max-width: 92ch; }
+  .opt .note em { color: var(--accent-ink); font-style: normal; font-weight: 600; }
+  .demo { background: var(--surface); border: 1px solid var(--hair); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+  .bar { display: flex; align-items: center; gap: 9px; padding: 11px 14px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .bar h3 { font-family: var(--display); font-size: 15px; margin: 0; }
+  .sp { flex: 1; }
+  .search { display: flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 5px 11px; font-size: 12.5px; color: var(--muted); min-width: 210px; }
+  .search svg { flex: none; }
+  .fchip { font-size: 11.5px; font-weight: 600; color: var(--ink-2); border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 3.5px 11px; }
+  .fchip.on { background: var(--accent-tint); border-color: transparent; color: var(--accent-ink); font-weight: 700; }
+  .fchip small { font-family: var(--mono); font-size: 9.5px; font-weight: 700; color: var(--accent-ink); background: var(--accent-wash); border-radius: 999px; padding: 1px 6px; margin-left: 3px; }
+  .fchip.on small { background: var(--accent); color: var(--surface); }
+  .who-chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px 3px 3px; font-size: 11.5px; font-weight: 600; background: var(--surface); }
+  .av { width: 20px; height: 20px; border-radius: 999px; background: var(--accent-wash); color: var(--accent-ink); font-size: 9px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  .map { position: relative; background: var(--surface-2); }
+  .map svg.base { display: block; width: 100%; height: auto; }
+  .ctl { position: absolute; right: 10px; top: 10px; display: flex; flex-direction: column; gap: 5px; }
+  .ctl button, .layers button { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,.06); display: flex; align-items: center; justify-content: center; font-family: var(--body); }
+  .layers { position: absolute; left: 10px; top: 10px; display: flex; gap: 5px; }
+  .layers button { width: auto; padding: 0 11px; font-size: 11.5px; font-weight: 600; }
+  .attrib { position: absolute; right: 8px; bottom: 6px; font-size: 9.5px; color: var(--muted); background: rgba(252,252,251,.8); border-radius: 5px; padding: 1px 6px; }
+  .row { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-top: 1px solid var(--line); font-size: 12.5px; }
+  .row:first-child { border-top: 0; }
+  .row .u { font-family: var(--mono); font-size: 11.5px; font-weight: 700; width: 46px; flex: none; }
+  .row .nm { font-weight: 600; }
+  .row .meta { color: var(--muted); font-size: 11px; }
+  .row .st { margin-left: auto; flex: none; }
+  .row .ago { font-family: var(--mono); font-size: 10px; color: var(--muted); flex: none; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 600; white-space: nowrap; }
+  .pill::before { content: ""; width: 6px; height: 6px; border-radius: 999px; }
+  .p-good { background: rgba(12,163,12,0.13); } .p-good::before { background: var(--good); }
+  .p-warn { background: rgba(250,178,25,0.18); } .p-warn::before { background: var(--warn); }
+  .p-idle { background: var(--surface-2); } .p-idle::before { background: var(--muted); }
+  .tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .tbl th { text-align: left; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; padding: 8px 12px 6px; border-bottom: 1px solid var(--line); }
+  .tbl td { padding: 7px 12px; border-top: 1px solid var(--line); }
+  .mono { font-family: var(--mono); }
+  .dim { color: var(--muted); }
+  .split { display: grid; grid-template-columns: 3fr 2fr; }
+  .split > * { min-width: 0; }
+  .split .list { border-left: 1px solid var(--line); }
+  .roster { max-height: 300px; overflow-y: auto; }
+  .ov { position: absolute; right: 10px; top: 48px; width: 232px; background: var(--surface); border: 1px solid var(--hair); border-radius: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .ov .h { padding: 8px 11px; font-size: 11px; font-weight: 700; border-bottom: 1px solid var(--line); display: flex; align-items: center; }
+  .drill { display: grid; grid-template-columns: 210px 1fr; }
+  .drill .crews { border-right: 1px solid var(--line); }
+  .crew { padding: 10px 12px; border-top: 1px solid var(--line); cursor: pointer; font-size: 12.5px; }
+  .crew:first-child { border-top: 0; }
+  .crew.on { background: var(--accent-tint); }
+  .crew b { display: block; }
+  .crew span { color: var(--muted); font-size: 11px; }
+  .tl { list-style: none; margin: 0; padding: 10px 14px; font-size: 12px; }
+  .tl li { position: relative; padding: 0 0 12px 18px; color: var(--ink-2); }
+  .tl li::before { content: ""; position: absolute; left: 2px; top: 5px; width: 8px; height: 8px; border-radius: 999px; background: var(--axis); }
+  .tl li.now::before { background: var(--good); }
+  .tl li::after { content: ""; position: absolute; left: 5.5px; top: 15px; bottom: 0; width: 1px; background: var(--line); }
+  .tl li:last-child::after { display: none; }
+  .tl b { color: var(--ink); }
+  .verdict { margin-top: 10px; font-size: 12px; color: var(--ink-2); }
+  .verdict b { color: var(--ink); }
+  @media (max-width: 820px) { .split, .drill { grid-template-columns: 1fr; } .ov { position: static; width: auto; margin: 10px; } }
+</style>
+
+<h1>Live map — four layouts</h1>
+<p class="sub">Reworked after three gaps in the current build: no zoom or pan, no way to filter to one person, and no search. Each option below fixes all three; they differ in what the screen is fundamentally organized around.</p>
+<div class="rule"><b>Shared by all four (non-negotiable in the rework):</b> real pannable/zoomable map with fit-to-fleet and locate controls · search that matches a person <em>or</em> a unit ("Diego", "U-104") · filter down to one person · a last-updated stamp on every vehicle, because a GPS point without a timestamp is a guess · provider attribution once a real basemap lands. <b>The basemap itself</b> is a separate decision — recommendation is MapLibre with open vector tiles (free, no key, no per-load meter, real vector zoom); Mapbox or Google only if a live traffic layer becomes a must-have.</div>
+
+<div class="opt">
+  <h2>A · Map-first — the map is the page</h2>
+  <p class="note">Full-bleed map with everything floating over it: search and filters on a translucent bar, the vehicle list as a collapsible card in the corner. <em>Feels like the map apps everyone already uses.</em> Best when the question is "show me the yard" and the answer is spatial.</p>
+  <div class="demo" id="dA"></div>
+  <p class="verdict"><b>Trade-off:</b> the biggest map and the most familiar interaction, but the vehicle list is a panel you open rather than a table you scan — worse when you want to compare eight crews at once.</p>
+</div>
+
+<div class="opt">
+  <h2>B · People-first — the roster drives the map</h2>
+  <p class="note">The left rail becomes a searchable roster of <em>people</em>, not units: photo initial, name, the truck they're in, and how long ago they reported. Type "Diego", click, the map flies to him. <em>Answers the question the office actually asks out loud.</em></p>
+  <div class="demo" id="dB"></div>
+  <p class="verdict"><b>Trade-off:</b> the most direct path to "where's Diego," and riders show under their driver — but a truck with nobody assigned needs its own row, so the roster isn't purely people.</p>
+</div>
+
+<div class="opt">
+  <h2>C · Command view — map on top, work table below</h2>
+  <p class="note">A shorter map for context, then a full-width sortable table of every active trip: driver, unit, status, speed, location, job progress, ETA, last update. <em>The table is the work surface; the map answers "where is that."</em> Uses the same table kit as every other screen — sort, filter, search, paging.</p>
+  <div class="demo" id="dC"></div>
+  <p class="verdict"><b>Trade-off:</b> the best density and the most consistent with the rest of Axle, but the map shrinks — fine on a desktop, cramped on a phone.</p>
+</div>
+
+<div class="opt">
+  <h2>D · Focus mode — one crew at a time</h2>
+  <p class="note">Crews list on the left; picking one takes the map over with just that crew's route, its stops, and a timeline of the day — punched in, left the shop, arrived at each site. <em>Turns the map into the answer to "what happened with this crew today."</em></p>
+  <div class="demo" id="dD"></div>
+  <p class="verdict"><b>Trade-off:</b> by far the best drill-down and it previews the phase-2 trip replay — but the fleet-wide glance takes a second click, so it works best combined with A or C rather than alone.</p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var V = [
+    { u: "U-078", d: "D. Whitfield", ini: "DW", p: "No movement 22 min · Jefferson St", meta: "mid-route stop", st: "Stopped", cls: "p-warn", ago: "0:22", x: 252, y: 192, c: "var(--warn)", job: "—", eta: "—", spd: "0 mph" },
+    { u: "U-131", d: "J. Reyes", ini: "JR", p: "38 mph · Baxter Ave", meta: "job 6 of 11 · ETA 10:52a", st: "En route", cls: "p-good", ago: "0:04", x: 420, y: 128, c: "var(--good)", job: "6 / 11", eta: "10:52a", spd: "38 mph" },
+    { u: "U-104", d: "M. Okafor", ini: "MO", p: "54 mph · I-64 W", meta: "+2 riders · towing TR-12", st: "En route", cls: "p-good", ago: "0:01", x: 120, y: 40, c: "var(--good)", job: "3 / 9", eta: "11:15a", spd: "54 mph" },
+    { u: "U-155", d: "T. Nguyen", ini: "TN", p: "Stopped 12 min · job site", meta: "job 4 of 9", st: "At stop", cls: "p-idle", ago: "0:12", x: 200, y: 150, c: "var(--axis)", job: "4 / 9", eta: "—", spd: "0 mph" },
+    { u: "U-201", d: "S. Patel", ini: "SP", p: "31 mph · Preston Hwy", meta: "service call", st: "En route", cls: "p-good", ago: "0:02", x: 330, y: 285, c: "var(--good)", job: "—", eta: "10:40a", spd: "31 mph" },
+    { u: "U-119", d: "A. Brooks", ini: "AB", p: "44 mph · River Rd", meta: "job 2 of 8", st: "En route", cls: "p-good", ago: "0:03", x: 500, y: 60, c: "var(--good)", job: "2 / 8", eta: "11:02a", spd: "44 mph" }
+  ];
+  function icon(p) { return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' + p + "</svg>"; }
+  var SEARCH = icon('<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5" stroke-linecap="round"/>');
+  function base(h, opts) {
+    opts = opts || {};
+    var dots = V.map(function (v) {
+      var lab = opts.labelDrivers ? v.d.split(" ")[1] : v.u;
+      return '<g><circle cx="' + v.x + '" cy="' + v.y + '" r="8" fill="' + v.c + '" stroke="var(--surface)" stroke-width="2"/>' +
+        '<text x="' + v.x + '" y="' + (v.y > 60 ? v.y - 15 : v.y + 22) + '" text-anchor="middle" font-size="9" font-family="ui-monospace,Menlo,monospace" font-weight="700" fill="var(--ink)">' + lab + "</text></g>";
+    }).join("");
+    return '<svg class="base" viewBox="0 0 560 ' + h + '" role="img" aria-label="Map">' +
+      '<rect width="560" height="' + h + '" fill="var(--surface-2)"/>' +
+      '<g stroke="var(--surface)" fill="none">' +
+      '<path d="M0 70 H560 M0 150 H560 M0 235 H560 M90 0 V' + h + ' M200 0 V' + h + ' M330 0 V' + h + ' M455 0 V' + h + '" stroke-width="10"/>' +
+      '<path d="M0 110 H560 M0 195 H560 M45 0 V' + h + ' M145 0 V' + h + ' M265 0 V' + h + ' M395 0 V' + h + ' M510 0 V' + h + '" stroke-width="4"/>' +
+      '<path d="M0 320 C 140 260 300 300 560 180" stroke-width="14" stroke="var(--axis)"/></g>' +
+      '<path d="M120 40 C 170 60 180 120 240 130 S 340 100 420 128" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 5"/>' +
+      (opts.dots === false ? "" : dots) + (opts.extra || "") + "</svg>";
+  }
+  var CTL = '<div class="ctl"><button type="button" title="Zoom in">+</button><button type="button" title="Zoom out">−</button><button type="button" title="Fit the whole fleet" style="font-size:11px">Fit</button><button type="button" title="Center on the shop" style="font-size:12px">⌖</button></div>';
+  var ATTRIB = '<span class="attrib">MapLibre · © OpenStreetMap</span>';
+  var LAYERS = '<div class="layers"><button type="button">Geofences</button><button type="button">Traffic</button><button type="button">Satellite</button></div>';
+
+  // ---------- A: map-first ----------
+  document.getElementById("dA").innerHTML =
+    '<div class="bar"><h3>Live map</h3><span class="search">' + SEARCH + 'Search a person or unit…</span>' +
+    '<span class="fchip on">All <small>6</small></span><span class="fchip">Moving <small>4</small></span><span class="fchip">Stopped <small>2</small></span><span class="sp"></span><span class="who-chip"><span class="av">MO</span>M. Okafor ×</span></div>' +
+    '<div class="map">' + base(330) + LAYERS + CTL + ATTRIB +
+      '<div class="ov"><div class="h">Vehicles · 6<span class="sp"></span><span class="dim" style="font-weight:400">hide</span></div>' +
+      V.slice(0, 4).map(function (v) { return '<div class="row" style="padding:7px 11px"><span class="u">' + v.u + '</span><span><span class="nm">' + v.d + '</span><span class="meta" style="display:block">' + v.st + " · " + v.ago + " ago</span></span></div>"; }).join("") +
+      '</div></div>';
+
+  // ---------- B: people-first ----------
+  document.getElementById("dB").innerHTML =
+    '<div class="bar"><h3>Live map</h3><span class="sp"></span><span class="dim" style="font-size:11.5px">Driver-app GPS · updates while a trip runs</span></div>' +
+    '<div class="split"><div class="map">' + base(330, { labelDrivers: true }) + LAYERS + CTL + ATTRIB + '</div>' +
+    '<div class="list"><div style="padding:10px 12px;border-bottom:1px solid var(--line)"><span class="search" style="width:100%;box-sizing:border-box">' + SEARCH + 'Diego, U-104, Baxter…</span>' +
+    '<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><span class="fchip on">Everyone <small>6</small></span><span class="fchip">Moving <small>4</small></span><span class="fchip">Alerts <small>1</small></span></div></div>' +
+    '<div class="roster">' + V.map(function (v, i) {
+      return '<div class="row"' + (i === 0 ? ' style="background:var(--accent-tint)"' : "") + '><span class="av">' + v.ini + '</span><span><span class="nm">' + v.d + '</span><span class="meta" style="display:block">' + v.u + " · " + v.p + "</span></span><span class=\"ago\">" + v.ago + '</span><span class="st pill ' + v.cls + '">' + v.st + "</span></div>";
+    }).join("") + "</div></div></div>";
+
+  // ---------- C: command view ----------
+  document.getElementById("dC").innerHTML =
+    '<div class="bar"><h3>Live map</h3><span class="search">' + SEARCH + 'Search a person or unit…</span><span class="fchip on">All <small>6</small></span><span class="fchip">Moving <small>4</small></span><span class="fchip">Stopped <small>2</small></span><span class="fchip">Alerts <small>1</small></span><span class="sp"></span><span class="dim" style="font-size:11.5px">Updated 14s ago</span></div>' +
+    '<div class="map">' + base(190) + LAYERS + CTL + ATTRIB + "</div>" +
+    '<table class="tbl"><thead><tr><th>Driver</th><th>Unit</th><th>Status</th><th>Speed</th><th>Where</th><th>Job</th><th>ETA</th><th>Last update</th></tr></thead><tbody>' +
+    V.map(function (v) {
+      return "<tr><td><b>" + v.d + "</b></td><td class=\"mono\">" + v.u + '</td><td><span class="pill ' + v.cls + '">' + v.st + "</span></td><td class=\"mono\">" + v.spd + "</td><td>" + v.p.split(" · ")[1] + "</td><td class=\"mono\">" + v.job + "</td><td class=\"mono\">" + v.eta + '</td><td class="mono dim">' + v.ago + " ago</td></tr>";
+    }).join("") + "</tbody></table>";
+
+  // ---------- D: focus mode ----------
+  var route = '<path d="M120 40 C 170 60 180 120 240 130 S 340 100 420 128" fill="none" stroke="var(--accent)" stroke-width="3"/>' +
+    '<circle cx="120" cy="40" r="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="3"/>' +
+    '<circle cx="240" cy="130" r="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="3"/>' +
+    '<circle cx="420" cy="128" r="9" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/>' +
+    '<text x="420" y="112" text-anchor="middle" font-size="9" font-family="ui-monospace,Menlo,monospace" font-weight="700" fill="var(--ink)">J. Reyes · U-131</text>';
+  document.getElementById("dD").innerHTML =
+    '<div class="bar"><h3>Live map</h3><span class="search">' + SEARCH + 'Search a person or unit…</span><span class="sp"></span><span class="fchip on">J. Reyes ×</span><span class="dim" style="font-size:11.5px">6 crews out</span></div>' +
+    '<div class="drill"><div class="crews">' +
+    V.map(function (v, i) { return '<div class="crew' + (i === 1 ? " on" : "") + '"><b>' + v.d + "</b><span>" + v.u + " · " + v.st + " · " + v.ago + " ago</span></div>"; }).join("") +
+    '</div><div><div class="map">' + base(220, { dots: false, extra: route }) + CTL + ATTRIB + "</div>" +
+    '<ul class="tl"><li><b>6:04a</b> — punched in at the shop</li><li><b>6:31a</b> — left the yard in U-131, towing TR-12</li><li><b>7:02a</b> — arrived Elm Ridge HOA · job 1</li><li class="now"><b>10:18a</b> — en route to job 6 of 11 · ETA 10:52a</li></ul></div></div>';
+})();
+</script>
