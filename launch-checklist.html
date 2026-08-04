@@ -1,0 +1,147 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Axle — what phase 1 needs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    color-scheme: light;
+    --page:#f7f8f5; --surface:#fcfcfb; --surface-2:#f1f1ec;
+    --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+    --line:#e1e0d9; --hair:rgba(11,11,11,0.10);
+    --accent:#0e6672; --accent-ink:#0b4d57; --accent-wash:rgba(14,102,114,0.09); --accent-tint:rgba(14,102,114,0.20);
+    --good:#0ca30c; --good-text:#006300; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+    --display:"Avenir Next",Avenir,Futura,"Segoe UI",system-ui,sans-serif;
+    --body:system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,monospace;
+    --shadow:0 1px 2px rgba(11,11,11,0.04), 0 10px 28px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --page:#0d0d0d; --surface:#1a1a19; --surface-2:#232321;
+      --ink:#fff; --ink-2:#c3c2b7; --line:#2c2c2a; --hair:rgba(255,255,255,0.10);
+      --accent:#56b6c2; --accent-ink:#8ed2db; --accent-wash:rgba(86,182,194,0.13); --accent-tint:rgba(86,182,194,0.26);
+      --good-text:#0ca30c;
+    }
+  }
+  body { font-family: var(--body); background: var(--page); color: var(--ink); margin: 0; padding: 28px 20px 80px; font-size: 14px; line-height: 1.5; }
+  .wrap { max-width: 1120px; margin: 0 auto; }
+  h1 { font-family: var(--display); font-size: 24px; margin: 0 0 6px; }
+  .sub { color: var(--ink-2); font-size: 13.5px; max-width: 90ch; margin-bottom: 22px; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--ink-2); margin-bottom: 22px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .tag { font-family: var(--mono); font-size: 9.5px; font-weight: 700; border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
+  .t-now { background: rgba(208,59,59,0.13); color: var(--crit); }
+  .t-wk0 { background: rgba(236,131,90,0.16); color: #a34b1f; }
+  .t-build { background: var(--accent-wash); color: var(--accent-ink); }
+  .t-have { background: rgba(12,163,12,0.13); color: var(--good-text); }
+  h2 { font-family: var(--display); font-size: 16px; margin: 26px 0 4px; }
+  h2 .n { color: var(--muted); font-weight: 500; font-size: 13px; }
+  .note { font-size: 12.5px; color: var(--ink-2); margin: 0 0 10px; max-width: 96ch; }
+  .card { background: var(--surface); border: 1px solid var(--hair); border-radius: 11px; overflow-x: auto; box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 720px; }
+  th { text-align: left; font-size: 9.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); font-weight: 700; padding: 11px 14px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  td { padding: 10px 14px; border-top: 1px solid var(--line); vertical-align: top; }
+  tr:first-child td { border-top: 0; }
+  td.item { font-weight: 600; white-space: nowrap; }
+  td.cost { font-family: var(--mono); white-space: nowrap; }
+  td.lead { font-family: var(--mono); font-size: 11.5px; color: var(--ink-2); white-space: nowrap; }
+  .dim { color: var(--muted); }
+  .why { color: var(--ink-2); }
+  .flag { display: block; font-size: 11.5px; color: var(--serious); margin-top: 3px; }
+  .flag b { color: var(--serious); }
+  .totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin-top: 24px; }
+  .tot { background: var(--surface); border: 1px solid var(--hair); border-radius: 11px; padding: 14px 16px; }
+  .tot .k { font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+  .tot .v { font-family: var(--display); font-size: 25px; font-weight: 700; margin-top: 3px; }
+  .tot .d { font-size: 11.5px; color: var(--ink-2); margin-top: 2px; }
+  .cta { margin-top: 24px; background: var(--surface-2); border: 1px solid var(--hair); border-radius: 11px; padding: 15px 17px; font-size: 13px; color: var(--ink-2); }
+  .cta b { color: var(--ink); }
+  .cta ol { margin: 8px 0 0; padding-left: 20px; }
+  .cta li { padding: 2px 0; }
+</style>
+<div class="wrap">
+<h1>What phase 1 needs</h1>
+<p class="sub">Every account, purchase, decision, and access grant required to launch Axle's phase 1 — the time clock, tags and trips, inspections, the asset register, fuel import, saved sites, and reports. Ordered by when it has to exist, not by category, because two of these have real lead time and everything else is an afternoon.</p>
+<div class="legend">
+  <span><i class="tag t-now">START NOW</i> has a waiting period — begin before the build does</span>
+  <span><i class="tag t-wk0">WEEK 0</i> the approval-week paperwork sprint</span>
+  <span><i class="tag t-build">AT BUILD</i> create when the code needs it</span>
+  <span><i class="tag t-have">IN HAND</i> already done</span>
+</div>
+
+<h2>1 · The long poles <span class="n">— nothing installs on a phone until these clear</span></h2>
+<p class="note">Both store accounts hinge on the same decision: <b>who legally owns the app</b>. An organization account needs a D-U-N-S number tied to a real corporation or LLC — a DBA won't pass — but it also skips Google's 14-day testing gate. Recommendation: Madison Commercial Landscapes holds both, with Tyler added as Admin.</p>
+<div class="card"><table>
+<thead><tr><th>Item</th><th>What it buys</th><th>Cost</th><th>Lead time</th><th>When</th></tr></thead>
+<tbody>
+<tr><td class="item">D-U-N-S number</td><td class="why">Free identifier from Dun &amp; Bradstreet that proves the legal entity to Apple and Google. Only needed for organization accounts.<span class="flag"><b>Decision first:</b> Madison or Wood Candle Co. holds the app?</span></td><td class="cost">Free</td><td class="lead">~5 business days</td><td><i class="tag t-now">START NOW</i></td></tr>
+<tr><td class="item">Apple Developer Program</td><td class="why">The only way an app reaches an iPhone: link-gated installs, TestFlight for the pilot crew, the APNs push key, and the signing certificates.</td><td class="cost">$99 / yr</td><td class="lead">days after D-U-N-S</td><td><i class="tag t-now">START NOW</i></td></tr>
+<tr><td class="item">Google Play Console</td><td class="why">The Android half of the crew's phones.<span class="flag"><b>Gotcha:</b> a new <em>personal</em> account must run a closed test with 12 testers for 14 straight days before it can publish. Organization accounts are exempt.</span></td><td class="cost">$25 once</td><td class="lead">days — or +14 if personal</td><td><i class="tag t-now">START NOW</i></td></tr>
+<tr><td class="item">Ownership agreement</td><td class="why">One page: who owns the app, the source, and the data. Tyler is the product owner; Madison is the client. Cheap now, expensive later.</td><td class="cost">Free</td><td class="lead">a conversation</td><td><i class="tag t-now">START NOW</i></td></tr>
+</tbody></table></div>
+
+<h2>2 · Where the software lives <span class="n">— the monthly meter</span></h2>
+<div class="card"><table>
+<thead><tr><th>Item</th><th>What it buys</th><th>Cost</th><th>Lead time</th><th>When</th></tr></thead>
+<tbody>
+<tr><td class="item">Cloud hosting</td><td class="why">Runs the API and the background workers, in two environments — production and the amber sandbox.</td><td class="cost">$25–40 / mo<span class="dim"> (both)</span></td><td class="lead">minutes</td><td><i class="tag t-wk0">WEEK 0</i></td></tr>
+<tr><td class="item">Postgres + TimescaleDB</td><td class="why">One database for the registry, people, punches, trips, and the GPS pings that roll up into trips.<span class="flag"><b>Check before choosing:</b> not every managed Postgres offers the Timescale extension — Neon and Supabase don't by default.</span></td><td class="cost">included above</td><td class="lead">minutes</td><td><i class="tag t-wk0">WEEK 0</i></td></tr>
+<tr><td class="item">Object storage</td><td class="why">Inspection and deep-check photos, claim PDFs, the employee manual, exported label sheets.</td><td class="cost">~$0–5 / mo</td><td class="lead">minutes</td><td><i class="tag t-build">AT BUILD</i></td></tr>
+<tr><td class="item">Transactional email</td><td class="why">Enrollment invites, password resets, scheduled reports. Needs SPF/DKIM/DMARC records on axlehq.io.</td><td class="cost">$0 at this volume</td><td class="lead">hours (DNS)</td><td><i class="tag t-build">AT BUILD</i></td></tr>
+<tr><td class="item">Error + uptime monitoring</td><td class="why">Sentry catches crashes before the crew reports them; an uptime check pings the API every minute.</td><td class="cost">Free tiers</td><td class="lead">minutes</td><td><i class="tag t-build">AT BUILD</i></td></tr>
+<tr><td class="item">Password manager</td><td class="why">Shared human credentials in one vault. App secrets live in the host's env store, never in the repo.</td><td class="cost">$0–8 / mo</td><td class="lead">minutes</td><td><i class="tag t-wk0">WEEK 0</i></td></tr>
+<tr><td class="item">Database backups</td><td class="why">Point-in-time recovery plus an offsite copy. Axle becomes the system of record for punches and inspections — this is not optional.</td><td class="cost">usually included</td><td class="lead">minutes</td><td><i class="tag t-build">AT BUILD</i></td></tr>
+<tr><td class="item">Push · maps · weather</td><td class="why">Apple and Google push at any volume, MapLibre with open map tiles, NWS forecasts and alerts.</td><td class="cost">$0</td><td class="lead">—</td><td><i class="tag t-build">AT BUILD</i></td></tr>
+</tbody></table></div>
+
+<h2>3 · Physical things <span class="n">— what the crew actually touches</span></h2>
+<div class="card"><table>
+<thead><tr><th>Item</th><th>What it buys</th><th>Cost</th><th>Lead time</th><th>When</th></tr></thead>
+<tbody>
+<tr><td class="item">NFC tag stock</td><td class="why">Every truck, trailer, and machine becomes tap-to-check-in. 50 anti-metal NTAG215 coins already purchased; a second pack covers the rest.</td><td class="cost">$60–110</td><td class="lead">days (shipping)</td><td><i class="tag t-have">IN HAND</i> <span class="dim">gen 1</span></td></tr>
+<tr><td class="item">Avery 5523 label sheets</td><td class="why">The printed face over every tag: QR, asset name, purpose band. 2&quot; × 4&quot;, 500 per box — a lifetime supply at this scale.</td><td class="cost">~$30</td><td class="lead">days</td><td><i class="tag t-wk0">WEEK 0</i></td></tr>
+<tr><td class="item">A laser printer</td><td class="why">The WeatherProof label line is laser-only — toner fuses to the film, which is what makes it waterproof.<span class="flag"><b>If there's no laser printer:</b> upload the same PDF to a sticker service instead. Decide which before ordering sheets.</span></td><td class="cost">access, not purchase</td><td class="lead">—</td><td><i class="tag t-wk0">WEEK 0</i></td></tr>
+<tr><td class="item">Clock-in kiosk</td><td class="why">The existing TimeStation tablet is reused; the badge cards keep scanning.</td><td class="cost">$0</td><td class="lead">—</td><td><i class="tag t-have">IN HAND</i></td></tr>
+<tr><td class="item">Test devices</td><td class="why">One iPhone and one Android in hand through the build — real tags, real gloves, real cold starts.</td><td class="cost">$0 <span class="dim">(existing)</span></td><td class="lead">—</td><td><i class="tag t-have">IN HAND</i></td></tr>
+<tr><td class="item">NFC wallet cards <span class="dim">(optional)</span></td><td class="why">A tap-to-punch card for anyone who'd rather not pull out a phone at the kiosk.</td><td class="cost">~$20</td><td class="lead">days</td><td><i class="tag t-build">AT BUILD</i></td></tr>
+</tbody></table></div>
+
+<h2>4 · Access to their existing systems <span class="n">— requested week 0, each has a manual fallback</span></h2>
+<p class="note">None of these block the build: every one has a file-based or manual path, so a slow vendor delays polish, not launch. But they all take weeks of someone else's calendar, so the requests go out on approval day.</p>
+<div class="card"><table>
+<thead><tr><th>Item</th><th>What it buys</th><th>Cost</th><th>Fallback if slow</th><th>When</th></tr></thead>
+<tbody>
+<tr><td class="item">WEX fuel</td><td class="why">Fuel transactions matched to trucks, people, and PINs — the exception flags depend on it.</td><td class="cost">$0</td><td class="lead">report-file export</td><td><i class="tag t-wk0">WEEK 0</i></td></tr>
+<tr><td class="item">ADP payroll</td><td class="why">Approved hours land in payroll without re-keying — the whole point of retiring TimeStation.</td><td class="cost">$0</td><td class="lead">ADP import file</td><td><i class="tag t-wk0">WEEK 0</i></td></tr>
+<tr><td class="item">NWS weather</td><td class="why">The forecast tile and storm alerts. Public, no account, no key.</td><td class="cost">$0</td><td class="lead">n/a</td><td><i class="tag t-build">AT BUILD</i></td></tr>
+<tr><td class="item">Jobber sites <span class="dim">(if used)</span></td><td class="why">Seeds the saved-site library instead of typing every address.</td><td class="cost">$0</td><td class="lead">CSV or manual entry</td><td><i class="tag t-wk0">WEEK 0</i></td></tr>
+<tr><td class="item">CMT / Federated <span class="dim">(phase 2)</span></td><td class="why">Safety scores imported rather than re-measured. Request now because access is slow; it isn't needed until phase 2.</td><td class="cost">$0</td><td class="lead">insurer portal entry</td><td><i class="tag t-wk0">WEEK 0</i></td></tr>
+</tbody></table></div>
+
+<h2>5 · Answers only Madison can give <span class="n">— free, but they gate real features</span></h2>
+<div class="card"><table>
+<thead><tr><th>Item</th><th>What it unblocks</th><th>Cost</th><th>Who</th><th>When</th></tr></thead>
+<tbody>
+<tr><td class="item">Expected start time</td><td class="why">Punctuality, the roll-call &quot;late&quot; math, and the PTO incentive report. Nothing computes without it.</td><td class="cost">Free</td><td class="lead">Alesha / owners</td><td><i class="tag t-now">START NOW</i></td></tr>
+<tr><td class="item">Privacy policy + support URL</td><td class="why">Both app stores refuse a submission without them. Two short pages on axlehq.io.</td><td class="cost">Free</td><td class="lead">Tyler</td><td><i class="tag t-wk0">WEEK 0</i></td></tr>
+<tr><td class="item">Crew roster + languages</td><td class="why">Person records, per-person language, and PINs — the first milestone's done-when.</td><td class="cost">Free</td><td class="lead">Alesha</td><td><i class="tag t-wk0">WEEK 0</i></td></tr>
+<tr><td class="item">Asset list + insurance schedule</td><td class="why">The truthful seed for the register — the schedule is the list that's already accurate.</td><td class="cost">Free</td><td class="lead">Alesha / owners</td><td><i class="tag t-wk0">WEEK 0</i></td></tr>
+<tr><td class="item">Spanish validation</td><td class="why">A crew member reads the shop-Spanish strings before launch. It's a launch gate, not a nicety.</td><td class="cost">Free</td><td class="lead">a crew member</td><td><i class="tag t-build">AT BUILD</i></td></tr>
+</tbody></table></div>
+
+<div class="totals">
+  <div class="tot"><div class="k">One-time, up front</div><div class="v">$140–185</div><div class="d">Play account, tag stock, label sheets, optional wallet cards</div></div>
+  <div class="tot"><div class="k">Annual</div><div class="v">~$139</div><div class="d">Apple $99 + axlehq.io ~$40</div></div>
+  <div class="tot"><div class="k">Monthly</div><div class="v">$25–48</div><div class="d">Hosting, database, storage, password manager</div></div>
+  <div class="tot"><div class="k">First year, all in</div><div class="v">≈ $500–750</div><div class="d">Then ≈ $415–600/yr — about $35–50 a month</div></div>
+</div>
+
+<div class="cta"><b>If you only do four things this week:</b>
+<ol>
+<li>Decide who legally owns the app — that single answer unlocks both store accounts.</li>
+<li>Request the D-U-N-S number (about five business days, and Apple can't verify without it).</li>
+<li>Register the Play account as an <em>organization</em> — it skips the 14-day testing gate.</li>
+<li>Ask Alesha for the expected start time; the punctuality features have no meaning until that number exists.</li>
+</ol></div>
+</div>
