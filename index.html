@@ -58,26 +58,30 @@
   .nav-item.on { background: var(--accent-tint); color: var(--accent-ink); font-weight: 600; }
   .nav-item.on svg { color: var(--accent); }
   .nav-item.off { opacity: 0.45; }
-  .maprow { display: grid; grid-template-columns: 3fr 2fr; gap: 12px; margin-bottom: 12px; }
-  .maprow > * { min-width: 0; }
-  .mapbox { position: relative; overflow: hidden; border-radius: 10px; border: 1px solid var(--hair); background: var(--surface-2); }
-  .mapbox svg { display: block; width: 100%; height: auto; }
-  .maptools { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; }
+  .mapbox { position: relative; overflow: hidden; border-radius: 10px; border: 1px solid var(--hair); background: var(--surface-2); height: 300px; margin-bottom: 12px; transition: height 0.22s ease; }
+  .mapbox.tall { height: 620px; }
+  @media (prefers-reduced-motion: reduce) { .mapbox { transition: none; } }
+  .mapbox svg.base { display: block; width: 100%; height: 100%; }
+  .maptools { position: absolute; left: 10px; top: 10px; display: flex; gap: 6px; }
   .maptools .btn { padding: 4px 10px; font-size: 11.5px; }
   .maptools .btn.on { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .live { list-style: none; margin: 4px 0 0; padding: 0 8px 8px; font-size: 12.5px; }
-  .live li { display: flex; align-items: center; gap: 10px; padding: 9px 8px; border-top: 1px solid var(--line); cursor: pointer; }
-  .live li:first-child { border-top: 0; }
-  .live li:hover { background: var(--surface-2); }
-  .live li.sel { background: var(--accent-tint); }
-  .live .u { font-family: var(--mono); font-size: 12px; font-weight: 600; width: 48px; flex: none; }
-  .live .st { margin-left: auto; flex: none; }
-  .live p { margin: 0; color: var(--ink-2); }
-  .live small { display: block; color: var(--muted); font-size: 11px; }
-  .live .who { min-width: 0; }
+  .mapctl { position: absolute; right: 10px; top: 10px; display: flex; flex-direction: column; gap: 5px; }
+  .mapctl button { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,.06); display: flex; align-items: center; justify-content: center; font-family: var(--body); }
+  .mapctl button:hover { border-color: var(--accent); }
+  .mapctl button.sm { font-size: 10.5px; }
+  .map-attrib { position: absolute; right: 8px; bottom: 6px; font-size: 9.5px; color: var(--muted); background: rgba(252,252,251,0.82); border-radius: 5px; padding: 1px 6px; }
   #map-svg .veh { cursor: pointer; }
-  #map-svg .veh.dim { opacity: 0.22; }
-  @media (max-width: 900px) { .maprow { grid-template-columns: 1fr; } }
+  #map-svg .veh.dim { opacity: 0.2; }
+  #map-svg .veh.sel circle { stroke: var(--accent); stroke-width: 3.5; }
+  .drv { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--accent-ink); cursor: pointer; text-align: left; }
+  .drv:hover { text-decoration: underline; }
+  .tl-crew { list-style: none; margin: 0; padding: 12px 16px 16px; font-size: 12.5px; }
+  .tl-crew li { position: relative; padding: 0 0 13px 20px; color: var(--ink-2); }
+  .tl-crew li::before { content: ""; position: absolute; left: 2px; top: 5px; width: 9px; height: 9px; border-radius: 999px; background: var(--axis); }
+  .tl-crew li.now::before { background: var(--good); }
+  .tl-crew li::after { content: ""; position: absolute; left: 6px; top: 16px; bottom: 0; width: 1px; background: var(--line); }
+  .tl-crew li:last-child::after { display: none; }
+  .tl-crew b { color: var(--ink); }
   .roadmap { background: var(--surface-2); border: 1px solid var(--hair); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
   .roadmap h6 { margin: 0 0 4px; font-family: var(--display); font-size: 12.5px; font-weight: 700; color: var(--ink); }
   .roadmap h6 + .rm-sub { font-size: 12px; color: var(--ink-2); margin: 0 0 2px; }
@@ -88,6 +92,8 @@
   .roadmap .rm-sec:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
   .roadmap li.ok b { color: var(--good-text); background: rgba(12,163,12,0.13); }
   .roadmap li.gap { padding-left: 26px; color: var(--muted); font-size: 11.5px; }
+  .roadmap li.q b { color: var(--serious); background: rgba(236,131,90,0.16); }
+  .roadmap li.q span { color: var(--ink-2); }
   .roadmap li.gap b { color: var(--muted); background: var(--surface); border: 1px solid var(--line); font-size: 9px; }
   .roadmap .empty-h { font-family: var(--display); font-size: 17px; font-weight: 700; color: var(--ink); margin: 0 0 4px; }
   .side .gap { flex: 1; }
@@ -789,37 +795,44 @@
 
     <!-- ============ VEHICLE DETAIL ============ -->
     <section class="view" id="v-map">
-      <div class="topbar"><h1>Live map</h1><span class="sp"></span><span class="tabchips"><button class="fchip on" data-mf="all" type="button">All <small>6</small></button><button class="fchip" data-mf="moving" type="button">Moving <small>4</small></button><button class="fchip" data-mf="stopped" type="button">Stopped <small>1</small></button><button class="fchip" data-mf="alerts" type="button">Alerts <small>1</small></button></span><span class="datechip">Driver-app GPS · trips in progress</span></div>
-      <div class="maprow">
-        <div class="mapbox">
-          <div class="maptools"><button class="btn" id="map-geo" type="button">Geofences</button><button class="btn" id="map-traffic" type="button">Traffic</button><button class="btn" data-toast="Trip replay scrubs a finished trip minute by minute — it ships with GPS history in phase 2." type="button">Replay &#9656;</button></div>
-          <svg id="map-svg" viewBox="0 0 560 330" role="img" aria-label="Schematic city map with live vehicle positions">
-            <rect width="560" height="330" fill="var(--surface-2)"/>
+      <div class="topbar"><h1>Live map</h1><input class="search" id="map-q" type="search" placeholder="Search a person or unit — Diego, U-104…" aria-label="Search people or units"><span class="tabchips"><button class="fchip on" data-mf="all" type="button">All <small>6</small></button><button class="fchip" data-mf="moving" type="button">Moving <small>4</small></button><button class="fchip" data-mf="stopped" type="button">Stopped <small>1</small></button><button class="fchip" data-mf="alerts" type="button">Alerts <small>1</small></button></span><span class="sp"></span><span class="datechip" id="map-fresh">Updated 14s ago</span></div>
+      <div class="mapbox" id="mapbox">
+        <div class="maptools"><button class="btn" id="map-geo" type="button">Geofences</button><button class="btn" id="map-traffic" type="button">Traffic</button></div>
+        <div class="mapctl"><button type="button" id="map-in" title="Zoom in">+</button><button type="button" id="map-out" title="Zoom out">&#8722;</button><button type="button" class="sm" id="map-fit" title="Fit the whole fleet">Fit</button><button type="button" id="map-home" title="Center on the shop">&#8982;</button></div>
+        <svg class="base" id="map-svg" viewBox="0 0 560 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Live vehicle positions">
+          <g id="map-pan">
+            <rect x="-200" y="-200" width="960" height="700" fill="var(--surface-2)"/>
             <g stroke="var(--surface)" fill="none">
-              <path d="M0 70 H560 M0 150 H560 M0 235 H560 M90 0 V330 M200 0 V330 M330 0 V330 M455 0 V330" stroke-width="10"/>
-              <path d="M0 110 H560 M0 195 H560 M0 285 H560 M45 0 V330 M145 0 V330 M265 0 V330 M395 0 V330 M510 0 V330" stroke-width="4"/>
-              <path d="M0 320 C 140 260 300 300 560 180" stroke-width="14" stroke="var(--axis)"/>
-              <path d="M0 320 C 140 260 300 300 560 180" stroke-width="1.6" stroke="var(--surface)" stroke-dasharray="10 8"/>
+              <path d="M-200 70 H760 M-200 150 H760 M-200 235 H760 M90 -200 V500 M200 -200 V500 M330 -200 V500 M455 -200 V500" stroke-width="10"/>
+              <path d="M-200 110 H760 M-200 195 H760 M-200 285 H760 M45 -200 V500 M145 -200 V500 M265 -200 V500 M395 -200 V500 M510 -200 V500" stroke-width="4"/>
+              <path d="M-200 340 C 140 260 300 300 760 170" stroke-width="14" stroke="var(--axis)"/>
+              <path d="M-200 340 C 140 260 300 300 760 170" stroke-width="1.6" stroke="var(--surface)" stroke-dasharray="10 8"/>
             </g>
-            <g id="map-traffic-layer" style="display:none"><path d="M0 150 H560" stroke="#d03b3b" stroke-width="6" opacity="0.45"/><path d="M330 0 V330" stroke="#eda100" stroke-width="6" opacity="0.45"/></g>
-            <path d="M120 40 C 170 60 180 120 240 130 S 340 100 420 128" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 5"/>
+            <g id="map-traffic-layer" style="display:none"><path d="M-200 150 H760" stroke="#d03b3b" stroke-width="6" opacity="0.45"/><path d="M330 -200 V500" stroke="#eda100" stroke-width="6" opacity="0.45"/></g>
             <g id="map-geo-layer" style="display:none">
               <circle cx="250" cy="196" r="34" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.75"/>
               <text x="250" y="243" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="system-ui">Depot &#8212; Grand Ave</text>
-              <circle cx="430" cy="130" r="26" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6"/>
-              <text x="430" y="170" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="system-ui">Elm Ridge HOA</text>
+              <circle cx="205" cy="152" r="26" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6"/>
+              <text x="205" y="192" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="system-ui">Elm Ridge HOA</text>
             </g>
-            <circle id="map-focus" cx="0" cy="0" r="17" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity="0"/>
-            <g font-size="9" font-family="ui-monospace,Menlo,monospace" text-anchor="middle" font-weight="700"><g class="veh" data-veh="U-078" data-state="alerts"><circle cx="252" cy="192" r="8" fill="var(--warn)" stroke="var(--surface)" stroke-width="2"/><text x="252" y="176" fill="var(--ink)">U-078</text></g><g class="veh" data-veh="U-131" data-state="moving"><circle cx="420" cy="128" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="420" y="112" fill="var(--ink)">U-131</text></g><g class="veh" data-veh="U-104" data-state="moving"><circle cx="120" cy="40" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="120" y="62" fill="var(--ink)">U-104</text></g><g class="veh" data-veh="U-155" data-state="stopped"><circle cx="200" cy="150" r="8" fill="var(--axis)" stroke="var(--surface)" stroke-width="2"/><text x="200" y="134" fill="var(--ink)">U-155</text></g><g class="veh" data-veh="U-201" data-state="moving"><circle cx="330" cy="285" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="330" y="269" fill="var(--ink)">U-201</text></g><g class="veh" data-veh="U-119" data-state="moving"><circle cx="500" cy="60" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="500" y="82" fill="var(--ink)">U-119</text></g></g>
-          </svg>
-        </div>
-        <div class="panel">
-          <div class="panel-h"><h5>Vehicles</h5><span class="sp"></span><span class="sub" id="map-count">Sorted by attention</span></div>
-          <ul class="live" id="map-list"><li data-veh="U-078" data-state="alerts"><span class="u">U-078</span><span class="who"><p>No movement 22 min · Jefferson St</p><small>D. Whitfield · mid-route stop</small></span><span class="st pill p-warn">Stopped</span></li><li data-veh="U-131" data-state="moving"><span class="u">U-131</span><span class="who"><p>38 mph · Baxter Ave</p><small>J. Reyes · job 6 of 11 · ETA 10:52a</small></span><span class="st pill p-good">En route</span></li><li data-veh="U-104" data-state="moving"><span class="u">U-104</span><span class="who"><p>54 mph · I-64 W</p><small>M. Okafor +2 riders · towing TR-12 (2 equip)</small></span><span class="st pill p-good">En route</span></li><li data-veh="U-155" data-state="stopped"><span class="u">U-155</span><span class="who"><p>Stopped 12 min · job site</p><small>T. Nguyen · job 4 of 9</small></span><span class="st pill p-idle">At stop</span></li><li data-veh="U-201" data-state="moving"><span class="u">U-201</span><span class="who"><p>31 mph · Preston Hwy</p><small>S. Patel · service call</small></span><span class="st pill p-good">En route</span></li><li data-veh="U-119" data-state="moving"><span class="u">U-119</span><span class="who"><p>44 mph · River Rd</p><small>A. Brooks · job 2 of 8</small></span><span class="st pill p-good">En route</span></li></ul>
-          <div style="padding:8px 14px 14px;display:flex;gap:8px;justify-content:flex-end"><button class="btn" data-toast="A read-only link with this truck's position and ETA — send it to a client or a crew lead; it expires when the trip ends." type="button">Share ETA link</button><button class="btn" data-toast="Trip replay scrubs a finished trip minute by minute — it ships with GPS history in phase 2." type="button">Trip replay</button></div>
-        </div>
+            <path id="map-route" d="M120 40 C 170 60 180 120 240 130 S 340 100 420 128" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 5"/>
+            <g id="map-stops" style="display:none"><circle cx="120" cy="40" r="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="3"/><circle cx="240" cy="130" r="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="3"/></g>
+            <g font-size="9" font-family="ui-monospace,Menlo,monospace" text-anchor="middle" font-weight="700"><g class="veh" data-veh="U-078" data-state="alerts"><circle cx="252" cy="192" r="8" fill="var(--warn)" stroke="var(--surface)" stroke-width="2"/><text x="252" y="177" fill="var(--ink)">U-078</text></g><g class="veh" data-veh="U-131" data-state="moving"><circle cx="420" cy="128" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="420" y="113" fill="var(--ink)">U-131</text></g><g class="veh" data-veh="U-104" data-state="moving"><circle cx="120" cy="40" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="120" y="62" fill="var(--ink)">U-104</text></g><g class="veh" data-veh="U-155" data-state="stopped"><circle cx="200" cy="150" r="8" fill="var(--axis)" stroke="var(--surface)" stroke-width="2"/><text x="200" y="135" fill="var(--ink)">U-155</text></g><g class="veh" data-veh="U-201" data-state="moving"><circle cx="330" cy="285" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="330" y="270" fill="var(--ink)">U-201</text></g><g class="veh" data-veh="U-119" data-state="moving"><circle cx="500" cy="60" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="500" y="82" fill="var(--ink)">U-119</text></g></g>
+          </g>
+        </svg>
+        <span class="map-attrib">Schematic &#183; real basemap at build (MapLibre &#183; &#169; OpenStreetMap)</span>
       </div>
-      <div class="roadmap"><div class="rm-sec"><h6>At launch</h6><p class="rm-sub">Everything you see on this screen works on day one.</p><ul><li class="ok"><b>Live</b><span>Live positions from the driver app's phone GPS — reported only while a trip runs, so nobody is tracked off the clock</span></li><li class="ok"><b>Live</b><span>Vehicle list sorted by attention — the stopped truck rises above the moving ones</span></li><li class="ok"><b>Live</b><span>Filter by moving, stopped, or alerting; click a row to find that truck on the map</span></li><li class="ok"><b>Live</b><span>Rider and towing context on every trip — who is aboard and what is attached</span></li><li class="gap"><b>Note</b><span>Positions exist only during trips; a parked truck shows its last known point, not a live dot. No hardware goes in the vehicles, by design</span></li></ul></div><div class="rm-sec"><h6>Still to come on the live map</h6><ul><li><b>P2</b><span>Geofences around every saved site, with arrivals and departures detected automatically</span></li><li><b>P2</b><span>Trip replay &#8212; scrub any finished trip minute by minute</span></li><li><b>P2</b><span>Storm mode: the dispatch board takes over this screen</span></li><li><b>P2</b><span>Route progress ticks flip from driver-tap to automatic</span></li><li><b>P2</b><span>Shareable ETA links for a client or a crew lead</span></li></ul></div></div>
+      <div class="panel" id="map-panel">
+        <div class="panel-h"><h5 id="map-panel-title">Active trips</h5><span class="sub" id="map-count">6 out</span><span class="sp"></span><button class="fchip hidden" id="map-back" type="button">&#8592; All trips</button><button class="fchip" id="map-collapse" type="button">Collapse &#9652;</button></div>
+        <div id="map-tblwrap">
+          <table class="tbl" data-nokit id="map-tbl">
+            <thead><tr><th>Driver</th><th>Unit</th><th>Status</th><th class="num">Speed</th><th>Where</th><th class="num">Job</th><th class="num">ETA</th><th class="num">Last update</th></tr></thead>
+            <tbody><tr data-veh="U-078" data-state="alerts" data-drv="D. Whitfield"><td><button class="drv" type="button">D. Whitfield</button></td><td class="mono">U-078</td><td><span class="pill p-warn">Stopped</span></td><td class="mono num">0 mph</td><td>Jefferson St</td><td class="mono num">—</td><td class="mono num">—</td><td class="mono dim num">0:22 ago</td></tr><tr data-veh="U-131" data-state="moving" data-drv="J. Reyes"><td><button class="drv" type="button">J. Reyes</button></td><td class="mono">U-131</td><td><span class="pill p-good">En route</span></td><td class="mono num">38 mph</td><td>Baxter Ave</td><td class="mono num">6 / 11</td><td class="mono num">10:52a</td><td class="mono dim num">0:04 ago</td></tr><tr data-veh="U-104" data-state="moving" data-drv="M. Okafor"><td><button class="drv" type="button">M. Okafor</button></td><td class="mono">U-104</td><td><span class="pill p-good">En route</span></td><td class="mono num">54 mph</td><td>I-64 W</td><td class="mono num">3 / 9</td><td class="mono num">11:15a</td><td class="mono dim num">0:01 ago</td></tr><tr data-veh="U-155" data-state="stopped" data-drv="T. Nguyen"><td><button class="drv" type="button">T. Nguyen</button></td><td class="mono">U-155</td><td><span class="pill p-idle">At stop</span></td><td class="mono num">0 mph</td><td>Elm Ridge HOA</td><td class="mono num">4 / 9</td><td class="mono num">—</td><td class="mono dim num">0:12 ago</td></tr><tr data-veh="U-201" data-state="moving" data-drv="S. Patel"><td><button class="drv" type="button">S. Patel</button></td><td class="mono">U-201</td><td><span class="pill p-good">En route</span></td><td class="mono num">31 mph</td><td>Preston Hwy</td><td class="mono num">—</td><td class="mono num">10:40a</td><td class="mono dim num">0:02 ago</td></tr><tr data-veh="U-119" data-state="moving" data-drv="A. Brooks"><td><button class="drv" type="button">A. Brooks</button></td><td class="mono">U-119</td><td><span class="pill p-good">En route</span></td><td class="mono num">44 mph</td><td>River Rd</td><td class="mono num">2 / 8</td><td class="mono num">11:02a</td><td class="mono dim num">0:03 ago</td></tr></tbody>
+          </table>
+        </div>
+        <div class="hidden" id="map-drill"></div>
+      </div>
+      <div class="roadmap"><div class="rm-sec"><h6>At launch</h6><p class="rm-sub">Everything you see on this screen works on day one.</p><ul><li class="ok"><b>Live</b><span>Live positions from the driver app's phone GPS &#8212; reported only while a trip runs, so nobody is tracked off the clock</span></li><li class="ok"><b>Live</b><span>Search by person or unit &#8212; type a name and the map and the table narrow together</span></li><li class="ok"><b>Live</b><span>Every active trip in one sortable table: status, speed, where, job progress, ETA, and how long ago it reported</span></li><li class="ok"><b>Live</b><span>Click a driver to see their day &#8212; punch, departure, each arrival &#8212; with their route drawn on the map</span></li><li class="ok"><b>Live</b><span>Collapse the table for a full-height map; zoom, pan, and fit-to-fleet on the map itself</span></li><li class="gap"><b>Note</b><span>Positions exist only during trips; a parked truck shows its last known point, not a live dot. No hardware goes in the vehicles, by design</span></li></ul></div><div class="rm-sec"><h6>Still to come on the live map</h6><ul><li><b>P2</b><span>Geofences around every saved site, with arrivals and departures detected automatically</span></li><li><b>P2</b><span>Trip replay &#8212; scrub a finished trip minute by minute instead of reading its timeline</span></li><li><b>P2</b><span>Storm mode: the dispatch board takes over this screen</span></li><li><b>P2</b><span>Route progress ticks flip from driver-tap to automatic</span></li><li><b>P2</b><span>Shareable ETA links for a client or a crew lead</span></li></ul></div><div class="rm-sec"><h6>Open question</h6><ul><li class="q"><b>?</b><span>Should a map dot represent the <b>person</b> or the <b>vehicle</b>? A truck with three crew aboard is one dot today. Person-dots answer &#8220;where is Diego&#8221; directly but stack on top of each other in a shared truck; vehicle-dots stay clean but need the roster underneath to answer for a rider. A third option: vehicle dots, with the driver&#8217;s name as the label and riders listed on click.</span></li></ul></div></div>
     </section>
     <section class="view" id="v-dispatch">
       <div class="topbar"><h1>Dispatch</h1><span class="sp"></span><span class="datechip">Phase 2</span></div>
@@ -1054,44 +1067,105 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     b.addEventListener("click", function () { show(b.getAttribute("data-view")); });
   });
   (function () {
-    var list = $("map-list");
-    if (!list) return;
-    var focus = $("map-focus");
-    function setFilter(f) {
-      document.querySelectorAll("[data-mf]").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-mf") === f); });
+    var tbl = $("map-tbl");
+    if (!tbl) return;
+    var rows = Array.prototype.slice.call(tbl.tBodies[0].rows);
+    var filter = "all", q = "", zoom = 1, drill = null;
+    var TL = {
+      "D. Whitfield": [["5:58a","punched in at the shop"],["6:22a","left the yard in U-078"],["7:10a","arrived Baxter &amp; 5th &#183; job 1"],["9:56a","stopped on Jefferson St &#8212; no movement since",1]],
+      "J. Reyes": [["6:04a","punched in at the shop"],["6:31a","left the yard in U-131, towing TR-12"],["7:02a","arrived Elm Ridge HOA &#183; job 1"],["10:18a","en route to job 6 of 11 &#183; ETA 10:52a",1]],
+      "M. Okafor": [["5:58a","punched in at the shop"],["6:12a","pre-trip inspection clean &#183; U-104"],["6:26a","left the yard with 2 riders, towing TR-12"],["10:20a","westbound on I-64 &#183; job 3 of 9",1]],
+      "T. Nguyen": [["6:01a","punched in at the shop"],["6:35a","left the yard in U-155"],["7:14a","arrived Elm Ridge HOA &#183; job 1"],["10:09a","at job site 4 of 9 &#183; 12 min on stop",1]],
+      "S. Patel": [["6:20a","punched in at the shop"],["6:48a","left on a service call in U-201"],["10:16a","southbound Preston Hwy &#183; ETA 10:40a",1]],
+      "A. Brooks": [["6:07a","punched in at the shop"],["6:40a","left the yard in U-119"],["7:25a","arrived River Rd &#183; job 1"],["10:15a","en route to job 2 of 8 &#183; ETA 11:02a",1]]
+    };
+    function apply() {
       var shown = 0;
-      list.querySelectorAll("li").forEach(function (li) {
-        var st = li.getAttribute("data-state");
-        var on = f === "all" || st === f;
-        li.style.display = on ? "" : "none";
+      rows.forEach(function (r) {
+        var okF = filter === "all" || r.getAttribute("data-state") === filter;
+        var hay = (r.getAttribute("data-drv") + " " + r.getAttribute("data-veh") + " " + r.textContent).toLowerCase();
+        var okQ = !q || hay.indexOf(q) >= 0;
+        var on = okF && okQ;
+        r.style.display = on ? "" : "none";
         if (on) shown++;
       });
       document.querySelectorAll("#map-svg .veh").forEach(function (g) {
-        g.classList.toggle("dim", !(f === "all" || g.getAttribute("data-state") === f));
+        var r = rows.filter(function (x) { return x.getAttribute("data-veh") === g.getAttribute("data-veh"); })[0];
+        g.classList.toggle("dim", !r || r.style.display === "none");
       });
-      $("map-count").textContent = shown + (shown === 1 ? " vehicle" : " vehicles") + (f === "all" ? " · sorted by attention" : " · " + f);
-      focus.setAttribute("opacity", "0");
-      list.querySelectorAll("li").forEach(function (x) { x.classList.remove("sel"); });
+      if (!drill) $("map-count").textContent = shown + " out" + (filter === "all" && !q ? "" : " \u00b7 filtered");
     }
     document.querySelectorAll("[data-mf]").forEach(function (b) {
-      b.addEventListener("click", function () { setFilter(b.getAttribute("data-mf")); });
+      b.addEventListener("click", function () {
+        filter = b.getAttribute("data-mf");
+        document.querySelectorAll("[data-mf]").forEach(function (x) { x.classList.toggle("on", x === b); });
+        apply();
+      });
     });
-    function focusVeh(id) {
-      var g = document.querySelector('#map-svg .veh[data-veh="' + id + '"]');
-      if (!g) return;
-      var c = g.querySelector("circle");
-      focus.setAttribute("cx", c.getAttribute("cx"));
-      focus.setAttribute("cy", c.getAttribute("cy"));
-      focus.setAttribute("opacity", "1");
-      list.querySelectorAll("li").forEach(function (x) { x.classList.toggle("sel", x.getAttribute("data-veh") === id); });
+    $("map-q").addEventListener("input", function () { q = this.value.trim().toLowerCase(); apply(); });
+
+    function select(veh) {
+      document.querySelectorAll("#map-svg .veh").forEach(function (g) { g.classList.toggle("sel", g.getAttribute("data-veh") === veh); });
     }
-    list.addEventListener("click", function (e) {
-      var li = e.target.closest("li");
-      if (li) focusVeh(li.getAttribute("data-veh"));
+    function openDrill(name, veh) {
+      drill = name;
+      select(veh);
+      $("map-tblwrap").classList.add("hidden");
+      var d = $("map-drill");
+      d.classList.remove("hidden");
+      d.innerHTML = '<ul class="tl-crew">' + (TL[name] || []).map(function (e) {
+        return '<li class="' + (e[2] ? "now" : "") + '"><b>' + e[0] + "</b> &#8212; " + e[1] + "</li>";
+      }).join("") + "</ul>";
+      $("map-panel-title").textContent = name + " \u00b7 " + veh;
+      $("map-count").textContent = "today";
+      $("map-back").classList.remove("hidden");
+      $("map-stops").style.display = "";
+      $("map-route").setAttribute("stroke-dasharray", "");
+      $("map-route").setAttribute("stroke-width", "3.5");
+    }
+    function closeDrill() {
+      drill = null;
+      select(null);
+      $("map-tblwrap").classList.remove("hidden");
+      $("map-drill").classList.add("hidden");
+      $("map-panel-title").textContent = "Active trips";
+      $("map-back").classList.add("hidden");
+      $("map-stops").style.display = "none";
+      $("map-route").setAttribute("stroke-dasharray", "6 5");
+      $("map-route").setAttribute("stroke-width", "2.5");
+      apply();
+    }
+    tbl.addEventListener("click", function (e) {
+      var b = e.target.closest(".drv");
+      if (!b) return;
+      var r = b.closest("tr");
+      openDrill(r.getAttribute("data-drv"), r.getAttribute("data-veh"));
     });
+    $("map-back").addEventListener("click", closeDrill);
     document.querySelectorAll("#map-svg .veh").forEach(function (g) {
-      g.addEventListener("click", function () { focusVeh(g.getAttribute("data-veh")); });
+      g.addEventListener("click", function () {
+        var r = rows.filter(function (x) { return x.getAttribute("data-veh") === g.getAttribute("data-veh"); })[0];
+        if (r) openDrill(r.getAttribute("data-drv"), r.getAttribute("data-veh"));
+      });
     });
+
+    $("map-collapse").addEventListener("click", function () {
+      var open = !$("mapbox").classList.contains("tall");
+      $("mapbox").classList.toggle("tall", open);
+      $("map-tblwrap").classList.toggle("hidden", open && !drill);
+      $("map-drill").classList.toggle("hidden", open || !drill);
+      this.innerHTML = open ? "Show trips \u25be" : "Collapse \u25b4";
+    });
+
+    function setZoom(z) {
+      zoom = Math.min(3, Math.max(0.6, z));
+      $("map-pan").setAttribute("transform", "translate(280,150) scale(" + zoom.toFixed(2) + ") translate(-280,-150)");
+    }
+    $("map-in").addEventListener("click", function () { setZoom(zoom * 1.35); });
+    $("map-out").addEventListener("click", function () { setZoom(zoom / 1.35); });
+    $("map-fit").addEventListener("click", function () { setZoom(1); toast("Fit to fleet \u2014 every active trip in view."); });
+    $("map-home").addEventListener("click", function () { setZoom(1.6); toast("Centered on the shop \u2014 Grand Ave depot."); });
+
     function layer(btnId, layerId, msg) {
       var b = $(btnId), L = $(layerId);
       b.addEventListener("click", function () {
@@ -1101,8 +1175,9 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         if (on && msg) toast(msg);
       });
     }
-    layer("map-geo", "map-geo-layer", "Geofences are phase 2 — drawn here so you can see where arrivals will be detected.");
+    layer("map-geo", "map-geo-layer", "Geofences are drawn here now; automatic arrival detection ships in phase 2.");
     layer("map-traffic", "map-traffic-layer", null);
+    apply();
   })();
   document.querySelectorAll("[data-goto]").forEach(function (b) {
     b.addEventListener("click", function () { show(b.getAttribute("data-goto")); });
