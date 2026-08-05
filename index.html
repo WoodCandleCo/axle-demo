@@ -73,6 +73,18 @@
   #map-svg .veh { cursor: pointer; }
   #map-svg .veh.dim { opacity: 0.2; }
   #map-svg .veh.sel circle { stroke: var(--accent); stroke-width: 3.5; }
+  .mappop { position: absolute; z-index: 6; width: 250px; max-height: calc(100% - 16px); display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--hair); border-radius: 11px; box-shadow: var(--shadow); overflow: hidden; }
+  .mappop .ph { display: flex; align-items: baseline; gap: 7px; padding: 8px 11px 6px; border-bottom: 1px solid var(--line); flex: none; }
+  .mappop .ph b { font-family: var(--display); font-size: 13px; }
+  .mappop .ph .ago { font-family: var(--mono); font-size: 9.5px; color: var(--muted); }
+  .mappop .ph .x { margin-left: auto; cursor: pointer; color: var(--muted); background: none; border: 0; font-size: 15px; line-height: 1; padding: 0 2px; font-family: var(--body); }
+  .mappop .pb { padding: 6px 11px 8px; font-size: 11.5px; overflow-y: auto; min-height: 0; }
+  .mappop .pr { display: flex; gap: 8px; padding: 2px 0; }
+  .mappop .pr .k { color: var(--muted); width: 62px; flex: none; font-size: 10.5px; }
+  .mappop .pr .v { color: var(--ink-2); min-width: 0; }
+  .mappop .pr .v b { color: var(--ink); font-weight: 600; }
+  .mappop .pf { display: flex; gap: 6px; padding: 0 11px 9px; flex: none; }
+  .mappop .pf .fchip { font-size: 10.5px; padding: 3px 9px; }
   .drv { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--accent-ink); cursor: pointer; text-align: left; }
   .drv:hover { text-decoration: underline; }
   .tl-crew { list-style: none; margin: 0; padding: 12px 16px 16px; font-size: 12.5px; }
@@ -817,7 +829,7 @@
             </g>
             <path id="map-route" d="M120 40 C 170 60 180 120 240 130 S 340 100 420 128" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 5"/>
             <g id="map-stops" style="display:none"><circle cx="120" cy="40" r="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="3"/><circle cx="240" cy="130" r="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="3"/></g>
-            <g font-size="9" font-family="ui-monospace,Menlo,monospace" text-anchor="middle" font-weight="700"><g class="veh" data-veh="U-078" data-state="alerts"><circle cx="252" cy="192" r="8" fill="var(--warn)" stroke="var(--surface)" stroke-width="2"/><text x="252" y="177" fill="var(--ink)">U-078</text></g><g class="veh" data-veh="U-131" data-state="moving"><circle cx="420" cy="128" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="420" y="113" fill="var(--ink)">U-131</text></g><g class="veh" data-veh="U-104" data-state="moving"><circle cx="120" cy="40" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="120" y="62" fill="var(--ink)">U-104</text></g><g class="veh" data-veh="U-155" data-state="stopped"><circle cx="200" cy="150" r="8" fill="var(--axis)" stroke="var(--surface)" stroke-width="2"/><text x="200" y="135" fill="var(--ink)">U-155</text></g><g class="veh" data-veh="U-201" data-state="moving"><circle cx="330" cy="285" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="330" y="270" fill="var(--ink)">U-201</text></g><g class="veh" data-veh="U-119" data-state="moving"><circle cx="500" cy="60" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="500" y="82" fill="var(--ink)">U-119</text></g></g>
+            <g font-size="9" font-family="ui-monospace,Menlo,monospace" text-anchor="middle" font-weight="700"><g class="veh" data-veh="U-078" data-state="alerts"><circle cx="252" cy="192" r="8" fill="var(--warn)" stroke="var(--surface)" stroke-width="2"/><text x="252" y="177" fill="var(--ink)">Whitfield</text></g><g class="veh" data-veh="U-131" data-state="moving"><circle cx="420" cy="128" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="420" y="113" fill="var(--ink)">Reyes</text></g><g class="veh" data-veh="U-104" data-state="moving"><circle cx="120" cy="40" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="120" y="62" fill="var(--ink)">Okafor</text></g><g class="veh" data-veh="U-155" data-state="stopped"><circle cx="200" cy="150" r="8" fill="var(--axis)" stroke="var(--surface)" stroke-width="2"/><text x="200" y="135" fill="var(--ink)">Nguyen</text></g><g class="veh" data-veh="U-201" data-state="moving"><circle cx="330" cy="285" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="330" y="270" fill="var(--ink)">Patel</text></g><g class="veh" data-veh="U-119" data-state="moving"><circle cx="500" cy="60" r="8" fill="var(--good)" stroke="var(--surface)" stroke-width="2"/><text x="500" y="82" fill="var(--ink)">Brooks</text></g></g>
           </g>
         </svg>
         <span class="map-attrib">Schematic &#183; real basemap at build (MapLibre &#183; &#169; OpenStreetMap)</span>
@@ -827,7 +839,7 @@
         <div id="map-tblwrap">
           <table class="tbl" data-nokit id="map-tbl">
             <thead><tr><th>Driver</th><th>Unit</th><th>Status</th><th class="num">Speed</th><th>Where</th><th class="num">Job</th><th class="num">ETA</th><th class="num">Last update</th></tr></thead>
-            <tbody><tr data-veh="U-078" data-state="alerts" data-drv="D. Whitfield"><td><button class="drv" type="button">D. Whitfield</button></td><td class="mono">U-078</td><td><span class="pill p-warn">Stopped</span></td><td class="mono num">0 mph</td><td>Jefferson St</td><td class="mono num">—</td><td class="mono num">—</td><td class="mono dim num">0:22 ago</td></tr><tr data-veh="U-131" data-state="moving" data-drv="J. Reyes"><td><button class="drv" type="button">J. Reyes</button></td><td class="mono">U-131</td><td><span class="pill p-good">En route</span></td><td class="mono num">38 mph</td><td>Baxter Ave</td><td class="mono num">6 / 11</td><td class="mono num">10:52a</td><td class="mono dim num">0:04 ago</td></tr><tr data-veh="U-104" data-state="moving" data-drv="M. Okafor"><td><button class="drv" type="button">M. Okafor</button></td><td class="mono">U-104</td><td><span class="pill p-good">En route</span></td><td class="mono num">54 mph</td><td>I-64 W</td><td class="mono num">3 / 9</td><td class="mono num">11:15a</td><td class="mono dim num">0:01 ago</td></tr><tr data-veh="U-155" data-state="stopped" data-drv="T. Nguyen"><td><button class="drv" type="button">T. Nguyen</button></td><td class="mono">U-155</td><td><span class="pill p-idle">At stop</span></td><td class="mono num">0 mph</td><td>Elm Ridge HOA</td><td class="mono num">4 / 9</td><td class="mono num">—</td><td class="mono dim num">0:12 ago</td></tr><tr data-veh="U-201" data-state="moving" data-drv="S. Patel"><td><button class="drv" type="button">S. Patel</button></td><td class="mono">U-201</td><td><span class="pill p-good">En route</span></td><td class="mono num">31 mph</td><td>Preston Hwy</td><td class="mono num">—</td><td class="mono num">10:40a</td><td class="mono dim num">0:02 ago</td></tr><tr data-veh="U-119" data-state="moving" data-drv="A. Brooks"><td><button class="drv" type="button">A. Brooks</button></td><td class="mono">U-119</td><td><span class="pill p-good">En route</span></td><td class="mono num">44 mph</td><td>River Rd</td><td class="mono num">2 / 8</td><td class="mono num">11:02a</td><td class="mono dim num">0:03 ago</td></tr></tbody>
+            <tbody><tr data-veh="U-078" data-state="alerts" data-drv="D. Whitfield" data-model="2019 Ford F-250 · Pickup" data-tow="none" data-equip="—" data-riders="—"><td><button class="drv" type="button">D. Whitfield</button></td><td class="mono">U-078</td><td><span class="pill p-warn">Stopped</span></td><td class="mono num">0 mph</td><td>Jefferson St</td><td class="mono num">—</td><td class="mono num">—</td><td class="mono dim num">0:22 ago</td></tr><tr data-veh="U-131" data-state="moving" data-drv="J. Reyes" data-model="2022 Ram ProMaster 2500 · Van" data-tow="TR-12 · 16-ft utility" data-equip="EQ-112 Z-turn mower, 2 trimmers" data-riders="—"><td><button class="drv" type="button">J. Reyes</button></td><td class="mono">U-131</td><td><span class="pill p-good">En route</span></td><td class="mono num">38 mph</td><td>Baxter Ave</td><td class="mono num">6 / 11</td><td class="mono num">10:52a</td><td class="mono dim num">0:04 ago</td></tr><tr data-veh="U-104" data-state="moving" data-drv="M. Okafor" data-model="2021 Freightliner MT45 · Box" data-tow="TR-12 · 16-ft utility" data-equip="EQ-208 skid steer" data-riders="J. Reyes, L. Vargas"><td><button class="drv" type="button">M. Okafor</button></td><td class="mono">U-104</td><td><span class="pill p-good">En route</span></td><td class="mono num">54 mph</td><td>I-64 W</td><td class="mono num">3 / 9</td><td class="mono num">11:15a</td><td class="mono dim num">0:01 ago</td></tr><tr data-veh="U-155" data-state="stopped" data-drv="T. Nguyen" data-model="2024 Ford Transit 250 · Van" data-tow="none" data-equip="Hand tools, 2-cycle oil" data-riders="D. Ríos"><td><button class="drv" type="button">T. Nguyen</button></td><td class="mono">U-155</td><td><span class="pill p-idle">At stop</span></td><td class="mono num">0 mph</td><td>Elm Ridge HOA</td><td class="mono num">4 / 9</td><td class="mono num">—</td><td class="mono dim num">0:12 ago</td></tr><tr data-veh="U-201" data-state="moving" data-drv="S. Patel" data-model="2023 Chevy Silverado 2500 · Pickup" data-tow="none" data-equip="Service kit" data-riders="—"><td><button class="drv" type="button">S. Patel</button></td><td class="mono">U-201</td><td><span class="pill p-good">En route</span></td><td class="mono num">31 mph</td><td>Preston Hwy</td><td class="mono num">—</td><td class="mono num">10:40a</td><td class="mono dim num">0:02 ago</td></tr><tr data-veh="U-119" data-state="moving" data-drv="A. Brooks" data-model="2023 Ford Transit 350 · Van" data-tow="none" data-equip="EQ-315 stump grinder" data-riders="—"><td><button class="drv" type="button">A. Brooks</button></td><td class="mono">U-119</td><td><span class="pill p-good">En route</span></td><td class="mono num">44 mph</td><td>River Rd</td><td class="mono num">2 / 8</td><td class="mono num">11:02a</td><td class="mono dim num">0:03 ago</td></tr></tbody>
           </table>
         </div>
         <div class="hidden" id="map-drill"></div>
@@ -1126,6 +1138,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     function closeDrill() {
       drill = null;
       select(null);
+      if (typeof closePop === "function") closePop();
       $("map-tblwrap").classList.remove("hidden");
       $("map-drill").classList.add("hidden");
       $("map-panel-title").textContent = "Active trips";
@@ -1142,12 +1155,49 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       openDrill(r.getAttribute("data-drv"), r.getAttribute("data-veh"));
     });
     $("map-back").addEventListener("click", closeDrill);
-    document.querySelectorAll("#map-svg .veh").forEach(function (g) {
-      g.addEventListener("click", function () {
-        var r = rows.filter(function (x) { return x.getAttribute("data-veh") === g.getAttribute("data-veh"); })[0];
-        if (r) openDrill(r.getAttribute("data-drv"), r.getAttribute("data-veh"));
+    var pop = null;
+    function closePop() { if (pop) { pop.remove(); pop = null; } }
+    function openPop(veh) {
+      closePop();
+      var r = rows.filter(function (x) { return x.getAttribute("data-veh") === veh; })[0];
+      var g = document.querySelector('#map-svg .veh[data-veh="' + veh + '"]');
+      if (!r || !g) return;
+      select(veh);
+      var A = function (n) { return r.getAttribute(n) || "\u2014"; };
+      var tow = A("data-tow") === "none" ? "Nothing attached" : "<b>" + A("data-tow") + "</b>";
+      var riders = A("data-riders") === "\u2014" ? "None \u2014 driver alone" : "<b>" + A("data-riders") + "</b>";
+      pop = document.createElement("div");
+      pop.className = "mappop";
+      pop.innerHTML =
+        '<div class="ph"><b>' + veh + "</b><span class=\"dim\" style=\"font-size:11px\">" + r.cells[2].textContent.trim() + '</span><span class="ago">' + r.cells[7].textContent.trim() + '</span><button class="x" type="button" aria-label="Close">&times;</button></div>' +
+        '<div class="pb">' +
+        '<div class="pr"><span class="k">Vehicle</span><span class="v">' + A("data-model") + "</span></div>" +
+        '<div class="pr"><span class="k">Driver</span><span class="v"><b>' + A("data-drv") + "</b></span></div>" +
+        '<div class="pr"><span class="k">Riders</span><span class="v">' + riders + "</span></div>" +
+        '<div class="pr"><span class="k">Towing</span><span class="v">' + tow + "</span></div>" +
+        '<div class="pr"><span class="k">On board</span><span class="v">' + A("data-equip") + "</span></div>" +
+        '<div class="pr"><span class="k">Now</span><span class="v">' + r.cells[3].textContent.trim() + " \u00b7 " + r.cells[4].textContent.trim() + "</span></div>" +
+        '<div class="pr"><span class="k">Job</span><span class="v">' + r.cells[5].textContent.trim() + " \u00b7 ETA " + r.cells[6].textContent.trim() + "</span></div>" +
+        "</div>" +
+        '<div class="pf"><button class="fchip" data-pop-day type="button">See their day &rarr;</button><button class="fchip" data-toast="A read-only link with this truck\u2019s position and ETA \u2014 it expires when the trip ends." type="button">Share ETA</button></div>';
+      $("mapbox").appendChild(pop);
+      var box = $("mapbox").getBoundingClientRect(), dot = g.querySelector("circle").getBoundingClientRect();
+      var left = dot.left - box.left + 16, top = dot.top - box.top + 14;
+      left = Math.max(8, Math.min(left, box.width - pop.offsetWidth - 8));
+      top = Math.max(8, Math.min(top, box.height - pop.offsetHeight - 8));
+      pop.style.left = left + "px";
+      pop.style.top = top + "px";
+      pop.querySelector(".x").addEventListener("click", closePop);
+      pop.querySelector("[data-pop-day]").addEventListener("click", function () {
+        closePop();
+        openDrill(r.getAttribute("data-drv"), veh);
       });
+      pop.querySelector("[data-toast]").addEventListener("click", function () { toast(this.getAttribute("data-toast")); });
+    }
+    document.querySelectorAll("#map-svg .veh").forEach(function (g) {
+      g.addEventListener("click", function (e) { e.stopPropagation(); openPop(g.getAttribute("data-veh")); });
     });
+    $("map-svg").addEventListener("click", function (e) { if (!e.target.closest(".veh")) closePop(); });
 
     $("map-collapse").addEventListener("click", function () {
       var open = !$("mapbox").classList.contains("tall");
