@@ -62,23 +62,23 @@
 </style>
 <div class="wrap">
 <h1>What phase 1 needs</h1>
-<p class="sub">Every account, purchase, decision, and access grant required to launch Axle's phase 1 — the time clock, tags and trips, inspections, the asset register, fuel import, saved sites, and reports. Ordered by when it has to exist, not by category, because two of these have real lead time and everything else is an afternoon.</p>
+<p class="sub">Every account, purchase, decision, and access grant required to launch Axle's phase 1 — the time clock, tags and trips, inspections, the asset register, fuel import, saved sites, and reports. Ordered by when it has to exist, not by category.<br><b>Updated Aug 4:</b> the phase-1 crew app ships as a <b>web app</b>, so both app-store accounts and both annual platform deadlines leave the launch path entirely — they become phase-2 prerequisites. Wood Candle Co. holds the developer accounts and already has a D-U-N-S number, so that wait is gone too. What used to be the two long poles is now a two-line to-do for later.</p>
 <div class="legend">
   <span><i class="tag t-now">START NOW</i> has a waiting period — begin before the build does</span>
   <span><i class="tag t-wk0">WEEK 0</i> the approval-week paperwork sprint</span>
-  <span><i class="tag t-build">AT BUILD</i> create when the code needs it</span>
+  <span><i class="tag t-build">AT BUILD</i> create when the code needs it, or when phase 2 starts</span>
   <span><i class="tag t-have">IN HAND</i> already done</span>
 </div>
 
-<h2>1 · The long poles <span class="n">— nothing installs on a phone until these clear</span></h2>
-<p class="note">Both store accounts hinge on the same decision: <b>who legally owns the app</b>. An organization account needs a D-U-N-S number tied to a real corporation or LLC — a DBA won't pass — but it also skips Google's 14-day testing gate. Recommendation: Madison Commercial Landscapes holds both, with Tyler added as Admin.</p>
+<h2>1 · Store accounts <span class="n">— no longer a launch blocker</span></h2>
+<p class="note">The crew app is a web app in phase 1: crew open it in a browser, add it to their home screen, and tag taps open it directly — no install, no review, no store. These accounts are only needed when the <b>phase-2</b> native app arrives for background GPS and push. <b>Wood Candle Co. holds them and already has a D-U-N-S number</b>, so enrollment is a form, not a wait. Worth doing a few weeks before phase 2 starts, since Apple verification takes days.</p>
 <div class="card"><table>
 <thead><tr><th>Item</th><th>What it buys</th><th>Cost</th><th>Lead time</th><th>When</th></tr></thead>
 <tbody>
-<tr><td class="item">D-U-N-S number</td><td class="why">Free identifier from Dun &amp; Bradstreet that proves the legal entity to Apple and Google. Only needed for organization accounts.<span class="flag"><b>Decision first:</b> Madison or Wood Candle Co. holds the app?</span></td><td class="cost">Free</td><td class="lead">~5 business days</td><td><i class="tag t-now">START NOW</i></td></tr>
-<tr><td class="item">Apple Developer Program</td><td class="why">The only way an app reaches an iPhone: link-gated installs, TestFlight for the pilot crew, the APNs push key, and the signing certificates.</td><td class="cost">$99 / yr</td><td class="lead">days after D-U-N-S</td><td><i class="tag t-now">START NOW</i></td></tr>
-<tr><td class="item">Google Play Console</td><td class="why">The Android half of the crew's phones.<span class="flag"><b>Gotcha:</b> a new <em>personal</em> account must run a closed test with 12 testers for 14 straight days before it can publish. Organization accounts are exempt.</span></td><td class="cost">$25 once</td><td class="lead">days — or +14 if personal</td><td><i class="tag t-now">START NOW</i></td></tr>
-<tr><td class="item">Ownership agreement</td><td class="why">One page: who owns the app, the source, and the data. Tyler is the product owner; Madison is the client. Cheap now, expensive later.</td><td class="cost">Free</td><td class="lead">a conversation</td><td><i class="tag t-now">START NOW</i></td></tr>
+<tr><td class="item">D-U-N-S number</td><td class="why">Proves the legal entity to Apple and Google for organization accounts.<span class="flag"><b>Settled:</b> Wood Candle Co. holds the accounts and already has one.</span></td><td class="cost">Free</td><td class="lead">done</td><td><i class="tag t-have">IN HAND</i></td></tr>
+<tr><td class="item">Apple Developer Program</td><td class="why">Needed only for the phase-2 native app — TestFlight, the APNs push key, signing. Also brings the annual April SDK deadline, which is precisely why it stays out of phase 1.</td><td class="cost">$99 / yr</td><td class="lead">days (verification)</td><td><i class="tag t-build">PHASE 2</i></td></tr>
+<tr><td class="item">Google Play Console</td><td class="why">Phase-2 native app only. As a Wood Candle Co. <em>organization</em> account it also skips Google's 12-testers-for-14-days gate that personal accounts face.</td><td class="cost">$25 once</td><td class="lead">days</td><td><i class="tag t-build">PHASE 2</i></td></tr>
+<tr><td class="item">Ownership agreement</td><td class="why">One page: who owns the app, the source, and the data. Wood Candle Co. builds and holds it; Madison is the client. Cheap now, expensive later.</td><td class="cost">Free</td><td class="lead">a conversation</td><td><i class="tag t-now">START NOW</i></td></tr>
 </tbody></table></div>
 
 <h2>2 · Where the software lives <span class="n">— the monthly meter</span></h2>
@@ -131,17 +131,17 @@
 </tbody></table></div>
 
 <div class="totals">
-  <div class="tot"><div class="k">One-time, up front</div><div class="v">$140–185</div><div class="d">Play account, tag stock, label sheets, optional wallet cards</div></div>
-  <div class="tot"><div class="k">Annual</div><div class="v">~$139</div><div class="d">Apple $99 + axlehq.io ~$40</div></div>
+  <div class="tot"><div class="k">One-time, up front</div><div class="v">$115–160</div><div class="d">Tag stock, label sheets, optional wallet cards — no store accounts at launch</div></div>
+  <div class="tot"><div class="k">Annual</div><div class="v">~$40</div><div class="d">axlehq.io only — Apple's $99 starts with phase 2</div></div>
   <div class="tot"><div class="k">Monthly</div><div class="v">$25–48</div><div class="d">Hosting, database, storage, password manager</div></div>
-  <div class="tot"><div class="k">First year, all in</div><div class="v">≈ $500–750</div><div class="d">Then ≈ $415–600/yr — about $35–50 a month</div></div>
+  <div class="tot"><div class="k">First year, all in</div><div class="v">≈ $400–640</div><div class="d">Then ≈ $340–520/yr. Add $124 the year the native app ships</div></div>
 </div>
 
 <div class="cta"><b>If you only do four things this week:</b>
 <ol>
-<li>Decide who legally owns the app — that single answer unlocks both store accounts.</li>
-<li>Request the D-U-N-S number (about five business days, and Apple can't verify without it).</li>
-<li>Register the Play account as an <em>organization</em> — it skips the 14-day testing gate.</li>
-<li>Ask Alesha for the expected start time; the punctuality features have no meaning until that number exists.</li>
+<li>Ask Alesha for the <b>expected start time</b> — punctuality, roll call, and the PTO report compute nothing without it, and it is now the only launch-gating unknown.</li>
+<li>Confirm laser-printer access, or commit to the sticker-service path before ordering label sheets.</li>
+<li>Send the WEX and ADP access requests — they run on someone else's calendar, and each has a manual fallback so neither blocks the build.</li>
+<li>Get the crew roster with each person's language, and the insurance schedule as the truthful seed for the asset register.</li>
 </ol></div>
 </div>
