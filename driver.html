@@ -9,7 +9,7 @@
     --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
     --line: #e1e0d9; --hair: rgba(11,11,11,0.10);
     --accent: #0e6672; --accent-ink: #0b4d57; --accent-wash: rgba(14,102,114,0.09);
-    --good: #0ca30c; --good-text: #006300; --warn: #fab219; --crit: #d03b3b;
+    --good: #0ca30c; --good-text: #006300; --warn: #fab219; --sim-bg: rgba(250,178,25,0.10); --sim-line: rgba(180,83,9,0.45); --sim-ink: #a3590a; --crit: #d03b3b;
     --s1: #2a78d6; --s4: #eda100;
     --display: "Avenir Next", Avenir, Futura, "Century Gothic", "Segoe UI", system-ui, sans-serif;
     --body: system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -22,6 +22,7 @@
       --ink: #fff; --ink-2: #c3c2b7; --line: #2c2c2a; --hair: rgba(255,255,255,0.10);
       --accent: #56b6c2; --accent-ink: #8ed2db; --accent-wash: rgba(86,182,194,0.13);
       --good-text: #0ca30c; --s1: #3987e5; --s4: #c98500;
+      --sim-bg: rgba(250,178,25,0.09); --sim-line: rgba(250,178,25,0.42); --sim-ink: #e0a437;
     }
   }
   html { background: var(--page); }
@@ -81,8 +82,11 @@
   .fchip.on { background: var(--accent-wash); border-color: var(--accent); color: var(--accent-ink); }
   .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--page); font-size: 13px; font-weight: 600; border-radius: 999px; padding: 10px 18px; opacity: 0; pointer-events: none; transition: opacity 0.25s; z-index: 50; max-width: 90vw; text-align: center; }
   .toast.on { opacity: 1; }
-  .simbar { margin-top: 26px; border-top: 1px dashed var(--line); padding-top: 14px; }
-  .simbar .lbl { font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .simbar { margin-top: 26px; border: 1px dashed var(--sim-line); background: var(--sim-bg); border-radius: 12px; padding: 13px 14px 14px; }
+  .simbar .lbl { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sim-ink); margin-bottom: 3px; }
+  .simbar .lbl::before { content: "Demo only"; background: var(--sim-ink); color: var(--surface); border-radius: 4px; padding: 2px 7px; letter-spacing: 0.06em; flex: none; }
+  .simbar .why { font-size: 11.5px; color: var(--ink-2); line-height: 1.45; margin-bottom: 10px; }
+  .simbar .note { text-align: left; margin-top: 10px; font-size: 11.5px; }
   .dot { display: inline-block; width: 9px; height: 9px; border-radius: 99px; margin-right: 7px; }
   .d-blue { background: var(--s1); } .d-yellow { background: var(--s4); } .d-red { background: var(--crit); }
   .undo { font-family: var(--mono); }
@@ -125,15 +129,16 @@
         <div class="row"><button class="add" id="manual-start" type="button">Start a trip without a tag →</button></div>
       </div>
       <div class="simbar">
-        <div class="lbl">No tag handy? Simulate a tap</div>
+        <div class="lbl">Simulate a tap</div>
+        <p class="why">These buttons don't exist in the real app. They stand in for tapping a physical tag, so the flows can be tried without one in hand.</p>
         <div class="chips">
           <button class="fchip" data-sim="U-104" type="button"><span class="dot d-blue"></span>U-104 dash</button>
           <button class="fchip" data-sim="TR-12" type="button"><span class="dot d-blue"></span>TR-12 tongue</button>
           <button class="fchip" data-sim="OIL" type="button"><span class="dot d-yellow"></span>Oil rack</button>
           <button class="fchip" data-sim="EQ-208" type="button"><span class="dot d-red"></span>EQ-208 problem</button>
         </div>
+        <div class="note">On a real phone, a tag or QR carrying <span style="font-family:var(--mono)">#t=U-104</span> opens these exact flows — no buttons needed.</div>
       </div>
-      <div class="note">A real tag or QR carrying <span style="font-family:var(--mono)">#t=U-104</span> opens the same flows.</div>
     </section>
 
     <!-- MANUAL: pick vehicle -->
