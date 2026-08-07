@@ -331,7 +331,7 @@
   .spec-row { display: flex; gap: 26px; align-items: flex-start; flex-wrap: wrap; }
   .spec-lab-v { width: 180px; height: 360px; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; padding: 18px 11px 0; color: #fff; border-radius: 6px; overflow: hidden; }
   .spec-lab-v.lpc-yellow { color: #332000; }
-  .spec-lab-v .vnm { font-size: 15px; font-weight: 800; text-align: center; line-height: 1.2; display: block; }
+  .spec-lab-v .vnm { font-family: var(--display); font-size: 15px; font-weight: 700; text-align: center; line-height: 1.2; display: block; }
   .spec-lab-v .vid { font-family: var(--mono); font-size: 9px; opacity: 0.92; text-align: center; display: block; margin-top: 2px; }
   .spec-lab-v .qr { width: 144px; height: 144px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex: none; margin-top: auto; }
   .spec-lab-v .qr img, .spec-lab-v .qr canvas { width: 135px !important; height: 135px !important; display: block; }
@@ -358,7 +358,7 @@
   .spec-side i.b::after { content: ""; position: absolute; bottom: 0; left: -3px; width: 7px; height: 1px; background: var(--muted); }
   .spec-lab { width: 360px; height: 180px; display: flex; align-items: stretch; padding: 0; box-sizing: border-box; color: #fff; border-radius: 6px; overflow: hidden; }
   .spec-lab .lpm { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 9px 7px 11px 13px; box-sizing: border-box; }
-  .spec-lab .lpm .nm { display: block; font-size: 21.5px; font-weight: 800; line-height: 1.15; }
+  .spec-lab .lpm .nm { display: block; font-family: var(--display); font-size: 21.5px; font-weight: 700; line-height: 1.15; }
   .spec-lab .lpr { flex: 1; display: flex; align-items: center; gap: 4px; margin-top: 4px; }
   .spec-lab .qrc { flex: none; position: relative; }
   .spec-lab .qid { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 8.5px; opacity: 0.9; margin-top: 2px; white-space: nowrap; }
@@ -416,7 +416,7 @@
     .lp-sheet { width: 8.5in; height: 11in; position: relative; page-break-after: always; }
     .lp-label { position: absolute; width: 4in; height: 2in; display: flex; align-items: stretch; padding: 0; box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; color: #fff; }
     .lp-label .lpm { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 0.1in 0.08in 0.12in 0.14in; box-sizing: border-box; }
-    .lp-label .lpm .nm { display: block; font-size: 0.24in; font-weight: 800; line-height: 1.15; }
+    .lp-label .lpm .nm { display: block; font-family: var(--display); font-size: 0.24in; font-weight: 700; line-height: 1.15; }
     .lp-label .lpr { flex: 1; display: flex; align-items: center; gap: 0.04in; margin-top: 0.05in; }
     .lp-label .qrc { flex: none; position: relative; }
     .lp-label .qid { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); font-family: ui-monospace, Menlo, monospace; font-size: 0.09in; opacity: 0.9; margin-top: 0.02in; white-space: nowrap; }
@@ -435,7 +435,7 @@
     .lp-label .band { align-self: stretch; flex: none; width: 0.58in; margin: 0 0 0 0.02in; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; transform: rotate(180deg); font-size: 0.135in; font-weight: 800; letter-spacing: 0.028in; color: #fff; }
     .lp-label.vert { padding: 0; display: block; }
     .lp-label.vert .lpv { position: absolute; left: 50%; top: 50%; width: 2in; height: 4in; transform: translate(-50%, -50%) rotate(-90deg); display: flex; flex-direction: column; align-items: center; box-sizing: border-box; padding: 0.2in 0.12in 0; }
-    .lp-label .lpv .vnm { font-size: 0.17in; font-weight: 800; text-align: center; line-height: 1.2; }
+    .lp-label .lpv .vnm { font-family: var(--display); font-size: 0.17in; font-weight: 700; text-align: center; line-height: 1.2; }
     .lp-label .lpv .vid { font-family: ui-monospace, Menlo, monospace; font-size: 0.1in; text-align: center; opacity: 0.92; margin-top: 0.02in; }
     .lp-label .lpv .qr { width: 1.6in; height: 1.6in; margin-top: auto; }
     .lp-label .lpv .qr img, .lp-label .lpv .qr canvas { width: 1.5in !important; height: 1.5in !important; }
@@ -485,7 +485,7 @@
     <button class="nav-item" data-view="tags" type="button"><svg width="16" height="16"><use href="#i-hex"/></svg>Tag manager</button>
     <span class="gap"></span>
     <div class="wx-tile">
-      <span class="wxt-k">Weather · Madison shop</span>
+      <span class="wxt-k">Weather · Oregon shop</span>
       <div class="wxt-now"><svg class="wxt-ic" aria-hidden="true"><use href="#i-sun"/></svg><span class="wxt-temp">78°</span><span class="wxt-cond">Sunny</span></div>
       <div class="wxt-detail">Rain 40% after 3p · wind SW 8 mph</div>
       <div class="wxt-hours">
@@ -1263,7 +1263,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
   });
   // ---- assets: full vehicle detail view ----
   var VEH = {
-    "U-104": { title: "U-104 · 2021 Freightliner MT45", pill: ["p-good", "Active"], meta: "VIN <b>1FVACWDT6MHMS5814</b> · Plate <b>WI · TRK-104</b> · Group <b>Madison — Mow crew</b> · In service <b>Apr 2021</b>",
+    "U-104": { title: "U-104 · 2021 Freightliner MT45", pill: ["p-good", "Active"], meta: "VIN <b>1FVACWDT6MHMS5814</b> · Plate <b>WI · TRK-104</b> · Group <b>Oregon — Mow crew</b> · In service <b>Apr 2021</b>",
       tiles: [["Odometer", "112,486 mi", "Pump prompt · Jul 29"], ["Cost / mile · 12 mo", "$0.63", "▲ 1¢ vs fleet avg"], ["Utilization · 30 d", "88%", "26 active days"], ["Fuel economy", "9.8 mpg", "Class avg 9.5"]],
       wo: '<span class="id">PM-B · due now</span><b>PM-B service — overdue 240 mi</b>Oil, filters, brake inspection. Book at Loudon or in-house bay 2.<div class="meta"><span class="pill p-serious">Overdue</span><span>One tap books it</span></div>',
       cost: ["$16,120", [["Fuel", "$11,020", "var(--s1)", 68], ["Maintenance", "$3,480", "var(--serious)", 22], ["Insurance", "$1,410", "var(--good)", 8], ["Other", "$210", "var(--s4)", 2]]],
@@ -1414,7 +1414,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       }
       var grid = '<div class="aa-grid">' + s.fields.map(function (f) {
         if (f[2] === "select") {
-          return '<div class="aa-f"><label>' + f[0] + '</label><select class="aa-group"><option>Madison — main yard</option><option>Snow fleet</option><option value="+new">+ New group…</option></select></div>';
+          return '<div class="aa-f"><label>' + f[0] + '</label><select class="aa-group"><option>Oregon — main yard</option><option>Snow fleet</option><option value="+new">+ New group…</option></select></div>';
         }
         if (f[2] === "month") return aaMonthCtl(f);
         var cls = f[0] === "Unit #" ? ' class="aa-unit"' : f[0] === "Name" ? ' class="aa-name"' : "";
@@ -1584,7 +1584,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     { code: "EQ-208", name: "Skid steer", spot: "frame" },
     { code: "EQ-315", name: "Stump grinder", spot: "frame" },
     { code: "Shop", name: "Shop \u2014 supply rack or bin", spot: "rack" },
-    { code: "Yard", name: "Verona yard \u2014 kiosk & gates", spot: "post" }
+    { code: "Yard", name: "Oregon yard \u2014 kiosk & gates", spot: "post" }
   ];
   window.__cats = [
     { k: "blue", n: "Check-in", c: "#2a78d6", tap: "U-104", d: "Who's aboard what \u2014 dash & tongue tags start or join a trip." },
