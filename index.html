@@ -1697,6 +1697,52 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     var c = (window.__cats || []).filter(function (x) { return x.k === key; })[0];
     return (c && c.c) || HEX2[key] || "#5a6b7a";
   }
+  /* A long asset name wraps and shoves the purpose band off the bottom of the
+     VERTICAL label — the one element that must never be lost. Shrink the name to
+     claw the space back; if that isn't enough, take the rest from the QR (Tyler
+     2026-08-08: 1.5in still scans fine). Runs on preview, thumbnails, and print
+     from one place so the three can't drift. */
+  window.__fitVert = function (box) {
+    if (!box) return;
+    var nm = box.querySelector(".vnm"), band = box.querySelector(".vband");
+    if (!nm || !band) return;
+    var qr = box.querySelector(".qr");
+    var code = qr && (qr.querySelector("img") || qr.querySelector("canvas"));
+    nm.style.fontSize = "";
+    /* On the printed sheet this stack is rotated -90deg, so getBoundingClientRect
+       measures in ROTATED space and "bottom" is really a side edge — the guard would
+       silently no-op exactly where it matters. scrollHeight/clientHeight are layout
+       values, unaffected by transforms. */
+    var fits = function () { return box.scrollHeight <= box.clientHeight + 1; };
+    if (fits()) return;
+    var size = parseFloat(getComputedStyle(nm).fontSize), floor = size * 0.6, guard = 0;
+    while (!fits() && size > floor && guard++ < 24) { size *= 0.94; nm.style.fontSize = size + "px"; }
+    if (fits() || !qr) return;
+    var side = qr.getBoundingClientRect().height, ratio = code ? code.getBoundingClientRect().height / side : 0.87;
+    for (var i = 0; i < 14 && !fits(); i++) {
+      side *= 0.96;
+      qr.style.setProperty("width", side + "px", "important");
+      qr.style.setProperty("height", side + "px", "important");
+      if (code) {
+        code.style.setProperty("width", side * ratio + "px", "important");
+        code.style.setProperty("height", side * ratio + "px", "important");
+      }
+    }
+  };
+  /* Same failure on the HORIZONTAL label, and worse on a real sheet: the stack is
+     centred, so an over-long name spills past BOTH edges onto the neighbouring
+     Avery slot rather than just clipping. Shrink the name until it sits inside. */
+  window.__fitHoriz = function (box) {
+    if (!box) return;
+    var nm = box.querySelector(".nm"), row = box.querySelector(".lpr");
+    if (!nm || !row) return;
+    nm.style.fontSize = "";
+    var m = box.querySelector(".lpm") || box;
+    var fits = function () { return m.scrollHeight <= m.clientHeight + 1; };
+    if (fits()) return;
+    var size = parseFloat(getComputedStyle(nm).fontSize), floor = size * 0.6, guard = 0;
+    while (!fits() && size > floor && guard++ < 24) { size *= 0.94; nm.style.fontSize = size + "px"; }
+  };
   function keyPreview(o) {
     var pv = $("res-prev");
     pv.classList.remove("hidden");
@@ -1706,6 +1752,8 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     var qs = pv.querySelectorAll(".qr");
     new QRCode(qs[0], { text: "https://demo.axlehq.io/driver.html#t=" + encodeURIComponent(o.tag), width: 84, height: 84, colorDark: "#0b0b0b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
     new QRCode(qs[1], { text: "https://demo.axlehq.io/driver.html#t=" + encodeURIComponent(o.tag), width: 135, height: 135, colorDark: "#0b0b0b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+    window.__fitVert(pv.querySelector(".spec-lab-v"));
+    window.__fitHoriz(pv.querySelector(".spec-lab"));
   }
   function renderKey() {
     var w = document.getElementById("colorkey");
@@ -2172,6 +2220,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       item.appendChild(tog);
       pv.appendChild(item);
       qr(d.querySelector(".qr"), t.t, vert ? 135 : 84);
+      if (vert) window.__fitVert(d); else window.__fitHoriz(d);
     });
     if (n > 4) { var m = document.createElement("div"); m.className = "dim"; m.style.fontSize = "11.5px"; m.textContent = "\u2026and " + (n - 4) + " more"; pv.appendChild(m); }
   }
@@ -2197,10 +2246,12 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         L.innerHTML = '<span class="lpv"><span class="vnm">' + t.asset + '</span><span class="vid">' + t.name + ' \u00b7 ' + t.id + '</span><span class="qr"></span><span class="tap" style="color:' + hx + '">' + NFC + '<b style="color:' + hx + '">TAP HERE</b></span><span class="vband" style="background:' + dk + '">' + bandHTML(act) + "</span></span>";
         sh[Math.floor(slot / 10)].appendChild(L);
         qr(L.querySelector(".qr"), t.t, 144);
+        window.__fitVert(L.querySelector(".lpv"));
       } else {
         L.innerHTML = '<span class="lpm"><span class="nm">' + t.asset + '</span><span class="lpr"><span class="qrc"><span class="qr"></span><span class="qid">' + t.id + '</span></span><span class="tx"><span class="id">' + t.name + '</span><span class="ac">' + act + '</span></span><span class="tap" style="color:' + hx + '">' + NFC + '<b style="color:' + hx + '">TAP HERE</b></span></span></span><span class="band" style="background:' + dk + '">' + bandHTML(act) + "</span>";
         sh[Math.floor(slot / 10)].appendChild(L);
         qr(L.querySelector(".qr"), t.t, 91);
+        window.__fitHoriz(L);
       }
     });
     rows().forEach(function (r) {
