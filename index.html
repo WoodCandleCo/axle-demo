@@ -357,15 +357,16 @@
   .spec-side i.t::before { content: ""; position: absolute; top: 0; left: -3px; width: 7px; height: 1px; background: var(--muted); }
   .spec-side i.b::after { content: ""; position: absolute; bottom: 0; left: -3px; width: 7px; height: 1px; background: var(--muted); }
   .spec-lab { width: 360px; height: 180px; flex: none; display: flex; align-items: stretch; padding: 0; box-sizing: border-box; color: #fff; border-radius: 6px; overflow: hidden; }
-  .spec-lab .lpm { position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; padding: 6px 7px 6px 13px; box-sizing: border-box; }
-  .spec-lab .lpm .nm { display: block; font-family: var(--display); font-size: 23.5px; font-weight: 700; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.35px; margin-bottom: 6px; }
-  .spec-lab .lpr { flex: none; display: flex; align-items: center; gap: 4px; margin-top: 0; }
-  .spec-lab .qrc { flex: none; position: relative; }
+  .spec-lab .lpm { position: relative; flex: 1; min-width: 0; display: flex; align-items: stretch; padding: 6px 7px 6px 13px; box-sizing: border-box; }
+  .spec-lab .lpm .nm { display: block; font-family: var(--display); font-size: 15.3px; font-weight: 700; line-height: 1.12; text-transform: uppercase; letter-spacing: 0.35px; text-align: center; }
+  .spec-lab .lpr { flex: 1; display: flex; align-items: center; gap: 4.5px; }
+  .spec-lab .qrc { flex: none; position: relative; margin-bottom: 11px; }
   .spec-lab .qid { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 8.5px; opacity: 0.9; margin-top: 2px; white-space: nowrap; }
   .spec-lab.lpc-yellow { color: #332000; }
-  .spec-lab .qr { width: 94px; height: 94px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex: none; }
-  .spec-lab .qr img, .spec-lab .qr canvas { width: 76px !important; height: 76px !important; display: block; }
-  .spec-lab .tx { flex: 1; min-width: 0; line-height: 1.2; }
+  .spec-lab .qr { width: 153px; height: 153px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .spec-lab .qr img, .spec-lab .qr canvas { width: 135px !important; height: 135px !important; display: block; }
+  .spec-lab .rcol { flex: 1; min-width: 0; align-self: stretch; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
+  .spec-lab .rcol span { display: block; }
   .spec-lab .tx span { display: block; }
   .spec-lab .nm { font-size: 16.5px; font-weight: 800; }
   .spec-lab .id { font-family: var(--mono); font-size: 10.5px; opacity: 0.92; margin-top: 2px; }
@@ -419,23 +420,24 @@
     #print-root { display: block !important; }
     .lp-sheet { width: 8.5in; height: 11in; position: relative; page-break-after: always; }
     .lp-label { position: absolute; width: 4in; height: 2in; display: flex; align-items: stretch; padding: 0; box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; color: #fff; }
-    .lp-label .lpm { position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; padding: 0.07in 0.08in 0.07in 0.14in; box-sizing: border-box; }
-    .lp-label .lpm .nm { display: block; font-family: var(--display); font-size: 0.265in; font-weight: 700; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.004in; margin-bottom: 0.07in; }
-    .lp-label .lpr { flex: none; display: flex; align-items: center; gap: 0.04in; margin-top: 0; }
-    .lp-label .qrc { flex: none; position: relative; }
+    .lp-label .lpm { position: relative; flex: 1; min-width: 0; display: flex; align-items: stretch; padding: 0.07in 0.08in 0.07in 0.14in; box-sizing: border-box; }
+    .lp-label .lpm .nm { display: block; font-family: var(--display); font-size: 0.17in; font-weight: 700; line-height: 1.12; text-transform: uppercase; letter-spacing: 0.004in; text-align: center; }
+    .lp-label .lpr { flex: 1; display: flex; align-items: center; gap: 0.05in; }
+    .lp-label .qrc { flex: none; position: relative; margin-bottom: 0.125in; }
     .lp-label .qid { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); font-family: ui-monospace, Menlo, monospace; font-size: 0.09in; opacity: 0.9; margin-top: 0.02in; white-space: nowrap; }
     .lp-label.lpc-yellow { color: #332000; }
-    .lp-label .tap { width: 1.1in; height: 1.1in; flex: none; margin-right: 0.02in; background: #fff; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.02in; box-sizing: border-box; }
+    .lp-label .tap { width: 1.1in; height: 1.1in; flex: none; background: #fff; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.02in; box-sizing: border-box; }
     .lp-label .tap svg { width: 0.34in; height: 0.34in; }
     .lp-label .tap b { font-size: 0.088in; font-weight: 800; letter-spacing: 0.016in; }
-    .lp-label .tx { flex: 1; min-width: 0.65in; line-height: 1.25; }
+    .lp-label .rcol { flex: 1; min-width: 0; align-self: stretch; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.035in; }
+    .lp-label .rcol span { display: block; }
     .lp-label .tx span { display: block; }
     .lp-label .nm { font-size: 0.185in; font-weight: 800; }
     .lp-label .id { font-family: ui-monospace, Menlo, monospace; font-size: 0.12in; opacity: 0.92; margin-top: 0.02in; }
     .lp-label .ac { font-size: 0.11in; text-transform: uppercase; letter-spacing: 0.018in; opacity: 0.92; margin-top: 0.025in; }
     .lp-label .u { font-size: 0.078in; opacity: 0.75; word-break: break-all; margin-top: 0.035in; }
-    .lp-label .qr { width: 1.05in; height: 1.05in; background: #fff; border-radius: 0.09in; display: flex; align-items: center; justify-content: center; flex: none; }
-    .lp-label .qr img, .lp-label .qr canvas { width: 0.85in !important; height: 0.85in !important; display: block; }
+    .lp-label .qr { width: 1.7in; height: 1.7in; background: #fff; border-radius: 0.09in; display: flex; align-items: center; justify-content: center; flex: none; }
+    .lp-label .qr img, .lp-label .qr canvas { width: 1.5in !important; height: 1.5in !important; display: block; }
     .lp-label .band { align-self: stretch; flex: none; width: 0.68in; margin: 0 0 0 0.02in; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.012in; writing-mode: vertical-rl; transform: rotate(180deg); color: #fff; }
     .lp-label .band .en { font-size: 0.21in; font-weight: 800; letter-spacing: 0.032in; }
     .lp-label .band .es { font-size: 0.145in; font-weight: 700; letter-spacing: 0.026in; opacity: 0.85; }
@@ -1737,7 +1739,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     var nm = box.querySelector(".nm"), row = box.querySelector(".lpr");
     if (!nm || !row) return;
     nm.style.fontSize = "";
-    var m = box.querySelector(".lpm") || box;
+    var m = box.querySelector(".rcol") || box.querySelector(".lpm") || box;
     var fits = function () { return m.scrollHeight <= m.clientHeight + 1; };
     if (fits()) return;
     var size = parseFloat(getComputedStyle(nm).fontSize), floor = size * 0.6, guard = 0;
@@ -1747,10 +1749,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     var pv = $("res-prev");
     pv.classList.remove("hidden");
     var ink = ink2(o.hex), dk = shade2(o.hex);
-    pv.innerHTML = '<div class="spec-row"><div class="spec"><div class="spec-top"><i class="l"></i><span>4&quot;</span><i class="r"></i></div><div class="spec-mid"><div class="spec-lab" style="background:' + o.hex + ';color:' + ink + '"><span class="lpm"><span class="nm">' + o.asset + '</span><span class="lpr"><span class="qrc"><span class="qr"></span><span class="qid">' + o.tag + '</span></span><span class="tx"><span class="id">' + o.name + '</span><span class="ac">' + o.act + '</span></span><span class="tap" style="color:' + o.hex + ';background:#fff">' + NFC2 + '<b style="color:' + o.hex + '">TAP HERE</b></span></span></span><span class="band" style="background:' + dk + ';color:#fff">' + bandHTML2(o.act) + '</span></div><div class="spec-side"><i class="t"></i><span>2&quot;</span><i class="b"></i></div></div></div>' +
+    pv.innerHTML = '<div class="spec-row"><div class="spec"><div class="spec-top"><i class="l"></i><span>4&quot;</span><i class="r"></i></div><div class="spec-mid"><div class="spec-lab" style="background:' + o.hex + ';color:' + ink + '"><span class="lpm"><span class="lpr"><span class="qrc"><span class="qr"></span><span class="qid">' + o.tag + '</span></span><span class="rcol"><span class="nm">' + o.asset + '</span><span class="id">' + o.name + '</span><span class="tap" style="color:' + o.hex + ';background:#fff">' + NFC2 + '<b style="color:' + o.hex + '">TAP HERE</b></span></span></span></span><span class="band" style="background:' + dk + ';color:#fff">' + bandHTML2(o.act) + '</span></div><div class="spec-side"><i class="t"></i><span>2&quot;</span><i class="b"></i></div></div></div>' +
       '<div class="spec"><div class="spec-top" style="width:180px"><i class="l"></i><span>2&quot;</span><i class="r"></i></div><div class="spec-mid"><div class="spec-lab-v" style="background:' + o.hex + ';color:' + ink + '"><span class="vnm">' + o.asset + '</span><span class="vid">' + o.name + ' \u00b7 ' + o.tag + '</span><span class="qr"></span><span class="tap" style="color:' + o.hex + ';background:#fff">' + NFC2 + '<b style="color:' + o.hex + '">TAP HERE</b></span><span class="vband" style="background:' + dk + ';color:#fff">' + bandHTML2(o.act) + '</span></div><div class="spec-side"><i class="t"></i><span>4&quot;</span><i class="b"></i></div></div></div></div>';
     var qs = pv.querySelectorAll(".qr");
-    new QRCode(qs[0], { text: "https://demo.axlehq.io/driver.html#t=" + encodeURIComponent(o.tag), width: 84, height: 84, colorDark: "#0b0b0b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+    new QRCode(qs[0], { text: "https://demo.axlehq.io/driver.html#t=" + encodeURIComponent(o.tag), width: 135, height: 135, colorDark: "#0b0b0b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
     new QRCode(qs[1], { text: "https://demo.axlehq.io/driver.html#t=" + encodeURIComponent(o.tag), width: 135, height: 135, colorDark: "#0b0b0b", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
     window.__fitVert(pv.querySelector(".spec-lab-v"));
     window.__fitHoriz(pv.querySelector(".spec-lab"));
@@ -2201,7 +2203,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       if (vert) {
         d.innerHTML = '<span class="vnm">' + t.asset + '</span><span class="vid">' + t.name + ' \u00b7 ' + t.id + '</span><span class="qr"></span><span class="tap" style="color:' + hx + '">' + NFC + '<b style="color:' + hx + '">TAP HERE</b></span><span class="vband" style="background:' + dk + '">' + bandHTML(act) + "</span>";
       } else {
-        d.innerHTML = '<span class="lpm"><span class="nm">' + t.asset + '</span><span class="lpr"><span class="qrc"><span class="qr"></span><span class="qid">' + t.id + '</span></span><span class="tx"><span class="id">' + t.name + '</span><span class="ac">' + act + '</span></span><span class="tap" style="color:' + hx + '">' + NFC + '<b style="color:' + hx + '">TAP HERE</b></span></span></span><span class="band" style="background:' + dk + '">' + bandHTML(act) + "</span>";
+        d.innerHTML = '<span class="lpm"><span class="lpr"><span class="qrc"><span class="qr"></span><span class="qid">' + t.id + '</span></span><span class="rcol"><span class="nm">' + t.asset + '</span><span class="id">' + t.name + '</span><span class="tap" style="color:' + hx + '">' + NFC + '<b style="color:' + hx + '">TAP HERE</b></span></span></span></span><span class="band" style="background:' + dk + '">' + bandHTML(act) + "</span>";
       }
       var wrap = document.createElement("div");
       wrap.style.cssText = "width:" + Math.round((vert ? 180 : 360) * scale) + "px;height:" + Math.round((vert ? 360 : 180) * scale) + "px;overflow:hidden;border-radius:4px";
@@ -2219,7 +2221,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       });
       item.appendChild(tog);
       pv.appendChild(item);
-      qr(d.querySelector(".qr"), t.t, vert ? 135 : 84);
+      qr(d.querySelector(".qr"), t.t, 135);
       if (vert) window.__fitVert(d); else window.__fitHoriz(d);
     });
     if (n > 4) { var m = document.createElement("div"); m.className = "dim"; m.style.fontSize = "11.5px"; m.textContent = "\u2026and " + (n - 4) + " more"; pv.appendChild(m); }
@@ -2248,9 +2250,9 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
         qr(L.querySelector(".qr"), t.t, 144);
         window.__fitVert(L.querySelector(".lpv"));
       } else {
-        L.innerHTML = '<span class="lpm"><span class="nm">' + t.asset + '</span><span class="lpr"><span class="qrc"><span class="qr"></span><span class="qid">' + t.id + '</span></span><span class="tx"><span class="id">' + t.name + '</span><span class="ac">' + act + '</span></span><span class="tap" style="color:' + hx + '">' + NFC + '<b style="color:' + hx + '">TAP HERE</b></span></span></span><span class="band" style="background:' + dk + '">' + bandHTML(act) + "</span>";
+        L.innerHTML = '<span class="lpm"><span class="lpr"><span class="qrc"><span class="qr"></span><span class="qid">' + t.id + '</span></span><span class="rcol"><span class="nm">' + t.asset + '</span><span class="id">' + t.name + '</span><span class="tap" style="color:' + hx + '">' + NFC + '<b style="color:' + hx + '">TAP HERE</b></span></span></span></span><span class="band" style="background:' + dk + '">' + bandHTML(act) + "</span>";
         sh[Math.floor(slot / 10)].appendChild(L);
-        qr(L.querySelector(".qr"), t.t, 91);
+        qr(L.querySelector(".qr"), t.t, 216);
         window.__fitHoriz(L);
       }
     });
